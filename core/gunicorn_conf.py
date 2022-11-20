@@ -14,4 +14,4 @@ worker_class = 'uvicorn.workers.UvicornWorker'
 
 loglevel = 'ERROR'
 
-errorlog = '/home/ubuntu/Feedback_bot/error_log'
+errorlog = '/home/falcon/EduNews_bot/error_log'
