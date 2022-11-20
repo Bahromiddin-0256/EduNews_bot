@@ -1,0 +1,49 @@
+# Most used
+back: "⬅ Ortga"
+confirm: "✅ Tasdiqlash"
+cancel: "🚫 Bekor qilish"
+
+# Registration
+language: "Til"
+language_my: "🇺🇿 O'zbek"
+language_choose: "🇺🇿 Tilni tanlang:"
+request_contact: "Telefon raqamingizni jo'natish uchun <b>📞 Raqamni jo'natish</b> ni bosing yoki raqamingizni quyidagi formatda jo'nating:\n\n👉   +998901234567"
+request_contact_btn: "📞 Raqamni jo'natish"
+request_fullname_msg: "Ism familiyangizni quyidagi formatda jo'nating:\n\n<b>👉   Alisherov Valisher</b>"
+request_district: "Tumaningizni tanlang:"
+request_school: "Maktabinigzni tanlang:"
+incorrect_full_name_format: "🚫 Ism familiya xato formatda kiritildi, ilitmos quyidagi formatda qayta kiriting:\n\n<b>👉   Alisherov Valisher</b>"
+incorrect_format_number: "🚫 Telefon raqam xato formatda kiritildi, raqamni jo'natish uchun <b>📞 Raqamni jo'natish</b> ni bosing yoki raqamingizni quyidagi formatda jo'nating:\n\n👉   +998901234567"
+invalid_district: "🚫 Noto'g'ri tuman kiritildi, quyidagilarda tumanlardan qayta tanlng:"
+invalid_school: "🚫 Noto'g'ri maktab kirtildi, quyidagi maktablarda birini tanlang:"
+
+# Main menu
+main_menu: "Asosiy menu:"
+give_feedback: "💬 Fikr qoldirish"
+about: "ℹ Xaqida"
+settings: "⚙ Sozlamalar"
+
+# Membership check
+membership_alert: "Botdan foydalanish uchun quyidagi kanallarga a'zo bo'lishingiz kerak 👇:"
+membership_success: "✅ Endi siz botdan toliq foydalana olasiz."
+membership_fail: "🚫 Kanallarga hali a'zo emassiz, a'zo bo'lib qayta urining."
+left_action_reminder: "❗ Kanalni tark etdingiz, botdan foydalanish uchun qayta a'zo bo'ling."
+
+# Settings
+change_settings_msg: "Asosiy sozlamalar:"
+change_language: "🈯️ Tilni o'zgartirish"
+change_full_name: "✏ Ism familiyani o'zgartirish"
+change_number: "📞 Telefon raqamni o'zgartirish"
+change_school: "📍 Maktabni o'zgartirish"
+phone_number_changed: "✅ Telefon raqam <b>{new_number}</b> ga o'zgartirildi"
+full_name_changed: "✅ Ism familiya <b>{new_full_name}</b> ga o'zgartirildi"
+school_changed: "✅ Maktab va tuman <b>{district_name}, {school_name}</b> ga o'zgartirildi."
+language_changed: "✅ <b>🇺🇿 O'zbek</b> tili tanlandi."
+phone_number: "Telefon raqam"
+district: "Tuman"
+school: "Maktab"
+
+# Give feedback
+choose_feedback_type: "Qaysi yo'naish bo'yich izoh qoldirmoqchisiz?"
+leave_feedback: "{field_name} uchun o'z izohingizni qoldiring 👇:"
+feedback_sent: "✅ Izohingiz yuborildi."

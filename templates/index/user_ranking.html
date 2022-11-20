@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ school.name }}</title>
+    {% if request.app.favicon_url %}
+    <link rel="icon" href="{{ request.app.favicon_url }}">
+    {% endif %}
+    <script src="https://kit.fontawesome.com/b6633c4c6c.js" crossorigin="anonymous"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <style>
+        th {
+            cursor: pointer;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+<div class="container p-3" style="position: relative;">
+    <div class="h3 text-secondary text-center mt-1"><b>{{ district.name }}, {{ school.name }}</b> foydalanuvchilari
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover shadow mt-3 mb-5 bg-white rounded" id="myTable">
+
+            <caption>Oxirgi marta yangilandi: {{ last_update }}</caption>
+            <thead style="position: sticky; top: 0">
+            <tr>
+                <th class="bg-primary text-white text-center" style="border-radius: 10px 0 0 0">№</th>
+                <th class="bg-primary text-white text-center">Ism Familiya</th>
+                <th class="bg-primary text-white text-center" onclick="sortTable(2)" style="border-radius: 0 10px 0 0">
+                    Umumiy ball
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+            <tr>
+                <td class="text-center">{{ loop.index }}</td>
+                <td class="text-center">{{ user.full_name }}</td>
+                <td class="text-center">{{ user.points }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            <a href="/district/{{ district.id }}/" class="btn btn-primary"><i class="fa fa-arrow-left"></i> <b>{{district.name}}</b>
+                tumani</a>
+        </div>
+    </div>
+</div>
+<script src="/static/js/bootstrap.min.js"></script>
+<script>
+    function sortTable(n) {
+        let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("myTable");
+        switching = true;
+        //Set the sorting direction to ascending:
+        dir = "asc";
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                /*check if the two rows should switch place,
+                based on the direction, asc or desc:*/
+                if (dir === "asc") {
+                    if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir === "desc") {
+                    if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                //Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /*If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again.*/
+                if (switchcount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+
+
+
+</script>
+</body>
+</html>

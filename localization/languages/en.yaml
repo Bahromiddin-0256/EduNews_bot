@@ -1,0 +1,92 @@
+# Most used
+back: "⬅ Back"
+confirm: "✅ Confirm"
+check: "✅ Check"
+restart: "🔄 Restart"
+cancel: "🚫 Cancel"
+share: "↗ Share"
+view: "🔗 View"
+
+
+# Registration
+language: "Language"
+language_my: "🇺🇸 English"
+language_choose: "🇺🇸 Please, select your language:"
+request_contact: "To send your contact press <b>📞 Send contact</b>\nor send your phone number in the following format:\n\n👉   +998901234567"
+request_contact_btn: "📞 Send contact"
+request_fullname_msg: "Send your full name in the following format:\n\n<b>👉   Alisherov Valisher</b>"
+request_district: "Choose you district:"
+request_school: "Choose your school:"
+incorrect_full_name_format: "🚫 Full name is invalid, send your full name in the following format:\n\n<b>👉   Alisherov Valisher</b>"
+incorrect_format_number: "🚫 Phone number is invalid, please try again"
+invalid_district: "🚫 Incorrect district entered, please choose your district from the followings:"
+invalid_school: "🚫 Incorrect school entered, please choose your school from the followings:"
+
+# Main menu
+main_menu: "Main menu:"
+add_post: "➕ Upload new post"
+my_posts: "📑 My posts"
+statistics: "📊 Statistics"
+settings: "⚙ Settings"
+leave_comment: "💬 Leave comment"
+
+# Membership check
+membership_alert: "To continue using this bot you will need to join following channels 👇:"
+membership_success: "✅ Great, now you can fully use the bot"
+membership_fail: "🚫 You are not member of the channel yet, please check it again once you are joined"
+left_action_reminder: "❗ You have left the channel, please join it again to use the bot"
+
+# Settings
+change_settings_msg: "Main settings:"
+change_language: "🈯️ Change language"
+change_full_name: "✏ Change full name"
+change_number: "📞 Change phone number"
+change_school: "📍 Change school"
+my_linked_channels: "🔗 Linked channels"
+phone_number_changed: "✅ Phone number has been updated  to <b>{new_number}</b>"
+full_name_changed: "✅ Full name changed to <b>{new_full_name}</b>"
+school_changed: "✅ School changed to <b>{district_name}, {school_name}</b>"
+language_changed: "✅ Language changed to <b>🇺🇸 English</b>"
+channels_you_added: "<b>🖇 Channels you added:</b>\n\n"
+no_added_channels: "🗑 You haven't added the bot to any channel yet."
+how_to_add: "❔ How to add the bot to channel."
+
+# New Post
+working_hours_alert: "❗ Sorry you can only upload new post on channel from <b>Monday to Saturday</b> between <b>4:00 and 22:00</b>.\n😊 Have a nice day <b>{name}</b>"
+contact_to_admin: "<a href='https://t.me/AndijonZiyolilari'>Andijon Ziyolilari</a> kanaliga yuklama yuklash uchun admin bilan bog'lanish kerak 👇:\n\n☎ +998 (99) 900-00-96"
+daily_limit_alert: "❗ Sorry you can only upload one post per day, please try again tomorrow"
+enter_post_media: "1. Upload an Image<b>(Only 1)</b> or a Video<b>(No more than 50MB)</b> for your new post:"
+file_upload_not_allowed: "❗ File upload is not allowed. Please upload your post media in photo or video format:"
+video_size_exceeded: "⚠ Uploaded video must be no more than <b>50 MB</b>.\n\nPlease try again 👇:"
+enter_post_title: "2. Enter your post title:\n\n❗ Post title shouldn't be more than <b>100</b> character."
+title_length_exceeded: "⚠ Post title shouldn't be more than <b>100</b> character, please try again:"
+enter_post_description: "3. Enter a context for your post, caption mustn't be more than <b>850</b> character:"
+caption_too_long: "⚠ Post caption mustn't be more than <b>850</b> character, please enter the context again:"
+request_to_accept: "👇 Do you confirm following post?"
+post_taken_to_consideration: "✅ Your post has been sent to consider.\n\n⏳ It will be uploaded to the channel once it is approved."
+post_rejected: "🙅‍ Unfortunately your post hasn't been approved."
+post_approved: "✅ Your post has been uploaded to the channel."
+
+# My posts
+uploaded_posts: "📑 Your posts currently uploaded to the channel:\n"
+no_uploaded_posts: "     📂 You don't have any uploaded posts yet."
+
+# Leave comment
+send_your_comment: "📝 Type your comment for the bot, it will be seen by admins:"
+comment_sent: "✅ Thank you, your comment has been sent to admins, you may receive response after a while."
+
+
+# Like counter
+liked: "➕ You put a like"
+like_taken: "➖ You get your like back"
+too_many_requests: "🚫 Too many requests, please try again later."
+join_alert: "⛔ You haven't not joined to the channel yet."
+
+
+# Statistics
+total_uploads: "📤 Total uploads:  <b>{total}</b> (Photos {photo}, Videos {video})"
+total_points: "       ⭐ Your total points:  <b>{total}</b>\n"
+school_rating: "<b>🏢 {school}</b> ranking:"
+school_in_district: "       In district:  <b>{rank}</b>"
+school_in_region: "       In Region:  <b>{rank}</b>\n"
+district_rating: "<b>🏆 {district} ranking:  {rank}</b>"

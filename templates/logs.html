@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% block page_body %}
+<div class="row">
+    <div class="mb-3">
+        <textarea class="form-control" rows="30" readonly>{{ errors }}</textarea>
+        <br>
+        <button type="submit" class="btn btn-primary" onclick="location.href='/admin/logs/clear';"><i
+                class="fa fa-trash fa fw"></i>
+            Clear
+        </button>
+    </div>
+</div>
+{% endblock %}
