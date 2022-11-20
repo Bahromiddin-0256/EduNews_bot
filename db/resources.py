@@ -22,6 +22,8 @@ class ForeignKeyDisplay(displays.Display):
         self.display_field = display_field
 
     async def render(self, request: Request, value: int):
+        if not value:
+            return ""
         model_ = await self.model_.get(pk=value).values()
         url = f"/admin/{self.model_.__name__.lower()}/update/{value}"
         return f"<b><a href='{url}'>{model_[self.display_field]}</a></b>"
