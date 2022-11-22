@@ -13,10 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
     HOST: str
+    PORT: int
     WEBHOOK_HOST: str
     WEBHOOK_PATH: str = "/bot{token}"
     WEBHOOK_URL: str = None
-    PORT: int
     BOT_TOKEN: str
     BOT_USERNAME: str
     FACEBOOK_PAGE_ID: int
