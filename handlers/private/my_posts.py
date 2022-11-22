@@ -18,13 +18,13 @@ router.message.middleware(PermissionMiddleware())
 
 @router.message(TranslatedText('my_posts'))
 async def show_my_posts(message: types.Message, user: User, state: FSMContext):
-    back_button = await translated_button(user, 'back')
-    await message.answer(text=_('uploaded_posts', user.lang_code), reply_markup=back_button)
     data = await my_posts_tm(user=user, index=0)
     if data is None:
         await message.answer(text=_('no_uploaded_posts', user.lang_code))
         return
     else:
+        back_button = await translated_button(user, 'back')
+        await message.answer(text=_('uploaded_posts', user.lang_code), reply_markup=back_button)
         if data.get('photo') is not None:
             _m = await message.answer_photo(**data)
         else:
@@ -51,7 +51,7 @@ async def change_current_post(call: CallbackQuery, user: User, callback_data: My
 
 @router.message(MyPostsState.view, TranslatedText('back'))
 async def go_back(message: types.Message, user: User, state: FSMContext):
-    from misc import bot
+    from core.misc import bot
     data = await state.get_data()
     msg_id = data['message_id']
     await bot.delete_message(chat_id=user.tg_id, message_id=msg_id)
