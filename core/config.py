@@ -12,6 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
     HOST: str
+    SERVER_IP: str
     PORT: int
     WEBHOOK_PATH: str = "/bot{token}"
     WEBHOOK_URL: str = None

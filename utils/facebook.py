@@ -3,13 +3,13 @@ import json
 import aiohttp
 from aiogram import Bot
 
-from core.config import settings
+from core.config import settings, BASE_DIR
 from db.models import Post
 
 
 async def upload_on_facebook(post: Post, bot: Bot):
-    file_path = await bot.get_file(file_id=post.media_id)
-    file_url = f"https://api.telegram.org/file/bot{settings.BOT_TOKEN}/{file_path.file_path}"
+    file = await bot.get_file(file_id=post.media_id)
+    file_url = f"http://{settings.SERVER_IP}:81/bot{settings.BOT_TOKEN}/{file.file_path}"
     context = await post.context(fb=True)
     data = {
         'published': 'true',
