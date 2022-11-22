@@ -16,6 +16,7 @@ async def test(update: ChatMemberUpdated):
         'channel_id': str(update.chat.id),
         'channel_title': update.chat.title,
         'channel_username': update.chat.username,
+        'channel_type': update.chat.type,
     }
     await ConnectedChannel.create(**data)
 

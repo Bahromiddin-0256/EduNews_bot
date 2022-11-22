@@ -93,6 +93,10 @@ class PostAdmin(Model):
               Field(name='author_id', label='Author', input_=inputs.ForeignKey(model=User),
                     display=ForeignKeyDisplay(model=User, display_field='full_name')),
               'title',
+              Field(name='url', label='Telegram link', input_=inputs.Input(),
+                    display=displays.InputOnly()),
+              Field(name='facebook_url', label='Facebook link', input_=inputs.Input(),
+                    display=displays.InputOnly()),
               "created_at"]
 
     async def row_attributes(self, request: Request, obj: dict) -> dict:

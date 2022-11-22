@@ -10,7 +10,7 @@ router = Router()
 async def new_grou_member(message: types.Message, user: User):
     chat = message.chat
     await ConnectedChannel.create(user=user, channel_id=chat.id, channel_title=chat.title,
-                                  channel_username=chat.username)
+                                  channel_username=chat.username, channel_type=chat.type)
 
 
 @router.message(F.left_chat_member & (F.left_chat_member.username == settings.BOT_USERNAME))

@@ -29,7 +29,7 @@ async def start_command(message: types.Message, user: User, state: FSMContext):
             data = await district_tm(user)
             await state.set_state(RegistrationState.district)
         elif not user.school:
-            data = await school_tm(user)
+            data = await school_tm(user, user.district)
             await state.set_state(RegistrationState.school)
         else:
             user.registered = True

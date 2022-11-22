@@ -84,6 +84,7 @@ class Post(Model):
     title = fields.CharField(max_length=100)
     description = fields.TextField()
     url = fields.TextField(null=True)
+    facebook_url = fields.TextField(null=True)
     message_id = fields.CharField(max_length=20, null=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     district: fields.ForeignKeyRelation[District] = fields.ForeignKeyField(model_name='models.District',
@@ -130,3 +131,4 @@ class ConnectedChannel(Model):
     channel_id = fields.CharField(max_length=20, unique=True)
     channel_title = fields.CharField(max_length=100)
     channel_username = fields.CharField(max_length=50, null=True)
+    channel_type = fields.CharField(max_length=50)
