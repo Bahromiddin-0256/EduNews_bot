@@ -36,7 +36,7 @@ async def new_post(message: types.Message, user: User, state: FSMContext):
     await state.set_state(NewPostState.media_upload)
 
 
-@router.message(NewPostState, TranslatedText('cancel'))
+@router.message(NewPostState(), TranslatedText('cancel'))
 async def back_to_menu(message: types.Message, user: User, state: FSMContext):
     await send_main_menu(message, user)
     await state.clear()
