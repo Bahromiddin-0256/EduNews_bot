@@ -23,11 +23,13 @@ import routes
 
 app = FastAPI()
 app.logger = logger
-app.mount(
-    "/static",
-    StaticFiles(directory=os.path.join(BASE_DIR, "static")),
-    name="static",
-)
+
+if settings.DEBUG:
+    app.mount(
+        "/static",
+        StaticFiles(directory=os.path.join(BASE_DIR, "static")),
+        name="static",
+    )
 
 
 @app.get("/")
