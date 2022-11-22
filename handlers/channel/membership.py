@@ -14,7 +14,7 @@ router = Router()
 
 @router.chat_member(ChannelFilter(channel=settings.REQUIRED_CHANNELS_IDS), ChatMemberUpdatedFilter(LEAVE_TRANSITION))
 async def warn_user(event: ChatMemberUpdated):
-    from misc import bot
+    from core.misc import bot
     user: User = await get_user(event.from_user)
 
     user.is_member = False

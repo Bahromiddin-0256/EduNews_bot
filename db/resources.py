@@ -113,7 +113,7 @@ class ConnectedChannelAdmin(Model):
     label = 'Linked Channels'
     icon = "fas fa-link"
     model = ConnectedChannel
-    fields = ['channel_title', 'channel_username',
+    fields = ['channel_title', 'channel_username', 'channel_type',
               Field(name='user_id', label='User', input_=inputs.ForeignKey(model=User),
                     display=ForeignKeyDisplay(model=User, display_field='full_name'))
               ]

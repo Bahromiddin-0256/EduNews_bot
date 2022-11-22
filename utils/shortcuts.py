@@ -8,7 +8,7 @@ from keyboards.reply_markup import main_menu_tm
 
 
 async def check_channels(user: User) -> bool:
-    from misc import bot
+    from core.misc import bot
     for chat_id in settings.REQUIRED_CHANNELS_IDS:
         try:
             member = await bot.get_chat_member(chat_id=chat_id, user_id=user.tg_id)
