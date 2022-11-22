@@ -140,5 +140,5 @@ if __name__ == '__main__':
             'app:app',
             host='localhost',
             port=settings.PORT,
-            workers=1,
+            workers=2,
         )
