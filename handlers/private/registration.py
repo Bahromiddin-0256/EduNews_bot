@@ -118,7 +118,7 @@ async def set_school(message: types.Message, user: User, state: FSMContext):
 
 
 @router.callback_query(F.data == 'check_membership')
-async def check_membership(call: CallbackQuery, user: User):
+async def check_membership(call: CallbackQuery, user: User, state: FSMContext):
     if user.is_member:
         await call.message.delete()
         return
@@ -131,6 +131,7 @@ async def check_membership(call: CallbackQuery, user: User):
         await call.answer(text=_('membership_success', user.lang_code), show_alert=True)
         await call.message.delete()
         await send_main_menu(message=call.message, user=user)
+        await state.clear()
     else:
         if user.is_member:
             user.is_member = False

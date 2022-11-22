@@ -1,8 +1,17 @@
+from datetime import datetime
+
+import pytz
 from aiogram import types
 
+from core.config import settings
 from core.sessions import caches
 from db.models import User, PostLikes, Post, District, School
 from localization.strings import _
+
+
+def get_current_time(format_: str = "%d/%m/%Y, %H:%M"):
+    now = datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
+    return now.strftime(format_)
 
 
 async def get_user(bot_user: types.User, *args) -> User:
@@ -52,10 +61,9 @@ async def stat_info() -> dict:
             'name': district.name,
             'points': district.points,
             'schools': len(district.schools),
-            'users': len(district.users)
-
+            'users': len(district.users),
         })
-    return {'districts': res}
+    return {'districts': res, 'last_update': get_current_time()}
 
 
 async def schools_stat_info(district_id: int) -> dict:
@@ -69,14 +77,14 @@ async def schools_stat_info(district_id: int) -> dict:
             'users': len(await school.users),
             'points': school.points,
         })
-    return {'district': district, 'schools': res}
+    return {'district': district, 'schools': res, 'last_update': get_current_time()}
 
 
 async def users_stat_info(district_id: int, school_id: int) -> dict:
     district = await District.get(pk=district_id)
     school = await School.get(pk=school_id).prefetch_related('users')
     users = await school.users.filter(points__gt=0)
-    return {'district': district, 'users': users, 'school': school}
+    return {'district': district, 'users': users, 'school': school, 'last_update': get_current_time()}
 
 
 async def show_user_stat(user: User):

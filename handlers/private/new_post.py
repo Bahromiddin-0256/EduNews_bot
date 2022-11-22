@@ -20,7 +20,7 @@ router.message.middleware(PermissionMiddleware())
 
 @router.message(TranslatedText('add_post'))
 async def new_post(message: types.Message, user: User, state: FSMContext):
-    now = datetime.now(tz=pytz.timezone('Asia/Tashkent'))
+    now = datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
     if not user.post_permission:
         await message.answer(text=_('contact_to_admin', user.lang_code), reply_markup=admin_contact)
         return
