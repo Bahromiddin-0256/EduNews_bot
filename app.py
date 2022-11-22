@@ -13,16 +13,16 @@ from tortoise import Tortoise
 
 import middlewares
 from core import sessions
-from core.config import settings, TORTOISE_ORM, admin_config, BASE_DIR
+from core.config import settings, TORTOISE_ORM, admin_config, BASE_DIR, logger
 from db.crud import stat_info, schools_stat_info, users_stat_info
 from db.models import Post
-from misc import bot, dp
+from core.misc import bot, dp
 from utils.post_publisher import publish_post
-from core.log_conf import logging
 import db.resources
 import routes
 
 app = FastAPI()
+app.logger = logger
 app.mount(
     "/static",
     StaticFiles(directory=os.path.join(BASE_DIR, "static")),
@@ -138,6 +138,5 @@ if __name__ == '__main__':
             'app:app',
             host='localhost',
             port=settings.PORT,
-            log_level='error',
-            workers=1
+            workers=1,
         )

@@ -3,6 +3,7 @@ import os
 from aioredis import Redis
 from pydantic import BaseSettings, validator
 
+from core.logger import CustomizeLogger
 from db.models import Admin
 from utils.providers import LoginProvider
 from pathlib import Path
@@ -12,10 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
     HOST: str
-    SERVER_IP: str
-    PORT: int
+    WEBHOOK_HOST: str
     WEBHOOK_PATH: str = "/bot{token}"
     WEBHOOK_URL: str = None
+    PORT: int
     BOT_TOKEN: str
     BOT_USERNAME: str
     FACEBOOK_PAGE_ID: int
@@ -38,10 +39,12 @@ class Settings(BaseSettings):
     DATABASE_PASSWORD: str
     DEBUG: bool
     TIME_ZONE: str = 'Asia/Tashkent'
+    LOGS_PATH: str
+    LOG_LEVEL: str
 
     @validator("WEBHOOK_URL")
     def webhook_url(cls, v, values: dict):
-        host = values['HOST']
+        host = values['WEBHOOK_HOST']
         if 'localhost' in host:
             host += f":{values['PORT']}"
         return f"{host}{values['WEBHOOK_PATH']}"
@@ -88,3 +91,17 @@ admin_config = {
     "redis": redis,
     "language_switch": False,
 }
+
+logger_config = {
+    "logger": {
+        "path": settings.LOGS_PATH,
+        "level": settings.LOG_LEVEL,
+        "rotation": "20 days",
+        "retention": "1 months",
+        "format": "<level>{level: <8}</level> <green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> request id: {extra["
+                  "request_id]} - <cyan>{name}</cyan>:<cyan>{function}</cyan> - <level>{message}</level> "
+
+    }
+}
+
+logger = CustomizeLogger.make_logger(config=logger_config)

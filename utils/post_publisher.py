@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Bot
 
 from core.config import settings
@@ -28,6 +30,7 @@ async def publish_post(post: Post, bot: Bot):
     await update_points(post=post, delta=delta)
 
     facebook_upload = await upload_on_facebook(post, bot)
+    logging.info(msg=facebook_upload)
     counter = await PostLikes.get(pk=counter.pk)
     await bot.edit_message_reply_markup(chat_id=settings.MAIN_CHANNEL_ID, message_id=post.message_id,
                                         reply_markup=make_post_markup(counter.pk, number=counter.likes - delta,

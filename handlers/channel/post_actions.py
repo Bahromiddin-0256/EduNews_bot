@@ -14,7 +14,7 @@ router = Router()
 
 @router.callback_query(IsAdmin(), PostAction.filter(), ChannelFilter(channel=settings.CONSIDERATION_CHANNEL_ID))
 async def commit_action(call: CallbackQuery, user: User, callback_data: PostAction):
-    from misc import bot
+    from core.misc import bot
     post: Post = await Post.get(id=callback_data.post_id).prefetch_related('author', 'district', 'school')
     author: User = post.author
     if callback_data.action == 'reject':

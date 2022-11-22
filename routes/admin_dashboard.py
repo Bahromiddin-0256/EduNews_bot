@@ -15,6 +15,8 @@ from starlette.status import (
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
+
+from core.config import settings
 from utils.exceptions import unauthorized_error_exception
 
 
@@ -22,8 +24,8 @@ async def read_document(path: str) -> str:
     try:
         with open(path, 'r') as doc:
             return ''.join(doc.readlines())
-    except Exception as error:
-        return error.__str__()
+    except Exception:
+        pass
 
 
 async def write_config(data: str) -> str:
@@ -120,20 +122,20 @@ async def logs(
             "resource_label": "Logs",
             "page_pre_title": "overview",
             "page_title": "Logs",
-            "errors": (await read_document(path='error_log'))
+            "errors": (await read_document(path=settings.LOGS_PATH))
         },
     )
 
 
 @app.get("/logs/clear", dependencies=[Depends(get_current_admin)])
-async def logs(
+async def clear_logs(
         request: Request,
         resources=Depends(get_resources),
 ):
     try:
-        with open('error_log', 'w') as f:
+        with open(settings.LOGS_PATH, 'w') as f:
             f.close()
-    except:
+    except Exception:
         pass
     return RedirectResponse(url='/admin/logs/')
 

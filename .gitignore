@@ -147,6 +147,7 @@ dmypy.json
 cython_debug/
 
 migrations/
+/static/temp
 pyproject.toml
-error_log
+logs
 test.py

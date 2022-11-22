@@ -120,7 +120,7 @@ async def confirm_post_creation(call: types.CallbackQuery, user: User, state: FS
     markup = await post_confirmation_markup_admin(user=user, post=post)
     notification_text = f"<b>User:</b>   {user.mention}\n\n" + (await post.context())
 
-    from misc import bot
+    from core.misc import bot
     if media_type == 'photo':
         await bot.send_photo(chat_id=settings.CONSIDERATION_CHANNEL_ID, photo=media_id, caption=notification_text,
                              reply_markup=markup)

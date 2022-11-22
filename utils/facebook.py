@@ -1,5 +1,4 @@
 import json
-
 import aiohttp
 from aiogram import Bot
 
@@ -7,9 +6,18 @@ from core.config import settings, BASE_DIR
 from db.models import Post
 
 
+async def download_and_get_url(post: Post, bot: Bot):
+    if post.media_type == 'photo':
+        path = '/static/temp/image.jpg'
+    else:
+        path = '/static/temp/video.mp4'
+
+    await bot.download(file=post.media_id, destination=f"{BASE_DIR}{path}")
+    return f"{settings.HOST}{path}"
+
+
 async def upload_on_facebook(post: Post, bot: Bot):
-    file = await bot.get_file(file_id=post.media_id)
-    file_url = f"http://{settings.SERVER_IP}:81/bot{settings.BOT_TOKEN}/{file.file_path}"
+    file_url = await download_and_get_url(post, bot)
     context = await post.context(fb=True)
     data = {
         'published': 'true',
