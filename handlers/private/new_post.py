@@ -24,13 +24,13 @@ async def new_post(message: types.Message, user: User, state: FSMContext):
     if not user.post_permission:
         await message.answer(text=_('contact_to_admin', user.lang_code), reply_markup=admin_contact)
         return
-    if now.weekday() == 6 or now.hour >= 22 or now.hour < 4:
-        await message.answer(text=_('working_hours_alert', user.lang_code).format(name=user.full_name))
-        return
-    if len(await Post.filter(created_at__year=now.year, created_at__month=now.month,
-                             created_at__day=now.day, author=user)) > 0:
-        await message.answer(text=_('daily_limit_alert', user.lang_code))
-        return
+    # if now.weekday() == 6 or now.hour >= 22 or now.hour < 4:
+    #     await message.answer(text=_('working_hours_alert', user.lang_code).format(name=user.full_name))
+    #     return
+    # if len(await Post.filter(created_at__year=now.year, created_at__month=now.month,
+    #                          created_at__day=now.day, author=user)) > 0:
+    #     await message.answer(text=_('daily_limit_alert', user.lang_code))
+    #     return
     await message.answer(text=_('enter_post_media', user.lang_code),
                          reply_markup=(await translated_button(user, 'cancel')))
     await state.set_state(NewPostState.media_upload)
