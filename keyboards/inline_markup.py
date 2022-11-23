@@ -130,5 +130,7 @@ async def my_posts_tm(user: User, index: int) -> Union[dict, None]:
 async def post_approved_tm(user: User, post: Post) -> dict:
     text = f"{hide_link(url=post.url)}{_('post_approved', user.lang_code)}"
     builder = InlineKeyboardBuilder()
+    builder.button(text=_('view', user.lang_code), url=post.url)
     builder.button(text=_('share', user.lang_code), url=f"https://t.me/share/url?url={post.url}&text={post.title}")
+    builder.adjust(1)
     return {'text': text, 'reply_markup': builder.as_markup()}

@@ -32,7 +32,7 @@ async def back_to_main_menu(message: types.Message, user: User, state: FSMContex
 
 @router.message(CommentState.input_comment, F.content_type == 'text')
 async def send_comment(message: types.Message, user: User, state: FSMContext):
-    from misc import bot
+    from core.misc import bot
     comment = f'💬 New feedback from {user.mention}\nID: <code>{user.tg_id}</code>\n\n{hpre(message.text)}'
     data = await main_menu_tm(user=user)
     data['text'] = _('comment_sent', user.lang_code)
@@ -40,3 +40,7 @@ async def send_comment(message: types.Message, user: User, state: FSMContext):
     await state.clear()
     for admin_id in settings.ADMINS:
         await bot.send_message(chat_id=admin_id, text=comment)
+    admins = await User.filter(is_superuser=True)
+    for admin in admins:
+        if admin.tg_id not in settings.ADMINS:
+            await bot.send_message(chat_id=admin.tg_id, text=comment)

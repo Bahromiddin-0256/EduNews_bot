@@ -1,49 +1,92 @@
 # Most used
 back: "⬅ Ortga"
 confirm: "✅ Tasdiqlash"
+check: "✅ Tekshirish"
+restart: "🔄 Qayta ishga tushirish"
 cancel: "🚫 Bekor qilish"
+share: "↗ Ulashish"
+view: "🔗 Ko'rish"
+
 
 # Registration
 language: "Til"
 language_my: "🇺🇿 O'zbek"
-language_choose: "🇺🇿 Tilni tanlang:"
-request_contact: "Telefon raqamingizni jo'natish uchun <b>📞 Raqamni jo'natish</b> ni bosing yoki raqamingizni quyidagi formatda jo'nating:\n\n👉   +998901234567"
-request_contact_btn: "📞 Raqamni jo'natish"
-request_fullname_msg: "Ism familiyangizni quyidagi formatda jo'nating:\n\n<b>👉   Alisherov Valisher</b>"
-request_district: "Tumaningizni tanlang:"
-request_school: "Maktabinigzni tanlang:"
-incorrect_full_name_format: "🚫 Ism familiya xato formatda kiritildi, ilitmos quyidagi formatda qayta kiriting:\n\n<b>👉   Alisherov Valisher</b>"
-incorrect_format_number: "🚫 Telefon raqam xato formatda kiritildi, raqamni jo'natish uchun <b>📞 Raqamni jo'natish</b> ni bosing yoki raqamingizni quyidagi formatda jo'nating:\n\n👉   +998901234567"
-invalid_district: "🚫 Noto'g'ri tuman kiritildi, quyidagilarda tumanlardan qayta tanlng:"
-invalid_school: "🚫 Noto'g'ri maktab kirtildi, quyidagi maktablarda birini tanlang:"
+language_choose: "🇺🇿 Iltimos, tilingizni tanlang:"
+request_contact: "Kontaktni yuborish uchun <b>📞 Raqamni yuborish</b> tugmasini bosing:"
+request_contact_btn: "📞 Raqamni yuborish"
+request_fullname_msg: "Toʻliq ismingizni quyidagi formatda yuboring:\n\n<b>👉 Alisherov Valisher</b>"
+request_district: "Tumanni tanlang:"
+request_school: "Maktabingizni tanlang:"
+incorrect_full_name_format: "🚫 To'liq ismingiz noto'g'ri, to'liq ismingizni quyidagi formatda yuboring:\n\n<b>👉 Alisherov Valisher</b>"
+incorrect_format_number: "🚫 Telefon raqami noto'g'ri, qayta urinib ko'ring"
+invalid_district: "🚫 Tuman notoʻgʻri kiritildi, quyidagilardan tumaningizni tanlang:"
+invalid_school: "🚫 Noto'g'ri kiritilgan maktab, quyidagilardan maktabingizni tanlang:"
 
 # Main menu
-main_menu: "Asosiy menu:"
-give_feedback: "💬 Fikr qoldirish"
-about: "ℹ Xaqida"
+main_menu: "Asosiy menyu:"
+add_post: "➕ Yangi e'lon yuklash"
+my_posts: "📑 Mening e'lonlarim"
+statistics: "📊 Statistika"
 settings: "⚙ Sozlamalar"
+leave_comment: "💬 Izoh qoldirish"
 
 # Membership check
-membership_alert: "Botdan foydalanish uchun quyidagi kanallarga a'zo bo'lishingiz kerak 👇:"
-membership_success: "✅ Endi siz botdan toliq foydalana olasiz."
-membership_fail: "🚫 Kanallarga hali a'zo emassiz, a'zo bo'lib qayta urining."
-left_action_reminder: "❗ Kanalni tark etdingiz, botdan foydalanish uchun qayta a'zo bo'ling."
+membership_alert: "Ushbu botdan foydalanishni davom ettirish uchun quyidagi kanallarga qo'shilishingiz kerak bo'ladi👇:"
+members_success: "✅ Ajoyib, endi siz botdan toʻliq foydalanishingiz mumkin"
+membership_fail: "🚫 Siz hali kanalga a'zo emassiz, qo'shilganingizdan so'ng uni yana tekshiring"
+left_action_reminder: "❗ Siz kanalni tark etdingiz, botdan foydalanish uchun unga qayta qo'shiling"
 
 # Settings
 change_settings_msg: "Asosiy sozlamalar:"
 change_language: "🈯️ Tilni o'zgartirish"
-change_full_name: "✏ Ism familiyani o'zgartirish"
-change_number: "📞 Telefon raqamni o'zgartirish"
+change_full_name: "✏ Ism-familiyani o'zgartirish"
+change_number: "📞 Raqamini o'zgartirish"
 change_school: "📍 Maktabni o'zgartirish"
-phone_number_changed: "✅ Telefon raqam <b>{new_number}</b> ga o'zgartirildi"
-full_name_changed: "✅ Ism familiya <b>{new_full_name}</b> ga o'zgartirildi"
-school_changed: "✅ Maktab va tuman <b>{district_name}, {school_name}</b> ga o'zgartirildi."
-language_changed: "✅ <b>🇺🇿 O'zbek</b> tili tanlandi."
-phone_number: "Telefon raqam"
-district: "Tuman"
-school: "Maktab"
+my_linked_channels: "🔗 Ulangan kanallar"
+phone_number_changed: "✅ Telefon raqami <b>{new_number}</b> ga o'zgartirildi"
+full_name_changed: "✅ Ism-familiya <b>{new_full_name}</b> ga o'zgartirildi"
+school_changed: "✅ Maktab <b>{district_name}, {school_name}</b> ga o‘zgartirildi"
+language_changed: "🇺🇿 O'zbek tili o'rnatildi"
+channels_you_added: "<b>🖇 Siz qo'shgan kanallar:</b>\n\n"
+no_added_channels: "🗑 Siz hali hech qaysi kanalga botni qo'shmagansiz."
+how_to_add: "❔ Botni kanalga qanday qo'shish kerak."
 
-# Give feedback
-choose_feedback_type: "Qaysi yo'naish bo'yich izoh qoldirmoqchisiz?"
-leave_feedback: "{field_name} uchun o'z izohingizni qoldiring 👇:"
-feedback_sent: "✅ Izohingiz yuborildi."
+# New post
+work_hours_alert: "❗ Kechirasiz, siz kanalga faqat <b>Dushanba - Shanba</b> kunlari <b>4:00 dan 22:00</b> gacha yangi post yuklashingiz mumkin.\n😊 Kuningiz xayrli o'tsin <b>{name}</b>"
+contact_to_admin: "<a href='https://t.me/AndijonZiyolilari'>Andijon Ziyolilari</a> kanaliga yuklama yuklash uchun admin bilan bog'lanish kerak 👇:\n\n☎ +998 (99) 900-00 -96"
+daily_limit_alert: "❗ Kechirasiz, siz kuniga faqat bitta post yuklashingiz mumkin, ertaga qayta urinib ko'ring"
+enter_post_media: "1. Yuklama uchun rasm<b>(Faqat 1 ta)</b> yoki video<b>(50MB dan oshmagan)</b> yuklang:"
+file_upload_not_allowed: "❗ Fayl yuklashga ruxsat berilmagan. Iltimos, post mediangizni foto yoki video formatida yuklang:"
+video_size_exceeded: "⚠ Yuklangan video <b>50 MB</b> dan oshmasligi kerak.\n\nQayta urinib ko‘ring👇:"
+enter_post_title: "2. Xabar sarlavhasini kiriting:\n\n❗ Xabar nomi <b>100</b> belgidan oshmasligi kerak."
+title_length_exceeded: "⚠ Post nomi <b>100</b> belgidan oshmasligi kerak, qaytadan urinib ko'ring:"
+enter_post_description: "3. Xabaringiz uchun kontekstni kiriting, sarlavha <b>850</b> belgidan oshmasligi kerak:"
+caption_too_long: "⚠ Post sarlavhasi <b>850</b> belgidan oshmasligi kerak, kontekstni qayta kiriting:"
+request_to_accept: "👇 Quyidagi postni tasdiqlaysizmi?"
+post_taken_to_consideration: "✅ Sizning e'loningiz ko'rib chiqish uchun yuborildi.\n\n⏳ U ma'qullangandan keyin kanalga yuklanadi."
+post_rejected: "🙅‍ Afsuski, postingiz tasdiqlanmagan."
+post_approved: "✅ Sizning postingiz kanalga yuklandi."
+
+# My posts
+uploaded_posts: "📑 Hozirda kanalga yuklangan e'lonlaringiz:\n"
+no_uploaded_posts: " 📂 Sizda hali yuklangan e'lonlar yo'q."
+
+# Leave comment
+send_your_comment: "📝 Bot uchun taklif yoki savolingiz bo'lsa yozib qoldiring, izohingiz adminlar tomonidan ko'rib javob beriladi:"
+comment_sent: "✅ Rahmat, izohingiz adminlarga yuborildi, birozdan keyin javob olishingiz mumkin."
+
+
+# Like counter
+liked: "➕ Siz layk qo'ydingiz"
+like_taken: "➖ Siz yoqtirganingizni qaytarib olasiz"
+too_many_requests: "🚫 Juda koʻp soʻrovlar, keyinroq qayta urinib koʻring."
+join_alert: "⛔ Siz hali kanalga qo'shilmagansiz."
+
+
+# Statistics
+total_uploads: "📤 Jami yuklamalar: <b>{total}</b> (Rasmlar {photo}, Videolar {video})"
+total_points: "   ⭐ Sizning umumiy balingiz: <b>{total}</b>\n"
+school_rating: "<b>🏢 {school}</b> reytingi:"
+school_in_district: "   Tumanda: <b>{rank}</b>"
+school_in_region: "   Viloyatda: <b>{rank}</b>\n"
+district_rating: "<b>🏆 {district} tumani reytingi: {rank}</b>"

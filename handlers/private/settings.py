@@ -94,7 +94,7 @@ async def change_language(message: types.Message, user: User, state: FSMContext)
     await state.set_state(SettingsState.phone_number)
 
 
-@router.message(SettingsState.phone_number, F.content_type.in_({'text', 'contact'}))
+@router.message(SettingsState.phone_number, F.content_type == 'contact')
 async def set_phone_number(message: types.Message, user: User, state: FSMContext):
     phone_number = await phone_number_validater(message)
     if phone_number is None:

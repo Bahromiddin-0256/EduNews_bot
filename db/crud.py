@@ -10,7 +10,7 @@ from localization.strings import _
 
 
 def get_current_time(format_: str = "%d/%m/%Y, %H:%M"):
-    now = datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
+    now = datetime.now(tz=settings.TIME_ZONE)
     return now.strftime(format_)
 
 

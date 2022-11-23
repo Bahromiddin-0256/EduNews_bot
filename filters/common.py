@@ -32,7 +32,7 @@ class TranslatedText(Filter):
 
 class IsAdmin(Filter):
     async def __call__(self, event: Union[Message, CallbackQuery]) -> bool:
-        user = await get_user(event.from_user)
+        user = await get_user(event.from_user, 'district', 'school')
         return event.from_user.id in settings.ADMINS or user.is_superuser
 
 

@@ -87,6 +87,7 @@ class Post(Model):
     facebook_url = fields.TextField(null=True)
     message_id = fields.CharField(max_length=20, null=True)
     created_at = fields.DatetimeField(auto_now_add=True)
+    published_at = fields.DatetimeField(null=True)
     district: fields.ForeignKeyRelation[District] = fields.ForeignKeyField(model_name='models.District',
                                                                            related_name='posts')
     school: fields.ForeignKeyRelation[School] = fields.ForeignKeyField(model_name='models.School',

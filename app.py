@@ -4,7 +4,6 @@ import uvicorn
 from fastapi import Response, BackgroundTasks, Body, status, FastAPI
 from fastapi_admin.app import app as admin_app
 from fastapi_admin.template import templates
-from fastapi_utils.tasks import repeat_every
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.staticfiles import StaticFiles
@@ -15,21 +14,18 @@ import middlewares
 from core import sessions
 from core.config import settings, TORTOISE_ORM, admin_config, BASE_DIR, logger
 from db.crud import stat_info, schools_stat_info, users_stat_info
-from db.models import Post
 from core.misc import bot, dp
-from utils.post_publisher import publish_post
 import db.resources
 import routes
 
 app = FastAPI()
 app.logger = logger
 
-if settings.DEBUG:
-    app.mount(
-        "/static",
-        StaticFiles(directory=os.path.join(BASE_DIR, "static")),
-        name="static",
-    )
+app.mount(
+    "/static",
+    StaticFiles(directory=os.path.join(BASE_DIR, "static")),
+    name="static",
+)
 
 
 @app.get("/")
@@ -91,15 +87,6 @@ async def on_startup():
     middlewares.setup(dp)
 
 
-@app.on_event("startup")
-@repeat_every(seconds=60)
-async def check_for_unpublished_posts():
-    remaining_posts = await Post.filter(status='approved', is_published=False) \
-        .order_by('created_at').prefetch_related('author', 'district', 'school')
-    if remaining_posts:
-        await publish_post(post=remaining_posts[0], bot=bot)
-
-
 @app.on_event("shutdown")
 async def on_shutdown():
     await Tortoise.close_connections()
@@ -140,5 +127,5 @@ if __name__ == '__main__':
             'app:app',
             host='localhost',
             port=settings.PORT,
-            workers=1,
+            workers=settings.WORKERS,
         )

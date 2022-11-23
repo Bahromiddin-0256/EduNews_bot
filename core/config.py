@@ -1,5 +1,6 @@
 import os
 
+import pytz
 from aioredis import Redis
 from pydantic import BaseSettings, validator
 
@@ -12,6 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 class Settings(BaseSettings):
+    WORKERS: int = 1
     HOST: str
     PORT: int
     WEBHOOK_HOST: str
@@ -39,15 +41,20 @@ class Settings(BaseSettings):
     DATABASE_PASSWORD: str
     DEBUG: bool
     TIME_ZONE: str = 'Asia/Tashkent'
+    POST_RANGE: int
     LOGS_PATH: str
     LOG_LEVEL: str
 
     @validator("WEBHOOK_URL")
-    def webhook_url(cls, v, values: dict):
+    def webhook_url(cls, v, values: dict) -> str:
         host = values['WEBHOOK_HOST']
         if 'localhost' in host:
             host += f":{values['PORT']}"
         return f"{host}{values['WEBHOOK_PATH']}"
+
+    @validator("TIME_ZONE")
+    def time_zone(cls, v: str):
+        return pytz.timezone(zone=v)
 
     class Config:
         env_file = '.env'
@@ -98,8 +105,8 @@ logger_config = {
         "level": settings.LOG_LEVEL,
         "rotation": "20 days",
         "retention": "1 months",
-        "format": "<level>{level: <8}</level> <green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> request id: {extra["
-                  "request_id]} - <cyan>{name}</cyan>:<cyan>{function}</cyan> - <level>{message}</level> "
+        "format": "<level>{level: <8}</level> <green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> - <cyan>{"
+                  "name}</cyan>:<cyan>{function}</cyan> - <level>{message}</level> "
 
     }
 }
