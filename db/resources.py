@@ -44,19 +44,20 @@ class UserResource(Model):
     filters = [
         filters.Search(name='full_name', label='Name', search_mode='contains', placeholder='Search for full name'),
         filters.ForeignKey(model=District, name='district', label='District'),
-        filters.Enum(enum=enums.IsMember, name='is_member', label='Is Active')
+        filters.Enum(enum=enums.IsRegistered, name='registered', label='Is Registered')
     ]
     fields = [
-        "lang_code",
+        Field(name='lang_code', label="Language", input_=inputs.Input(), display=displays.InputOnly()),
         "full_name",
-        "tg_username",
+        Field(name='tg_username', label="Telegram username", input_=inputs.Input(), display=displays.InputOnly()),
         Field(name='district_id', label='District', input_=inputs.ForeignKey(model=District),
               display=ForeignKeyDisplay(model=District, display_field='name')),
         Field(name='school_id', label='School', input_=inputs.ForeignKey(model=School),
               display=ForeignKeyDisplay(model=School, display_field='name')),
         "contact_number",
         'points',
-        'is_superuser'
+        Field(name='is_superuser', label="Is Admin", input_=inputs.Switch(), display=displays.InputOnly()),
+        'post_permission'
     ]
 
 

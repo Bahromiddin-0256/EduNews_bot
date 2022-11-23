@@ -1,6 +1,6 @@
 from enum import IntEnum
 
 
-class IsMember(IntEnum):
+class IsRegistered(IntEnum):
     No = 0
     Yes = 1
