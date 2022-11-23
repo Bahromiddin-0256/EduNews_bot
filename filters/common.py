@@ -30,8 +30,8 @@ class TranslatedText(Filter):
 
 
 class IsAdmin(Filter):
-    async def __call__(self, event: Union[Message, CallbackQuery]) -> bool:
-        return event.from_user.id in settings.ADMINS
+    async def __call__(self, event: Union[Message, CallbackQuery], user: User) -> bool:
+        return event.from_user.id in settings.ADMINS or user.is_superuser
 
 
 class CommentReply(Filter):
