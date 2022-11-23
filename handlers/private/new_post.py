@@ -50,7 +50,7 @@ async def document_upload_alert(message: types.Message, user: User):
 @router.message(NewPostState.media_upload, F.content_type.in_({'photo', 'video'}))
 async def input_post_media(message: types.Message, user: User, state: FSMContext):
     if message.content_type == 'video':
-        if message.video.file_size > 52428800:
+        if message.video.file_size > 524288000:
             await message.answer(text=_('video_size_exceeded', user.lang_code))
             return
         else:
