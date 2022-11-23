@@ -90,6 +90,7 @@ async def users_stat_info(district_id: int, school_id: int) -> dict:
 async def show_user_stat(user: User):
     photos = len(await user.posts.filter(media_type='photo'))
     videos = len(await user.posts.filter(media_type='video'))
+    await user.fetch_related('school', 'district')
     school_in_region = len(await School.filter(points__gt=user.school.points)) + 1
     school_in_district = len(await School.filter(points__gt=user.school.points, district=user.district)) + 1
     district_in_region = len(await District.filter(points__gt=user.district.points)) + 1
