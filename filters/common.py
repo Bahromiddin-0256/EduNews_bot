@@ -4,6 +4,7 @@ from aiogram.filters import Filter
 from aiogram.types import Message, ChatMemberUpdated, CallbackQuery
 
 from core.config import settings
+from db.crud import get_user
 from db.models import User
 from localization.strings import check_for_translation
 
@@ -30,7 +31,8 @@ class TranslatedText(Filter):
 
 
 class IsAdmin(Filter):
-    async def __call__(self, event: Union[Message, CallbackQuery], user: User) -> bool:
+    async def __call__(self, event: Union[Message, CallbackQuery]) -> bool:
+        user = await get_user(event.from_user)
         return event.from_user.id in settings.ADMINS or user.is_superuser
 
 
