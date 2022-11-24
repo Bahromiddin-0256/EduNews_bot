@@ -39,7 +39,7 @@ text = """🤖 Bot ish faoliyatini yangi imkoniyatlar bilan boshladi
 🇷🇺 Rus tili
 🇺🇸 Ingiliz tilida foydalanishingiz mumkin
 
-Boshlash uchun 👉 /start 👈 ni bosing."""
+Yangi imkoniyatlardan foydalanish uchun 👉 /start 👈 ni bosing."""
 
 
 async def start_broadcasting():
