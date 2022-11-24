@@ -23,9 +23,24 @@ import asyncio
 
 from core.misc import bot
 from users import var
+
 var = [973021229]
 
-file_id="AgACAgIAAxkBAAEIySxjf1aZhondvi6qjOZXwoKzUjJFzwAC2cIxG6l6-UvSuQSDlRiyhQEAAwIAA3kAAysE"
+file_id = "AgACAgIAAxkBAAEIySxjf1aZhondvi6qjOZXwoKzUjJFzwAC2cIxG6l6-UvSuQSDlRiyhQEAAwIAA3kAAysE"
+
+text = """🤖 Bot ish faoliyatini yangi imkoniyatlar bilan boshladi
+
+💬 Yuklamalaringiz facebook tarmog'iga ham yuklanadi
+
+✅ Yuklamalaringizni tuman yoki maktab kanallariga ham chiqarish imkoni mavjuda
+
+🤖 Botdan 3 xil
+🇺🇿 O'zbek tili
+🇷🇺 Rus tili
+🇺🇸 Ingiliz tilida foydalanishingiz mumkin
+
+Boshlash uchun 👉 /start 👈 ni bosing."""
+
 
 async def start_broadcasting():
     print("Broadcast started...")
