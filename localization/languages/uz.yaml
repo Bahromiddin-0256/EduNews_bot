@@ -52,7 +52,7 @@ no_added_channels: "🗑 Siz hali hech qaysi kanalga botni qo'shmagansiz."
 how_to_add: "❔ Botni kanalga qanday qo'shish kerak."
 
 # New post
-work_hours_alert: "❗ Kechirasiz, siz kanalga faqat <b>Dushanba - Shanba</b> kunlari <b>4:00 dan 22:00</b> gacha yangi post yuklashingiz mumkin.\n😊 Kuningiz xayrli o'tsin <b>{name}</b>"
+working_hours_alert: "❗ Kechirasiz, siz kanalga faqat <b>Dushanba - Shanba</b> kunlari <b>4:00 dan 22:00</b> gacha yangi post yuklashingiz mumkin.\n😊 Kuningiz xayrli o'tsin <b>{name}</b>"
 contact_to_admin: "<a href='https://t.me/AndijonZiyolilari'>Andijon Ziyolilari</a> kanaliga yuklama yuklash uchun admin bilan bog'lanish kerak 👇:\n\n☎ +998 (99) 900-00 -96"
 daily_limit_alert: "❗ Kechirasiz, siz kuniga faqat bitta post yuklashingiz mumkin, ertaga qayta urinib ko'ring"
 enter_post_media: "1. Yuklama uchun rasm<b>(Faqat 1 ta)</b> yoki video<b>(50MB dan oshmagan)</b> yuklang:"
