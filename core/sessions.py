@@ -9,6 +9,7 @@ private_messages_cache = TTLCache(maxsize=30000, ttl=1)
 caches = TTLCache(maxsize=30000, ttl=10)
 blocked_users_cache = TTLCache(maxsize=30000, ttl=30)
 like_action_counter = TTLCache(maxsize=30000, ttl=1)
+ranking_cache = TTLCache(maxsize=30000, ttl=120)
 
 
 async def close():
