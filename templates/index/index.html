@@ -34,8 +34,9 @@
             <tr>
                 <th class="bg-primary text-white text-center" style="border-radius: 10px 0 0 0">№</th>
                 <th class="bg-primary text-white text-center">Nomi</th>
+                <th class="bg-primary text-white text-center" onclick="sortTable(2)">A'zolar</th>
                 <th class="bg-primary text-white text-center" onclick="sortTable(3)">Umumiy ball</th>
-                <th class="bg-primary text-white text-center" style="border-radius: 0 10px 0 0">Foydalanuvchilar</th>
+                <th class="bg-primary text-white text-center" style="border-radius: 0 10px 0 0">Maktablar</th>
             </tr>
             </thead>
             <tbody>
@@ -43,9 +44,10 @@
             <tr class="item">
                 <td class="text-center">{{ loop.index }}</td>
                 <td class="text-center">{{ district.name }}</td>
+                <td class="text-center">{{district.users}}</td>
                 <td class="text-center">{{ district.points }}</td>
                 <td class="text-center"><a href="district/{{ district.id }}/">
-                    <button type="button" class="btn btn-info">{{district.users}}ta, Ko'rish <i class="fa fa-arrow-right"></i></button>
+                    <button type="button" class="btn btn-info">Ko'rish <i class="fa fa-arrow-right"></i></button>
                 </a></td>
             </tr>
             {% endfor %}
