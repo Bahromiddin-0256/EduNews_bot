@@ -54,7 +54,7 @@ async def start_broadcasting():
     try:
         for i in range(users_count):
             try:
-                await bot.send_message(chat_id=users[i], text="Sorry for bothering you. that was a test")
+                await bot.send_photo(chat_id=users[i], photo=file_id, caption=text)
                 count += 1
             except Exception as exp:
 
