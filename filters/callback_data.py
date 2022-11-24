@@ -6,7 +6,7 @@ class PostAction(CallbackData, prefix='post_action'):
     action: str
 
 
-class LikeButton(CallbackData, prefix='like'):
+class LikeButton(CallbackData, prefix='post_like'):
     counter_id: int
 
 
