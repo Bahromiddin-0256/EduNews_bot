@@ -24,8 +24,6 @@ import asyncio
 from core.misc import bot
 from users import var
 
-var = [973021229]
-
 file_id = "AgACAgIAAxkBAAEIySxjf1aZhondvi6qjOZXwoKzUjJFzwAC2cIxG6l6-UvSuQSDlRiyhQEAAwIAA3kAAysE"
 
 text = """🤖 Bot ish faoliyatini yangi imkoniyatlar bilan boshladi
@@ -67,7 +65,7 @@ async def start_broadcasting():
                 print(
                     f"Status: {k}/{users_count}, {int(k / users_count * 100)}%, ({blocked + other_reasons}) couldn't "
                     f"be sent, blocked: {blocked}")
-            # await asyncio.sleep(.01)
+            await asyncio.sleep(.04)
     finally:
         print(f"Message has been sent to <b>{count}</b> users.")
 
