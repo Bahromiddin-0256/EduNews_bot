@@ -150,4 +150,3 @@ migrations/
 /static/temp
 pyproject.toml
 logs
-first_broadcaster.py
