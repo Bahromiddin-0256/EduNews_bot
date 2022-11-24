@@ -4,7 +4,7 @@ import pytz
 from aiogram import types
 
 from core.config import settings
-from core.sessions import caches
+from core.sessions import caches, ranking_cache
 from db.models import User, PostLikes, Post, District, School
 from localization.strings import _
 
@@ -52,6 +52,8 @@ async def update_likes(existence: bool, counter: PostLikes, user: User):
 
 
 async def stat_info() -> dict:
+    if 'districts_ranking' in ranking_cache:
+        return ranking_cache['districts_ranking']
     districts = await District.all().order_by('-points').prefetch_related('schools', 'users')
     res = []
     for district in districts:
@@ -63,10 +65,15 @@ async def stat_info() -> dict:
             'schools': len(district.schools),
             'users': len(district.users),
         })
-    return {'districts': res, 'last_update': get_current_time()}
+    result = {'districts': res, 'last_update': get_current_time()}
+    ranking_cache['districts_ranking'] = result
+    return result
 
 
 async def schools_stat_info(district_id: int) -> dict:
+    cache_key = f'district_{district_id}_ranking'
+    if cache_key in ranking_cache:
+        return ranking_cache[cache_key]
     district = await District.get(pk=district_id).prefetch_related('schools')
     res = []
     schools = await district.schools.all().order_by('-points').prefetch_related('users')
@@ -77,7 +84,9 @@ async def schools_stat_info(district_id: int) -> dict:
             'users': len(await school.users),
             'points': school.points,
         })
-    return {'district': district, 'schools': res, 'last_update': get_current_time()}
+    result = {'district': district, 'schools': res, 'last_update': get_current_time()}
+    ranking_cache[cache_key] = result
+    return result
 
 
 async def users_stat_info(district_id: int, school_id: int) -> dict:

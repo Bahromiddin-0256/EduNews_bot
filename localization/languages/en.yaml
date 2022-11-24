@@ -55,6 +55,7 @@ how_to_add: "❔ How to add the bot to channel."
 working_hours_alert: "❗ Sorry you can only upload new post on channel from <b>Monday to Saturday</b> between <b>4:00 and 22:00</b>.\n😊 Have a nice day <b>{name}</b>"
 contact_to_admin: "<a href='https://t.me/AndijonZiyolilari'>Andijon Ziyolilari</a> kanaliga yuklama yuklash uchun admin bilan bog'lanish kerak 👇:\n\n☎ +998 (99) 900-00-96"
 daily_limit_alert: "❗ Sorry you can only upload one post per day, please try again tomorrow"
+
 enter_post_media: "1. Upload an Image<b>(Only 1)</b> or a Video<b>(No more than 50MB)</b> for your new post:"
 file_upload_not_allowed: "❗ File upload is not allowed. Please upload your post media in photo or video format:"
 video_size_exceeded: "⚠ Uploaded video must be no more than <b>50 MB</b>.\n\nPlease try again 👇:"

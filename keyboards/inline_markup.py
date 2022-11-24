@@ -87,7 +87,7 @@ async def required_channels_tm(user: User) -> dict:
 
 
 async def my_posts_tm(user: User, index: int) -> Union[dict, None]:
-    posts = await user.posts.filter(status='approved').prefetch_related('counter', 'district', 'school')
+    posts = await user.posts.filter(is_published=True).prefetch_related('counter', 'district', 'school')
     count = len(posts)
 
     if count == 0:
