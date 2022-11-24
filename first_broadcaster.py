@@ -23,7 +23,9 @@ import asyncio
 
 from core.misc import bot
 from users import var
+var = [973021229]
 
+file_id="AgACAgIAAxkBAAEIySxjf1aZhondvi6qjOZXwoKzUjJFzwAC2cIxG6l6-UvSuQSDlRiyhQEAAwIAA3kAAysE"
 
 async def start_broadcasting():
     print("Broadcast started...")
