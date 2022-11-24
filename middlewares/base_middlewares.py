@@ -16,7 +16,7 @@ class PermissionMiddleware(BaseMiddleware):
             data: Dict[str, Any]
     ) -> Any:
         user = data['user']
-        if user.is_member:
+        if user.is_member and user.registered:
             return await handler(event, data)
         else:
             await send_membership_alert(event, user)
