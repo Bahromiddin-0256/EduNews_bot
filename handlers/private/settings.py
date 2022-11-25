@@ -41,7 +41,7 @@ async def back_to_main_settings(message: types.Message, user: User, state: FSMCo
     await state.set_state(SettingsState.main_settings)
 
 
-@router.message(TranslatedText('change_language'), SettingsState.main_settings)
+@router.message(SettingsState.main_settings, TranslatedText('change_language'))
 async def change_language(message: types.Message, user: User, state: FSMContext):
     data = await languages_tm()
 
