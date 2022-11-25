@@ -77,8 +77,8 @@ comment_sent: "✅ Rahmat, izohingiz adminlarga yuborildi, birozdan keyin javob 
 
 
 # Like counter
-liked: "➕ Siz layk qo'ydingiz"
-like_taken: "➖ Siz yoqtirganingizni qaytarib olasiz"
+liked: "➕ Like bosildi"
+like_taken: "➖ Like olindi"
 too_many_requests: "🚫 Juda koʻp soʻrovlar, keyinroq qayta urinib koʻring."
 join_alert: "⛔ Siz hali kanalga qo'shilmagansiz."
 

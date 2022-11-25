@@ -31,10 +31,8 @@ async def get_user(bot_user: types.User, *args) -> User:
 async def get_counter(counter_id: int, user: User):
     cache_key = f'post:{counter_id}'
     if cache_key in post_counter_cache:
-        print('hit the cache')
         counter = post_counter_cache[cache_key]
     else:
-        print('hit the database')
         counter = await PostLikes.get(id=counter_id).prefetch_related('post')
         post_counter_cache[cache_key] = counter
     existence = bool(await counter.liked_users.filter(id=user.pk))
