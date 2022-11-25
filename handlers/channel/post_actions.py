@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Router
 from aiogram.types import CallbackQuery
 
@@ -66,7 +68,7 @@ async def perform_like(call: CallbackQuery, user: User, callback_data: LikeButto
         call.message.reply_markup.inline_keyboard[0][0].text = f'👍 {like_count}'
         try:
             await call.message.edit_reply_markup(reply_markup=call.message.reply_markup)
-        except:
-            pass
+        except Exception:
+            logging.error(msg="Couldn't edit the post", exc_info=True)
 
     await update_likes(existence=existence, counter=counter, user=user)
