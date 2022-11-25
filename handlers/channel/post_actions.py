@@ -4,7 +4,7 @@ from aiogram import Router
 from aiogram.types import CallbackQuery
 
 from core.sessions import blocked_users_cache, like_action_counter
-from db.crud import update_likes
+from db.crud import update_likes, get_counter
 from db.models import User, Post, PostLikes
 from core.config import settings
 from filters.callback_data import PostAction, LikeButton
@@ -50,8 +50,7 @@ async def perform_like(call: CallbackQuery, user: User, callback_data: LikeButto
         return
     like_action_counter[like_pressed_key] = True
 
-    counter = await PostLikes.get(id=callback_data.counter_id).prefetch_related('post')
-    existence = bool(await counter.liked_users.filter(id=user.pk))
+    counter, existence = await get_counter(callback_data.counter_id, user=user)
 
     like_count = int(call.message.reply_markup.inline_keyboard[0][0].text.split()[1])
     previous = like_count
@@ -68,7 +67,7 @@ async def perform_like(call: CallbackQuery, user: User, callback_data: LikeButto
         call.message.reply_markup.inline_keyboard[0][0].text = f'👍 {like_count}'
         try:
             await call.message.edit_reply_markup(reply_markup=call.message.reply_markup)
-        except Exception:
-            logging.error(msg="Couldn't edit the post", exc_info=True)
+        except Exception as error:
+            logging.warning(msg=error.__str__())
 
     await update_likes(existence=existence, counter=counter, user=user)

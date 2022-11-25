@@ -18,7 +18,7 @@ class PrivateFilter(ChatTypes):
 
 
 router = Router()
-# router.message.middleware(ThrottlingMiddleware())
+router.message.middleware(ThrottlingMiddleware())
 router.message.middleware(DatabaseProviderMessage())
 router.callback_query.middleware(DatabaseProviderCallbackQuery())
 

@@ -6,10 +6,11 @@ from utils.session import ClientSession
 bot_session = AiohttpSession()
 bot_client_session = ClientSession()
 private_messages_cache = TTLCache(maxsize=30000, ttl=1)
-caches = TTLCache(maxsize=30000, ttl=10)
+user_cache = TTLCache(maxsize=30000, ttl=10)
 blocked_users_cache = TTLCache(maxsize=30000, ttl=30)
-like_action_counter = TTLCache(maxsize=30000, ttl=1)
+like_action_counter = TTLCache(maxsize=30000, ttl=1.7)
 ranking_cache = TTLCache(maxsize=30000, ttl=120)
+post_counter_cache = TTLCache(maxsize=20000, ttl=120)
 
 
 async def close():
