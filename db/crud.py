@@ -4,7 +4,7 @@ import pytz
 from aiogram import types
 
 from core.config import settings
-from core.sessions import caches, ranking_cache
+from core.sessions import user_cache, ranking_cache, post_counter_cache
 from db.models import User, PostLikes, Post, District, School
 from localization.strings import _
 
@@ -20,12 +20,29 @@ async def get_user(bot_user: types.User, *args) -> User:
         'tg_name': bot_user.full_name,
     }
     key = f"bot_user:{bot_user.id}"
-    if key in caches:
-        return caches[key]
+    if key in user_cache:
+        return user_cache[key]
     user, _ = await User.update_or_create(tg_id=bot_user.id, defaults=defaults)
     await user.fetch_related(*args)
-    caches[key] = user
+    user_cache[key] = user
     return user
+
+
+async def get_counter(counter_id: int, user: User):
+    cache_key = f'post:{counter_id}'
+    if cache_key in post_counter_cache:
+        print('hit the cache')
+        counter = post_counter_cache[cache_key]
+    else:
+        print('hit the database')
+        counter = await PostLikes.get(id=counter_id).prefetch_related('post')
+        post_counter_cache[cache_key] = counter
+    existence = bool(await counter.liked_users.filter(id=user.pk))
+    if existence:
+        await counter.liked_users.remove(user)
+    else:
+        await counter.liked_users.add(user)
+    return counter, existence
 
 
 async def update_points(post: Post, delta: int):
@@ -43,10 +60,8 @@ async def update_points(post: Post, delta: int):
 async def update_likes(existence: bool, counter: PostLikes, user: User):
     if existence:
         delta = -1
-        await counter.liked_users.remove(user)
     else:
         delta = 1
-        await counter.liked_users.add(user)
     post: Post = counter.post
     await update_points(post=post, delta=delta)
 
