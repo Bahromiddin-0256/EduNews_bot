@@ -94,6 +94,9 @@ class Post(Model):
                                                                        related_name='likes')
     counter: fields.ReverseRelation['PostLikes']
 
+    def facebook_id(self):
+        return self.facebook_url.split('/')[-1]
+
     async def context(self, fb=False) -> str:
         from core.config import settings
         if fb:
