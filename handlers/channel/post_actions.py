@@ -1,12 +1,12 @@
-import logging
+import json
 
 from aiogram import Router
 from aiogram.types import CallbackQuery
 
 from core.sessions import blocked_users_cache, like_action_counter
-from db.crud import update_likes, get_counter
-from db.models import User, Post, PostLikes
-from core.config import settings
+from db.crud import get_counter
+from db.models import User, Post
+from core.config import settings, redis
 from filters.callback_data import PostAction, LikeButton
 from filters.common import IsAdmin, ChannelFilter
 from localization.strings import _
@@ -52,22 +52,14 @@ async def perform_like(call: CallbackQuery, user: User, callback_data: LikeButto
 
     counter, existence = await get_counter(callback_data.counter_id, user=user)
 
-    like_count = int(call.message.reply_markup.inline_keyboard[0][0].text.split()[1])
-    previous = like_count
     if existence:
-        if like_count > 0:
-            like_count -= 1
         text = _('like_taken', user.lang_code)
     else:
-        like_count += 1
         text = _('liked', user.lang_code)
 
+    data = {
+        'counter_id': counter.pk,
+        'existence': existence,
+    }
+    await redis.rpush("bot_caches:post_like_press", json.dumps(data))
     await call.answer(text=text, show_alert=True)
-    if previous != like_count:
-        call.message.reply_markup.inline_keyboard[0][0].text = f'👍 {like_count}'
-        try:
-            await call.message.edit_reply_markup(reply_markup=call.message.reply_markup)
-        except Exception as error:
-            logging.warning(msg=error.__str__())
-
-    await update_likes(existence=existence, counter=counter, user=user)

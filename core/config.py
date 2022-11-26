@@ -114,3 +114,8 @@ logger_config = {
 }
 
 logger = CustomizeLogger.make_logger(config=logger_config)
+
+media_points = {
+    'photo': 2,
+    'video': 3,
+}

@@ -53,15 +53,16 @@ async def update_points(post: Post, delta: int):
     await post.author.save()
     await post.school.save()
     await post.district.save()
+    return post.counter.likes
 
 
-async def update_likes(existence: bool, counter: PostLikes, user: User):
+async def update_likes(existence: bool, counter: PostLikes):
     if existence:
         delta = -1
     else:
         delta = 1
     post: Post = counter.post
-    await update_points(post=post, delta=delta)
+    return await update_points(post=post, delta=delta)
 
 
 async def stat_info() -> dict:
