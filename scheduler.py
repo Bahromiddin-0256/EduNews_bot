@@ -24,7 +24,6 @@ async def on_startup():
 
 @app.task(every(f"{settings.POST_RANGE} seconds"))
 async def check_for_unpublished_posts():
-    print("checking unpublished posts")
     remaining_posts = await Post.filter(status='approved', is_published=False) \
         .order_by('created_at').prefetch_related('author', 'district', 'school')
     if remaining_posts:
@@ -33,7 +32,6 @@ async def check_for_unpublished_posts():
 
 @app.task(every('1 seconds'))
 async def check():
-    print("checking likes")
     _, action = await redis.blpop(f'bot_caches:post_like_press')
     action = json.loads(action)
     existence = action['existence']
