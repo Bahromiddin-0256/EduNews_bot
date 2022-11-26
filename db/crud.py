@@ -128,3 +128,12 @@ async def show_user_stat(user: User):
             _('district_rating', user.lang_code).format(district=user.district.name, rank=district_in_region),
         ]
     )
+
+
+async def check_active_posts(user: User) -> bool:
+    now = datetime.now(tz=settings.TIME_ZONE)
+    await user.fetch_related('posts')
+    for post in user.posts:
+        if post.created_at.date() == now.date():
+            return False
+    return True

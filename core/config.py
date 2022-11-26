@@ -83,6 +83,8 @@ TORTOISE_ORM = {
             "default_connection": "default",
         }
     },
+    'user_tz': True,
+    'timezone': settings.TIME_ZONE.__str__()
 }
 
 admin_config = {
