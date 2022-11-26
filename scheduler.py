@@ -39,7 +39,8 @@ async def check():
     counter = await PostLikes.get(pk=action['counter_id']).prefetch_related('post')
     points = await update_likes(existence=existence, counter=counter)
     markup = make_post_markup(counter_id=action['counter_id'],
-                              number=points - media_points[counter.post.media_type])
+                              number=points - media_points[counter.post.media_type],
+                              facebook_id=counter.post.facebook_id())
 
     try:
         await bot.edit_message_reply_markup(chat_id=settings.MAIN_CHANNEL_ID, message_id=counter.post.message_id,
