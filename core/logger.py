@@ -81,7 +81,6 @@ class CustomizeLogger:
         for _log in ['uvicorn',
                      'uvicorn.error',
                      'fastapi',
-                     'rocketry.task',
                      ]:
             _logger = logging.getLogger(_log)
             _logger.handlers = [InterceptHandler()]
