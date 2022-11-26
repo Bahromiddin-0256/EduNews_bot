@@ -3,7 +3,7 @@ import logging
 
 from aiogram import Bot
 
-from core.config import settings
+from core.config import settings, media_points
 from db.crud import update_points
 from db.models import Post, PostLikes, ConnectedChannel
 from keyboards.inline_markup import make_post_markup, post_approved_tm, make_url_markup
@@ -18,11 +18,10 @@ async def publish_post(post: Post, bot: Bot):
     if post.media_type == 'photo':
         upload = await bot.send_photo(chat_id=settings.MAIN_CHANNEL_ID, photo=post.media_id, caption=context,
                                       reply_markup=make_post_markup(counter.pk, 0))
-        delta = 2
     else:
         upload = await bot.send_video(chat_id=settings.MAIN_CHANNEL_ID, video=post.media_id, caption=context,
                                       reply_markup=make_post_markup(counter.pk, 0))
-        delta = 3
+    delta = media_points[post.media_type]
 
     post.url = upload.get_url()
     post.message_id = upload.message_id
