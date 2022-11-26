@@ -32,7 +32,7 @@ async def publish_post(post: Post, bot: Bot):
 
     try:
         facebook_upload = await upload_on_facebook(post, bot)
-        logging.info(msg=facebook_upload)
+        logging.warning(msg=facebook_upload)
         counter = await PostLikes.get(pk=counter.pk)
         post.facebook_url = f"https://facebook.com/{facebook_upload['id']}"
         await post.save()
