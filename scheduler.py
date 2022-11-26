@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 
@@ -17,9 +18,12 @@ app = Rocketry(config={"task_execution": "async"})
 redis = Redis.from_url(url=settings.REDIS_URL)
 
 
+async def on_startup():
+    await Tortoise.init(config=TORTOISE_ORM)
+
+
 @app.task(every(f"{settings.POST_RANGE} seconds"))
 async def check_for_unpublished_posts():
-    await Tortoise.init(config=TORTOISE_ORM)
     remaining_posts = await Post.filter(status='approved', is_published=False) \
         .order_by('created_at').prefetch_related('author', 'district', 'school')
     if remaining_posts:
@@ -45,4 +49,5 @@ async def check():
 
 
 if __name__ == '__main__':
+    asyncio.run(on_startup())
     app.run()
