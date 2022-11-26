@@ -135,5 +135,5 @@ async def check_active_posts(user: User) -> bool:
     await user.fetch_related('posts')
     for post in user.posts:
         if post.created_at.date() == now.date():
-            return False
-    return True
+            return True
+    return False
