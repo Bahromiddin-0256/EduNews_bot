@@ -60,7 +60,7 @@ file_upload_not_allowed: "❗ Fayl yuklashga ruxsat berilmagan. Iltimos, post me
 video_size_exceeded: "⚠ Yuklangan video <b>50 MB</b> dan oshmasligi kerak.\n\nQayta urinib ko‘ring👇:"
 enter_post_title: "2. Xabar sarlavhasini kiriting:\n\n❗ Xabar nomi <b>100</b> belgidan oshmasligi kerak."
 title_length_exceeded: "⚠ Post nomi <b>100</b> belgidan oshmasligi kerak, qaytadan urinib ko'ring:"
-enter_post_description: "3. Xabaringiz uchun kontekstni kiriting, sarlavha <b>850</b> belgidan oshmasligi kerak:"
+enter_post_description: "3. Xabaringiz uchun izohni kiriting, izoh <b>850</b> belgidan oshmasligi kerak:"
 caption_too_long: "⚠ Post sarlavhasi <b>850</b> belgidan oshmasligi kerak, kontekstni qayta kiriting:"
 request_to_accept: "👇 Quyidagi postni tasdiqlaysizmi?"
 post_taken_to_consideration: "✅ Sizning e'loningiz ko'rib chiqish uchun yuborildi.\n\n⏳ U ma'qullangandan keyin kanalga yuklanadi."
