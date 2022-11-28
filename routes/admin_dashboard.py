@@ -8,7 +8,7 @@ from fastapi_admin.exceptions import (
     not_found_error_exception,
     server_error_exception,
 )
-from starlette.responses import RedirectResponse
+from starlette.responses import RedirectResponse, Response
 from starlette.status import (
     HTTP_401_UNAUTHORIZED,
     HTTP_403_FORBIDDEN,
@@ -17,6 +17,7 @@ from starlette.status import (
 )
 
 from core.config import settings
+from db.models import User
 from utils.exceptions import unauthorized_error_exception
 
 
@@ -138,6 +139,15 @@ async def clear_logs(
     except Exception:
         pass
     return RedirectResponse(url='/admin/logs/')
+
+
+# http://127.0.0.1:8000/admin/user/change_post_permission/4
+@app.post('/user/change_post_permission/{pk}', dependencies=[Depends(get_current_admin)])
+async def change_post_permission(request: Request, pk: int):
+    user = await User.get(pk=pk)
+    user.post_permission = not user.post_permission
+    await user.save()
+    return Response(status_code=201)
 
 
 app.add_exception_handler(HTTP_500_INTERNAL_SERVER_ERROR, server_error_exception)

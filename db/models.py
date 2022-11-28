@@ -55,8 +55,7 @@ class User(Model):
     district: fields.ForeignKeyRelation[District] = fields.ForeignKeyField(model_name='models.District',
                                                                            related_name='users', on_delete='CASCADE',
                                                                            null=True)
-    school: fields.ForeignKeyRelation[School] = fields.ForeignKeyField(model_name='models.School',
-                                                                       related_name='users',
+    school: fields.ForeignKeyRelation[School] = fields.ForeignKeyField(model_name='models.School', related_name='users',
                                                                        on_delete='CASCADE', null=True)
     posts: fields.ReverseRelation["Post"]
     liked_posts: fields.ManyToManyRelation['PostLikes']
@@ -90,29 +89,25 @@ class Post(Model):
     published_at = fields.DatetimeField(null=True)
     district: fields.ForeignKeyRelation[District] = fields.ForeignKeyField(model_name='models.District',
                                                                            related_name='posts')
-    school: fields.ForeignKeyRelation[School] = fields.ForeignKeyField(model_name='models.School',
-                                                                       related_name='likes')
+    school: fields.ForeignKeyRelation[School] = fields.ForeignKeyField(model_name='models.School', related_name='likes')
     counter: fields.ReverseRelation['PostLikes']
 
     def facebook_id(self):
-        return self.facebook_url.split('/')[-1]
+        if self.facebook_url:
+            return self.facebook_url.split('/')[-1]
+        else:
+            return None
 
     async def context(self, fb=False) -> str:
         from core.config import settings
         if fb:
-            return '\n\n'.join([
-                f"{self.title}",
-                f"{self.description}\n",
-                f"📍 {self.district.name},  {self.school.name}\n",
-                f"🔗 {self.url}"
-            ])
+            return '\n\n'.join(
+                [f"{self.title}", f"{self.description}\n", f"📍 {self.district.name},  {self.school.name}\n",
+                 f"🔗 {self.url}"])
         else:
-            return '\n'.join([
-                f"<b>{self.title}</b>\n",
-                f"<i>{self.description}</i>",
-                f"\n📍 <b>{self.district.name},  {self.school.name}</b>",
-                f"\n👉  @{settings.BOT_USERNAME}"
-            ])
+            return '\n'.join([f"<b>{self.title}</b>\n", f"<i>{self.description}</i>",
+                              f"\n📍 <b>{self.district.name},  {self.school.name}</b>",
+                              f"\n👉  @{settings.BOT_USERNAME}"])
 
     def __str__(self) -> str:
         return self.title
