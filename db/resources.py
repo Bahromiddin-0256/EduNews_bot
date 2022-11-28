@@ -1,9 +1,10 @@
 import os
-from typing import Type
+from typing import Type, List
 
 from fastapi_admin.app import app
+from fastapi_admin.enums import Method
 from fastapi_admin.file_upload import FileUpload
-from fastapi_admin.resources import Dropdown, Link, Field, Model
+from fastapi_admin.resources import Dropdown, Link, Field, Model, Action
 from fastapi_admin.widgets import inputs, displays, filters
 from starlette.requests import Request
 from tortoise import Model as db_model
@@ -29,6 +30,11 @@ class ForeignKeyDisplay(displays.Display):
         return f"<b><a href='{url}'>{model_[self.display_field]}</a></b>"
 
 
+class SwitchDisplay(displays.Display):
+    async def render(self, request: Request, value: bool):
+        return
+
+
 @app.register
 class Dashboard(Link):
     label = "Dashboard"
@@ -44,21 +50,24 @@ class UserResource(Model):
     filters = [
         filters.Search(name='full_name', label='Name', search_mode='contains', placeholder='Search for full name'),
         filters.ForeignKey(model=District, name='district', label='District'),
-        filters.Enum(enum=enums.IsRegistered, name='registered', label='Is Registered')
-    ]
-    fields = [
-        Field(name='lang_code', label="Language", input_=inputs.Input(), display=displays.InputOnly()),
-        "full_name",
-        Field(name='tg_username', label="Telegram username", input_=inputs.Input(), display=displays.InputOnly()),
-        Field(name='district_id', label='District', input_=inputs.ForeignKey(model=District),
-              display=ForeignKeyDisplay(model=District, display_field='name')),
-        Field(name='school_id', label='School', input_=inputs.ForeignKey(model=School),
-              display=ForeignKeyDisplay(model=School, display_field='name')),
-        "contact_number",
-        'points',
-        Field(name='is_superuser', label="Is Admin", input_=inputs.Switch(), display=displays.InputOnly()),
-        'post_permission'
-    ]
+        filters.Enum(enum=enums.IsRegistered, name='registered', label='Is Registered')]
+    fields = [Field(name='lang_code', label="Language", input_=inputs.Input(), display=displays.InputOnly()),
+              "full_name",
+              Field(name='tg_username', label="Telegram username", input_=inputs.Input(), display=displays.InputOnly()),
+              Field(name='district_id', label='District', input_=inputs.ForeignKey(model=District),
+                    display=ForeignKeyDisplay(model=District, display_field='name')),
+              Field(name='school_id', label='School', input_=inputs.ForeignKey(model=School),
+                    display=ForeignKeyDisplay(model=School, display_field='name')), "contact_number", 'points',
+              Field(name='is_superuser', label="Is Admin", input_=inputs.Switch(), display=displays.InputOnly()),
+              Field(name='post_permission', label="Upload permission", input_=inputs.Switch(),
+                    display=displays.Boolean())]
+
+    async def get_actions(self, request: Request) -> List[Action]:
+        actions = await super().get_actions(request)
+        switch_permission = Action(label="block", icon="ti ti-reload", name='change_post_permission',
+                                   mthod=Method.POST, )
+        actions.append(switch_permission)
+        return actions
 
 
 @app.register
@@ -71,13 +80,9 @@ class Content(Dropdown):
     class SchoolResource(Model):
         label = "School"
         model = School
-        filters = [
-            filters.ForeignKey(model=District, name='district', label='District')
-        ]
-        fields = ["id",
-                  Field(name='district_id', label='District', input_=inputs.ForeignKey(model=District),
-                        display=ForeignKeyDisplay(model=District, display_field='name')),
-                  "name", 'points']
+        filters = [filters.ForeignKey(model=District, name='district', label='District')]
+        fields = ["id", Field(name='district_id', label='District', input_=inputs.ForeignKey(model=District),
+                              display=ForeignKeyDisplay(model=District, display_field='name')), "name", 'points']
 
     label = "Schools"
     icon = "fas fa-location-pin"
@@ -90,14 +95,10 @@ class PostAdmin(Model):
     icon = "fas fa-photo-film"
     model = Post
     filters = []
-    fields = ["status",
-              Field(name='author_id', label='Author', input_=inputs.ForeignKey(model=User),
-                    display=ForeignKeyDisplay(model=User, display_field='full_name')),
-              'title',
-              Field(name='url', label='Telegram link', input_=inputs.Input(),
-                    display=displays.InputOnly()),
-              Field(name='facebook_url', label='Facebook link', input_=inputs.Input(),
-                    display=displays.InputOnly()),
+    fields = ["status", Field(name='author_id', label='Author', input_=inputs.ForeignKey(model=User),
+                              display=ForeignKeyDisplay(model=User, display_field='full_name')), 'title',
+              Field(name='url', label='Telegram link', input_=inputs.Input(), display=displays.InputOnly()),
+              Field(name='facebook_url', label='Facebook link', input_=inputs.Input(), display=displays.InputOnly()),
               "created_at"]
 
     async def row_attributes(self, request: Request, obj: dict) -> dict:
@@ -116,8 +117,7 @@ class ConnectedChannelAdmin(Model):
     model = ConnectedChannel
     fields = ['channel_title', 'channel_username', 'channel_type',
               Field(name='user_id', label='User', input_=inputs.ForeignKey(model=User),
-                    display=ForeignKeyDisplay(model=User, display_field='full_name'))
-              ]
+                    display=ForeignKeyDisplay(model=User, display_field='full_name'))]
 
 
 @app.register

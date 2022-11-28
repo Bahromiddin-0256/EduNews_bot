@@ -109,6 +109,10 @@ async def restart_post_upload(call: types.CallbackQuery, user: User, state: FSMC
 
 @router.callback_query(NewPostState.confirmation, F.data == 'accept')
 async def confirm_post_creation(call: types.CallbackQuery, user: User, state: FSMContext):
+    if await check_active_posts(user=user):
+        await call.answer("Oops, Something went wrong.")
+        await call.message.delete()
+        await send_main_menu(call.message, user)
     data = await state.get_data()
     media_id = data['media_id']
     media_type = data['media_type']
