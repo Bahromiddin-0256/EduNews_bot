@@ -18,8 +18,14 @@ async def full_name_validator(message: Message) -> bool:
                 return False
         return True
 
+    if not full_name:
+        return False
     full_name = message.text.split()
-    return len(full_name) == 2 and (await is_valid(full_name[0])) and (await is_valid(full_name[1]))
+    return (
+        len(full_name) == 2
+        and (await is_valid(full_name[0]))
+        and (await is_valid(full_name[1]))
+    )
 
 
 class TranslatedText(Filter):
@@ -32,7 +38,7 @@ class TranslatedText(Filter):
 
 class IsAdmin(Filter):
     async def __call__(self, event: Union[Message, CallbackQuery]) -> bool:
-        user = await get_user(event.from_user, 'district', 'school')
+        user = await get_user(event.from_user, "district", "school")
         return event.from_user.id in settings.ADMINS or user.is_superuser
 
 
@@ -41,14 +47,14 @@ class CommentReply(Filter):
         if not message.reply_to_message or not message.reply_to_message.entities:
             return False
         for entity in message.reply_to_message.entities:
-            if entity.type == 'code':
+            if entity.type == "code":
                 try:
                     user_id = entity.extract_from(message.reply_to_message.text)
                     user = await User.get_or_none(tg_id=int(user_id))
                     if not user:
                         return False
                     else:
-                        return {'comment_author': user}
+                        return {"comment_author": user}
                 except:
                     return False
         return False
@@ -61,7 +67,9 @@ class ChannelFilter(Filter):
         else:
             self.channel = channel
 
-    async def __call__(self, event: Union[ChatMemberUpdated, CallbackQuery, Message]) -> bool:
+    async def __call__(
+        self, event: Union[ChatMemberUpdated, CallbackQuery, Message]
+    ) -> bool:
         if isinstance(event, CallbackQuery):
             event = event.message
         return event.chat.id in self.channel
