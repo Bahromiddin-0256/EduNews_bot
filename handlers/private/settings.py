@@ -10,7 +10,7 @@ from keyboards.reply_markup import settings_tm, languages_tm, translated_button,
     district_tm, school_tm
 from localization.strings import get_language_code, _
 from middlewares.base_middlewares import PermissionMiddleware
-from utils.shortcuts import phone_number_validater, send_main_menu
+from utils.shortcuts import phone_number_validator, send_main_menu
 
 router = Router()
 router.message.middleware(PermissionMiddleware())
@@ -96,7 +96,7 @@ async def change_language(message: types.Message, user: User, state: FSMContext)
 
 @router.message(SettingsState.phone_number, F.content_type == 'contact')
 async def set_phone_number(message: types.Message, user: User, state: FSMContext):
-    phone_number = await phone_number_validater(message)
+    phone_number = await phone_number_validator(message)
     if phone_number is None:
         await message.answer(text=_('incorrect_format_number', user.lang_code))
         return
