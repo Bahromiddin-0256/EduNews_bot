@@ -18,7 +18,7 @@ async def full_name_validator(message: Message) -> bool:
                 return False
         return True
 
-    if not full_name:
+    if not message.text:
         return False
     full_name = message.text.split()
     return (

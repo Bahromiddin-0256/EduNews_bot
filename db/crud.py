@@ -111,7 +111,7 @@ async def schools_stat_info(district_id: int) -> dict:
 
 async def users_stat_info(district_id: int, school_id: int) -> dict:
     district = await District.get(pk=district_id)
-    school = await School.get(pk=school_id).order_by('-points').prefetch_related("users")
+    school = await School.get(pk=school_id).order_by('points').prefetch_related("users")
     users = await school.users.filter(points__gt=0)
     return {
         "district": district,
