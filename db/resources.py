@@ -17,7 +17,7 @@ upload = FileUpload(uploads_dir=os.path.join(BASE_DIR, "static", "uploads"))
 
 
 class ForeignKeyDisplay(displays.Display):
-    def __init__(self, model: Type[db_model], display_field: str = 'name'):
+    def __init__(self, model: Type[db_model], display_field: str = "name"):
         super().__init__()
         self.model_ = model
         self.display_field = display_field
@@ -28,11 +28,6 @@ class ForeignKeyDisplay(displays.Display):
         model_ = await self.model_.get(pk=value).values()
         url = f"/admin/{self.model_.__name__.lower()}/update/{value}"
         return f"<b><a href='{url}'>{model_[self.display_field]}</a></b>"
-
-
-class SwitchDisplay(displays.Display):
-    async def render(self, request: Request, value: bool):
-        return
 
 
 @app.register
@@ -48,24 +43,66 @@ class UserResource(Model):
     icon = "fas fa-user"
     model = User
     filters = [
-        filters.Search(name='full_name', label='Name', search_mode='contains', placeholder='Search for full name'),
-        filters.ForeignKey(model=District, name='district', label='District'),
-        filters.Enum(enum=enums.IsRegistered, name='registered', label='Is Registered')]
-    fields = [Field(name='lang_code', label="Language", input_=inputs.Input(), display=displays.InputOnly()),
-              "full_name",
-              Field(name='tg_username', label="Telegram username", input_=inputs.Input(), display=displays.InputOnly()),
-              Field(name='district_id', label='District', input_=inputs.ForeignKey(model=District),
-                    display=ForeignKeyDisplay(model=District, display_field='name')),
-              Field(name='school_id', label='School', input_=inputs.ForeignKey(model=School),
-                    display=ForeignKeyDisplay(model=School, display_field='name')), "contact_number", 'points',
-              Field(name='is_superuser', label="Is Admin", input_=inputs.Switch(), display=displays.InputOnly()),
-              Field(name='post_permission', label="Upload permission", input_=inputs.Switch(),
-                    display=displays.Boolean())]
+        filters.Search(
+            name="full_name",
+            label="Name",
+            search_mode="contains",
+            placeholder="Search for full name",
+        ),
+        filters.ForeignKey(model=District, name="district", label="District"),
+        filters.ForeignKey(model=School, name="school", label="School"),
+        filters.Enum(enum=enums.IsRegistered, name="is_registered", label="Is Registered"),  
+    ]
+    fields = [
+        Field(
+            name="lang_code",
+            label="Language",
+            input_=inputs.Input(),
+            display=displays.InputOnly(),
+        ),
+        "full_name",
+        Field(
+            name="tg_username",
+            label="Telegram username",
+            input_=inputs.Input(),
+            display=displays.InputOnly(),
+        ),
+        Field(
+            name="district_id",
+            label="District",
+            input_=inputs.ForeignKey(model=District),
+            display=ForeignKeyDisplay(model=District, display_field="name"),
+        ),
+        Field(
+            name="school_id",
+            label="School",
+            input_=inputs.ForeignKey(model=School),
+            display=ForeignKeyDisplay(model=School, display_field="name"),
+        ),
+        "contact_number",
+        "points",
+        Field(
+            name="is_superuser",
+            label="Is Admin",
+            input_=inputs.Switch(),
+            display=displays.InputOnly(),
+        ),
+        Field(
+            name="post_permission",
+            label="Upload permission",
+            input_=inputs.Switch(),
+            display=displays.Boolean(),
+        ),
+    ]
 
     async def get_actions(self, request: Request) -> List[Action]:
         actions = await super().get_actions(request)
-        switch_permission = Action(label="block", icon="ti ti-reload", name='change_post_permission',
-                                   mthod=Method.POST, )
+        switch_permission = Action(
+            label="block",
+            icon="ti ti-reload",
+            name="change_post_permission",
+            method=Method.POST,
+        )
         actions.append(switch_permission)
         return actions
 
@@ -75,14 +112,37 @@ class Content(Dropdown):
     class DistrictResource(Model):
         label = "District"
         model = District
-        fields = ["id", "name", 'points']
+        fields = ["id", "name", "points"]
 
     class SchoolResource(Model):
         label = "School"
         model = School
-        filters = [filters.ForeignKey(model=District, name='district', label='District')]
-        fields = ["id", Field(name='district_id', label='District', input_=inputs.ForeignKey(model=District),
-                              display=ForeignKeyDisplay(model=District, display_field='name')), "name", 'points']
+        filters = [
+            filters.ForeignKey(model=District, name="district", label="District")
+        ]
+        fields = [
+            "id",
+            Field(
+                name="district_id",
+                label="District",
+                input_=inputs.ForeignKey(model=District),
+                display=ForeignKeyDisplay(model=District, display_field="name"),
+            ),
+            "name",
+            "points",
+        ]
+
+        async def get_actions(self, request: Request) -> List[Action]:
+            actions = await super().get_actions(request)
+            show_related_users = Action(
+                label="users",
+                icon="ti ti-list",
+                name="show_users",
+                method=Method.GET,
+                ajax=False,
+            )
+            actions.append(show_related_users)
+            return actions
 
     label = "Schools"
     icon = "fas fa-location-pin"
@@ -95,16 +155,34 @@ class PostAdmin(Model):
     icon = "fas fa-photo-film"
     model = Post
     filters = []
-    fields = ["status", Field(name='author_id', label='Author', input_=inputs.ForeignKey(model=User),
-                              display=ForeignKeyDisplay(model=User, display_field='full_name')), 'title',
-              Field(name='url', label='Telegram link', input_=inputs.Input(), display=displays.InputOnly()),
-              Field(name='facebook_url', label='Facebook link', input_=inputs.Input(), display=displays.InputOnly()),
-              "created_at"]
+    fields = [
+        "status",
+        Field(
+            name="author_id",
+            label="Author",
+            input_=inputs.ForeignKey(model=User),
+            display=ForeignKeyDisplay(model=User, display_field="full_name"),
+        ),
+        "title",
+        Field(
+            name="url",
+            label="Telegram link",
+            input_=inputs.Input(),
+            display=displays.InputOnly(),
+        ),
+        Field(
+            name="facebook_url",
+            label="Facebook link",
+            input_=inputs.Input(),
+            display=displays.InputOnly(),
+        ),
+        "created_at",
+    ]
 
     async def row_attributes(self, request: Request, obj: dict) -> dict:
-        if obj["status"] == 'waiting':
+        if obj["status"] == "waiting":
             return {"style": "background-color: rgb(245, 187, 61);"}
-        elif obj["status"] == 'approved' and obj['is_published'] is False:
+        elif obj["status"] == "approved" and obj["is_published"] is False:
             return {"style": "background-color: rgba(0, 255, 0, 0.5);"}
         else:
             return {"style": "background-color: rgb(0, 255, 0);"}
@@ -112,12 +190,20 @@ class PostAdmin(Model):
 
 @app.register
 class ConnectedChannelAdmin(Model):
-    label = 'Linked Channels'
+    label = "Linked Channels"
     icon = "fas fa-link"
     model = ConnectedChannel
-    fields = ['channel_title', 'channel_username', 'channel_type',
-              Field(name='user_id', label='User', input_=inputs.ForeignKey(model=User),
-                    display=ForeignKeyDisplay(model=User, display_field='full_name'))]
+    fields = [
+        "channel_title",
+        "channel_username",
+        "channel_type",
+        Field(
+            name="user_id",
+            label="User",
+            input_=inputs.ForeignKey(model=User),
+            display=ForeignKeyDisplay(model=User, display_field="full_name"),
+        ),
+    ]
 
 
 @app.register

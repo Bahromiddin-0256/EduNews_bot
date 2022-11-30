@@ -4,7 +4,7 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
 from core.config import settings
-from db.crud import check_active_posts
+from db.crud import check_active_posts, create_post
 from db.models import User, Post
 from filters.common import TranslatedText
 from filters.states import NewPostState
@@ -109,18 +109,21 @@ async def restart_post_upload(call: types.CallbackQuery, user: User, state: FSMC
 
 @router.callback_query(NewPostState.confirmation, F.data == 'accept')
 async def confirm_post_creation(call: types.CallbackQuery, user: User, state: FSMContext):
-    if await check_active_posts(user=user):
-        await call.answer("Oops, Something went wrong.")
-        await call.message.delete()
-        await send_main_menu(call.message, user)
     data = await state.get_data()
     media_id = data['media_id']
     media_type = data['media_type']
     data['author'] = user
     data['district'] = user.district
     data['school'] = user.school
-    post: Post = await Post.create(**data)
+    post = await create_post(user=user, data=data)
 
+    if post is None:
+        await call.answer("Oops, Something went wrong.")
+        await call.message.delete()
+        await send_main_menu(call.message, user)
+        await state.clear()
+        return
+    
     markup = await post_confirmation_markup_admin(user=user, post=post)
     notification_text = f"<b>User:</b>   {user.mention}\n\n" + (await post.context())
 
