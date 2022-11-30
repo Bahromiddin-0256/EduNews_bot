@@ -15,7 +15,7 @@ from keyboards.reply_markup import (
 )
 from localization.strings import get_language_code, _
 from utils.shortcuts import (
-    phone_number_validater,
+    phone_number_validator,
     send_main_menu,
     send_membership_alert,
     check_channels,
