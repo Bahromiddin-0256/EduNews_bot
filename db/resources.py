@@ -51,7 +51,7 @@ class UserResource(Model):
         ),
         filters.ForeignKey(model=District, name="district", label="District"),
         filters.ForeignKey(model=School, name="school", label="School"),
-        filters.Enum(enum=enums.IsRegistered, name="is_registered", label="Is Registered"),  
+        filters.Enum(enum=enums.IsRegistered, name="registered", label="Is Registered"),  
     ]
     fields = [
         Field(
