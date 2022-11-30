@@ -70,7 +70,7 @@ class User(Model):
         return self.full_name if self.full_name else self.tg_name
 
     class Meta:
-        ordering = ['points', 'full_name']
+        ordering = ['-points', 'full_name']
 
 
 class Post(Model):
