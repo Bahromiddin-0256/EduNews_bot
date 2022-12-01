@@ -115,13 +115,13 @@ async def confirm_post_creation(call: types.CallbackQuery, user: User, state: FS
     data['author'] = user
     data['district'] = user.district
     data['school'] = user.school
+    await call.message.delete()
+    await state.clear()
     post = await create_post(user=user, data=data)
 
     if post is None:
-        await call.answer("Oops, Something went wrong.")
-        await call.message.delete()
+        await call.message.answer("Oops, Something went wrong.")
         await send_main_menu(call.message, user)
-        await state.clear()
         return
     
     markup = await post_confirmation_markup_admin(user=user, post=post)
@@ -135,8 +135,6 @@ async def confirm_post_creation(call: types.CallbackQuery, user: User, state: FS
         await bot.send_video(chat_id=settings.CONSIDERATION_CHANNEL_ID, video=media_id, caption=notification_text,
                              reply_markup=markup)
 
-    await call.message.delete()
     data = await main_menu_tm(user=user)
     data['text'] = _('post_taken_to_consideration', user.lang_code)
     await call.message.answer(**data)
-    await state.clear()
