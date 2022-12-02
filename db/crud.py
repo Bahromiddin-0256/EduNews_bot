@@ -22,8 +22,9 @@ async def get_user(bot_user: types.User, *args) -> User:
     key = f"bot_user:{bot_user.id}"
     if key in user_cache:
         return user_cache[key]
-    user = await User.get_or_none(tg_id=bot_user.id)
-    if user is None:
+    if await User.exists(tg_id=bot_user.id):
+        user = await User.get(tg_id=bot_user.id)
+    else:
         user = await User.create(tg_id=bot_user.id, **defaults)
     await user.fetch_related(*args)
     user_cache[key] = user
@@ -56,15 +57,6 @@ async def update_points(post: Post, delta: int):
     await post.school.save()
     await post.district.save()
     return post.counter.likes
-
-
-async def update_likes(existence: bool, counter: PostLikes):
-    if existence:
-        delta = -1
-    else:
-        delta = 1
-    post: Post = counter.post
-    return await update_points(post=post, delta=delta)
 
 
 async def stat_info() -> dict:
@@ -114,7 +106,7 @@ async def schools_stat_info(district_id: int) -> dict:
 async def users_stat_info(district_id: int, school_id: int) -> dict:
     district = await District.get(pk=district_id)
     school = await School.get(pk=school_id).prefetch_related("users")
-    users = await school.users.filter(points__gt=0).order_by('-points')
+    users = await school.users.filter(points__gt=0).order_by("-points")
     return {
         "district": district,
         "users": users,

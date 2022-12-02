@@ -68,6 +68,7 @@ class CustomizeLogger:
             "uvicorn",
             "uvicorn.error",
             "fastapi",
+            "rocketry.task"
         ]:
             _logger = logging.getLogger(_log)
             _logger.handlers = [InterceptHandler()]
