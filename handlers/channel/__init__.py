@@ -13,8 +13,6 @@ class ChannelFilter(ChatTypes):
 
 
 router = Router()
-router.message.middleware(DatabaseProviderMessage())
-router.callback_query.middleware(DatabaseProviderCallbackQuery())
 
 for observer_key in router.observers:
     router.observers[observer_key].filter(ChannelFilter())
