@@ -36,12 +36,6 @@ class TranslatedText(Filter):
         return await check_for_translation(key=self.key, text=message.text)
 
 
-class IsAdmin(Filter):
-    async def __call__(self, event: Union[Message, CallbackQuery]) -> bool:
-        user = await get_user(event.from_user, "district", "school")
-        return event.from_user.id in settings.ADMINS or user.is_superuser
-
-
 class CommentReply(Filter):
     async def __call__(self, message: Message) -> Union[bool, Dict[str, Any]]:
         if not message.reply_to_message or not message.reply_to_message.entities:
