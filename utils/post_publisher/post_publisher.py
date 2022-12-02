@@ -36,9 +36,14 @@ async def publish_post(post: Post, bot: Bot):
         counter = await PostLikes.get(pk=counter.pk)
         post.facebook_url = f"https://facebook.com/{facebook_upload['id']}"
         await post.save()
-        await bot.edit_message_reply_markup(chat_id=settings.MAIN_CHANNEL_ID, message_id=post.message_id,
-                                            reply_markup=make_post_markup(counter.pk, number=counter.likes - delta,
-                                                                          facebook_id=facebook_upload['id']))
+        while True:
+            try:
+                await bot.edit_message_reply_markup(chat_id=settings.MAIN_CHANNEL_ID, message_id=post.message_id,
+                                                    reply_markup=make_post_markup(counter.pk, number=counter.likes - delta,
+                                                                                facebook_id=facebook_upload['id']))
+                break
+            except Exception:
+                asyncio.sleep(10)
     except Exception:
         logging.error("Couldn't upload on facebook:", exc_info=True)
 
