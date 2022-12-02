@@ -62,10 +62,10 @@ async def checker():
         if not delta:
             return
 
-        points = await update_points(post=counter.post, delta=delta)
+        likes = await update_points(post=counter.post, delta=delta)
         markup = make_post_markup(
             counter_id=counter_id,
-            number=points - media_points[counter.post.media_type],
+            number=likes,
             facebook_id=counter.post.facebook_id(),
         )
         try:
