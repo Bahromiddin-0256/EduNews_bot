@@ -56,7 +56,9 @@ async def update_points(post: Post, delta: int):
     await post.author.save()
     await post.school.save()
     await post.district.save()
-    return post.counter.likes
+    await post.counter.fetch_related('liked_users')
+    total_likes = await post.counter.liked_users.all()
+    return len(total_likes)
 
 
 async def stat_info() -> dict:

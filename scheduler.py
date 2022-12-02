@@ -40,7 +40,7 @@ async def check_for_unpublished_posts():
         await publish_post(post=remaining_posts[0], bot=bot)
 
 
-@app.task(every("15 seconds"))
+@app.task(every("5 seconds"))
 async def checker():
     req = await redis.lpop(cache_key)
     aggregate = {}
