@@ -26,7 +26,7 @@ async def get_user(bot_user: types.User, *args) -> User:
         key = f"bot_user:{bot_user.id}"
         if key in user_cache:
             return user_cache[key]
-        user = await User.get_or_create(defaults=defaults, tg_id=bot_user.id)
+        user, _ = await User.get_or_create(defaults=defaults, tg_id=bot_user.id)
         await user.fetch_related(*args)
         user_cache[key] = user
         return user
