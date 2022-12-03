@@ -6,7 +6,7 @@ from rocketry import Rocketry
 from rocketry.conds import every
 from tortoise import Tortoise
 
-from core.config import settings, TORTOISE_ORM, media_points
+from core.config import settings, TORTOISE_ORM
 from aioredis import Redis
 from core.misc import bot
 from db.crud import update_points
@@ -40,7 +40,7 @@ async def check_for_unpublished_posts():
         await publish_post(post=remaining_posts[0], bot=bot)
 
 
-@app.task(every("5 seconds"))
+@app.task(every("2 seconds"))
 async def checker():
     req = await redis.lpop(cache_key)
     aggregate = {}
@@ -74,7 +74,7 @@ async def checker():
                 message_id=counter.post.message_id,
                 reply_markup=markup,
             )
-            asyncio.sleep(0.05)
+            asyncio.sleep(0.1)
         except Exception as error:
             logging.warning(msg=error.__str__())
 

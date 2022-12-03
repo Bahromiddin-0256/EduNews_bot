@@ -2,11 +2,14 @@ from datetime import datetime
 from typing import Union
 
 from aiogram import types
-
+import asyncio
 from core.config import settings
 from core.sessions import user_cache, ranking_cache, post_counter_cache
 from db.models import User, PostLikes, Post, District, School
 from localization.strings import _
+
+
+lock = asyncio.Lock()
 
 
 def get_current_time(format_: str = "%d/%m/%Y, %H:%M"):
@@ -15,20 +18,18 @@ def get_current_time(format_: str = "%d/%m/%Y, %H:%M"):
 
 
 async def get_user(bot_user: types.User, *args) -> User:
-    defaults = {
-        "tg_username": bot_user.username,
-        "tg_name": bot_user.full_name,
-    }
-    key = f"bot_user:{bot_user.id}"
-    if key in user_cache:
-        return user_cache[key]
-    if await User.exists(tg_id=bot_user.id):
-        user = await User.get(tg_id=bot_user.id)
-    else:
-        user = await User.create(tg_id=bot_user.id, **defaults)
-    await user.fetch_related(*args)
-    user_cache[key] = user
-    return user
+    async with lock:
+        defaults = {
+            "tg_username": bot_user.username,
+            "tg_name": bot_user.full_name,
+        }
+        key = f"bot_user:{bot_user.id}"
+        if key in user_cache:
+            return user_cache[key]
+        user = await User.get_or_create(defaults=defaults, tg_id=bot_user.id)
+        await user.fetch_related(*args)
+        user_cache[key] = user
+        return user
 
 
 async def get_counter(counter_id: int, user: User):
@@ -56,7 +57,7 @@ async def update_points(post: Post, delta: int):
     await post.author.save()
     await post.school.save()
     await post.district.save()
-    await post.counter.fetch_related('liked_users')
+    await post.counter.fetch_related("liked_users")
     total_likes = await post.counter.liked_users.all()
     return len(total_likes)
 
