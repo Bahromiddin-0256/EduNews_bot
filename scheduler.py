@@ -26,7 +26,7 @@ async def on_startup():
 def make_delta(values: list[bool]):
     trues = values.count(True)
     falses = values.count(False)
-    return trues - falses
+    return falses - trues
 
 
 @app.task(every(f"{settings.POST_RANGE} seconds"))
