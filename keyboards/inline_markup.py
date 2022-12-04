@@ -97,7 +97,7 @@ async def my_posts_tm(user: User, index: int) -> Union[dict, None]:
     post: Post
     builder = InlineKeyboardBuilder()
     builder.adjust(3)
-    builder.button(text=f'👍 {post.counter.likes}', url=post.url)
+    builder.button(text=f'👍 {post.counter.last_updated_likes}', url=post.url)
     if index == 0:
         previous_button = "null"
     else:
