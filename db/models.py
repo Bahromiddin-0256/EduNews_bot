@@ -89,7 +89,7 @@ class Post(Model):
     published_at = fields.DatetimeField(null=True)
     district: fields.ForeignKeyRelation[District] = fields.ForeignKeyField(model_name='models.District',
                                                                            related_name='posts')
-    school: fields.ForeignKeyRelation[School] = fields.ForeignKeyField(model_name='models.School', related_name='likes')
+    school: fields.ForeignKeyRelation[School] = fields.ForeignKeyField(model_name='models.School', related_name='posts')
     counter: fields.ReverseRelation['PostLikes']
 
     def facebook_id(self):
