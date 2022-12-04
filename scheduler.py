@@ -40,7 +40,7 @@ async def check_for_unpublished_posts():
         await publish_post(post=remaining_posts[0], bot=bot)
 
 
-@app.task(every("2 seconds"))
+@app.task(every("10 seconds"))
 async def checker():
     req = await redis.lpop(cache_key)
     aggregate = {}
@@ -63,20 +63,22 @@ async def checker():
             return
 
         likes = await update_points(post=counter.post, delta=delta)
-        markup = make_post_markup(
-            counter_id=counter_id,
-            number=likes,
-            facebook_id=counter.post.facebook_id(),
-        )
-        try:
-            await bot.edit_message_reply_markup(
-                chat_id=settings.MAIN_CHANNEL_ID,
-                message_id=counter.post.message_id,
-                reply_markup=markup,
+
+        if likes is not None:
+            markup = make_post_markup(
+                counter_id=counter_id,
+                number=likes,
+                facebook_id=counter.post.facebook_id(),
             )
-            asyncio.sleep(0.1)
-        except Exception as error:
-            logging.warning(msg=error.__str__())
+            try:
+                await bot.edit_message_reply_markup(
+                    chat_id=settings.MAIN_CHANNEL_ID,
+                    message_id=counter.post.message_id,
+                    reply_markup=markup,
+                )
+                await asyncio.sleep(0.3)
+            except Exception as error:
+                logging.warning(msg=error.__str__())
 
 
 if __name__ == "__main__":

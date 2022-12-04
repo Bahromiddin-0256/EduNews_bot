@@ -121,7 +121,8 @@ class PostLikes(Model):
     liked_users: fields.ManyToManyRelation[User] = fields.ManyToManyField(model_name='models.User',
                                                                           related_name='liked_posts',
                                                                           on_delete='CASCADE')
-    likes = fields.IntField(default=0)
+    points = fields.IntField(default=0)
+    last_updated_likes = fields.IntField(default=0)
 
 
 class ConnectedChannel(Model):

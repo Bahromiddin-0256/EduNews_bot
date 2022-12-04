@@ -47,9 +47,9 @@ async def get_counter(counter_id: int, user: User):
     return counter, existence
 
 
-async def update_points(post: Post, delta: int):
+async def update_points(post: Post, delta: int) -> Union[int, None]:
     await post.fetch_related("author", "school", "district", "counter")
-    post.counter.likes += delta
+    post.counter.points += delta
     post.author.points += delta
     post.school.points += delta
     post.district.points += delta
@@ -58,8 +58,13 @@ async def update_points(post: Post, delta: int):
     await post.school.save()
     await post.district.save()
     await post.counter.fetch_related("liked_users")
-    total_likes = await post.counter.liked_users.all()
-    return len(total_likes)
+    total_likes = len(await post.counter.liked_users.all())
+    if total_likes != post.counter.last_updated_likes:
+        post.counter.last_updated_likes = total_likes
+        await post.counter.save()
+        return total_likes
+    else:
+        return None
 
 
 async def stat_info() -> dict:
