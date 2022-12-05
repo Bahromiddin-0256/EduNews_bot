@@ -44,7 +44,7 @@ async def publish_post(post: Post, bot: Bot):
                                                                                 facebook_id=facebook_upload['id']))
                 break
             except Exception:
-                asyncio.sleep(10)
+                await asyncio.sleep(10)
     except Exception:
         logging.error("Couldn't upload on facebook:", exc_info=True)
 
