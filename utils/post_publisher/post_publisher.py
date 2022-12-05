@@ -55,7 +55,7 @@ async def publish_post(post: Post, bot: Bot):
                     message_id=post.message_id,
                     reply_markup=make_post_markup(
                         counter.pk,
-                        number=counter.last_updated_likes - delta,
+                        number=counter.last_updated_likes,
                         facebook_id=facebook_upload["id"],
                     ),
                 )
