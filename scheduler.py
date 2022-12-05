@@ -36,7 +36,6 @@ async def check_for_unpublished_posts():
         .order_by("created_at")
         .prefetch_related("author", "district", "school")
     )
-    logging.warning('I am running')
     if remaining_posts:
         await publish_post(post=remaining_posts[0], bot=bot)
 
