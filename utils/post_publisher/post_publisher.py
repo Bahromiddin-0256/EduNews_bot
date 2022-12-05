@@ -43,7 +43,8 @@ async def publish_post(post: Post, bot: Bot):
                                                     reply_markup=make_post_markup(counter.pk, number=counter.likes - delta,
                                                                                 facebook_id=facebook_upload['id']))
                 break
-            except Exception:
+            except Exception as er:
+                await logging.warning(f"Couldn't update post markup, {er}")
                 await asyncio.sleep(10)
     except Exception:
         logging.error("Couldn't upload on facebook:", exc_info=True)
