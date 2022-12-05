@@ -62,7 +62,7 @@ async def publish_post(post: Post, bot: Bot):
                 break
             except Exception as er:
                 k += 1
-                await logging.warning(f"Couldn't update post markup, {er}")
+                logging.warning(f"Couldn't update post markup, {er}")
                 await asyncio.sleep(10)
     except Exception:
         logging.error("Couldn't upload on facebook:", exc_info=True)
