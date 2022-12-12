@@ -1,6 +1,4 @@
 from aiogram import Router
-
-from middlewares.base_middlewares import DatabaseProviderMessage, DatabaseProviderCallbackQuery
 from middlewares.throttling import ThrottlingMiddleware
 from .registration import router as registration_router
 from .admin import router as admin_router
@@ -14,7 +12,7 @@ from filters.chat_type import ChatTypes
 
 
 class PrivateFilter(ChatTypes):
-    chat_types = 'private'
+    chat_types = "private"
 
 
 router = Router()

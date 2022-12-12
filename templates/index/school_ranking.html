@@ -30,8 +30,8 @@
             <tr>
                 <th class="bg-primary text-white text-center" style="border-radius: 10px 0 0 0">№</th>
                 <th class="bg-primary text-white text-center">Maktab nomi</th>
-                <th class="bg-primary text-white text-center" onclick="sortTable(2)">Umumiy ball</th>
-                <th class="bg-primary text-white text-center" onclick="sortTable(3)">A'zolar</th>
+                <th class="bg-primary text-white text-center" onclick="sortTable(2)">A'zolar</th>
+                <th class="bg-primary text-white text-center" onclick="sortTable(3)">Umumiy ball</th>
                 <th class="bg-primary text-white text-center" style="border-radius: 0 10px 0 0">Ko'rish</th>
             </tr>
             </thead>
@@ -40,8 +40,8 @@
             <tr>
                 <td class="text-center">{{ loop.index }}</td>
                 <td class="text-center">{{ school.name }}</td>
-                <td class="text-center">{{ school.points }}</td>
                 <td class="text-center">{{ school.users }}</td>
+                <td class="text-center">{{ school.points }}</td>
                 <td class="text-center"><a href="/district/{{ district.id }}/{{ school.id }}/">
                     <button type="button" class="btn btn-info">Ko'rish <i
                             class="fa fa-arrow-right"></i></button>
