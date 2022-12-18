@@ -39,6 +39,9 @@ async def publish_post(post: Post, bot: Bot):
     await post.save()
     await update_points(post=post, delta=delta)
 
+    data = await post_approved_tm(author, post)
+    await bot.send_message(chat_id=author.tg_id, **data)
+
     try:
         facebook_upload = await upload_on_facebook(post, bot)
         logging.warning(msg=facebook_upload)
@@ -66,9 +69,6 @@ async def publish_post(post: Post, bot: Bot):
                 await asyncio.sleep(10)
     except Exception:
         logging.error("Couldn't upload on facebook:", exc_info=True)
-
-    data = await post_approved_tm(author, post)
-    await bot.send_message(chat_id=author.tg_id, **data)
 
     markup = make_url_markup(text="👍 Like", url=post.url)
     current_district = post.district
