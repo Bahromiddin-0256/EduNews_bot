@@ -42,9 +42,8 @@ async def publish_post(post: Post, bot: Bot):
     data = await post_approved_tm(author, post)
     await bot.send_message(chat_id=author.tg_id, **data)
 
-    try:
-        facebook_upload = await upload_on_facebook(post, bot)
-        logging.warning(msg=facebook_upload)
+    facebook_upload: dict = await upload_on_facebook(post, bot)
+    if facebook_upload.get('id'):
         counter = await PostLikes.get(pk=counter.pk)
         post.facebook_url = f"https://facebook.com/{facebook_upload['id']}"
         await post.save()
@@ -63,12 +62,9 @@ async def publish_post(post: Post, bot: Bot):
                     ),
                 )
                 break
-            except Exception as er:
+            except Exception:
                 k += 1
-                logging.warning(f"Couldn't update post markup, {er}")
                 await asyncio.sleep(10)
-    except Exception:
-        logging.error("Couldn't upload on facebook:", exc_info=True)
 
     markup = make_url_markup(text="👍 Like", url=post.url)
     current_district = post.district
