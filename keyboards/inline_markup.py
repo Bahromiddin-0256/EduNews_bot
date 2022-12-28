@@ -122,6 +122,7 @@ async def my_posts_tm(user: User, index: int) -> Union[dict, None]:
                                      url=f"https://t.me/share/url?url={post.url}&text={post.title}"))
 
     caption = await post.context()
+    print(builder.as_markup())
     if post.media_type == 'photo':
         return {'photo': post.media_id, 'caption': caption, 'reply_markup': builder.as_markup()}
     return {'video': post.media_id, 'caption': caption, 'reply_markup': builder.as_markup()}
