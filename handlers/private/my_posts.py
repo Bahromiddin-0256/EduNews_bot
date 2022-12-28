@@ -44,12 +44,15 @@ async def null_answer(call: CallbackQuery):
 
 @router.callback_query(MyPostsState.view, MyPosts.filter())
 async def change_current_post(call: CallbackQuery, user: User, callback_data: MyPosts, state: FSMContext):
-    data = await my_posts_tm(user=user, index=callback_data.index)
-    if data.get('photo') is not None:
-        _m = await call.message.edit_media(media=types.input_media_photo.InputMediaPhoto(media=data['photo'], caption=data['caption']), reply_markup=data['reply_markup'])
-    else:
-        _m = await call.message.edit_media(media=types.input_media_video.InputMediaVideo(media=data['video'], caption=data['caption']), reply_markup=data['reply_markup'])
-    await state.update_data(message_id=_m.message_id)
+    try:
+        data = await my_posts_tm(user=user, index=callback_data.index)
+        if data.get('photo') is not None:
+            _m = await call.message.edit_media(media=types.input_media_photo.InputMediaPhoto(media=data['photo'], caption=data['caption']), reply_markup=data['reply_markup'])
+        else:
+            _m = await call.message.edit_media(media=types.input_media_video.InputMediaVideo(media=data['video'], caption=data['caption']), reply_markup=data['reply_markup'])
+        await state.update_data(message_id=_m.message_id)
+    except Exception as er:
+        print(er)
 
 
 @router.message(MyPostsState.view, TranslatedText('back'))
