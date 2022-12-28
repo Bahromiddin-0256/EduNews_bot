@@ -78,7 +78,7 @@ async def checker():
                 )
                 await asyncio.sleep(0.3)
             except Exception as error:
-                logging.warning(msg=error.__str__())
+                await asyncio.sleep(3)
 
 
 if __name__ == "__main__":
