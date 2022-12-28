@@ -119,7 +119,7 @@ async def my_posts_tm(user: User, index: int) -> Union[dict, None]:
                              )
     )
     builder.row(InlineKeyboardButton(text=_('share', user.lang_code),
-                                     url=f"https://t.me/share/url?url={post.url}&text={post.title}"))
+                                     url=f"https://t.me/share/url?url={post.url}&text=Check out my new post."))
 
     caption = await post.context()
     print(builder.as_markup())
