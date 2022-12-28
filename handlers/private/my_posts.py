@@ -34,7 +34,7 @@ async def show_my_posts(message: types.Message, user: User, state: FSMContext):
             await state.update_data(message_id=_m.message_id)
             await state.set_state(MyPostsState.view)
     except Exception as er:
-        logging.warning(str(er))
+        print(er)
 
 
 @router.callback_query(MyPostsState.view, F.data == 'null')
