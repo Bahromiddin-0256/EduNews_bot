@@ -151,6 +151,14 @@ async def change_post_permission(request: Request, pk: int):
     return Response(status_code=201)
 
 
+@app.get(
+    "/user/related_posts/{pk}", dependencies=[Depends(get_current_admin)]
+)
+async def show_user_related_posts(request: Request, pk: int):
+    return RedirectResponse(
+        url=f"/admin/post/list?page_size=10&author={pk}"
+    )
+
 @app.get("/school/show_users/{pk}", dependencies=[Depends(get_current_admin)])
 async def show_related_users(request: Request, pk: int):
     return RedirectResponse(

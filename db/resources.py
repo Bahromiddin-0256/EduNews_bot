@@ -103,7 +103,15 @@ class UserResource(Model):
             name="change_post_permission",
             method=Method.POST,
         )
+        show_posts = Action(
+            label='posts',
+            icon='ti ti-list',
+            name="related_posts",
+            method=Method.GET,
+            ajax=False,
+        )
         actions.append(switch_permission)
+        actions.append(show_posts)
         return actions
 
 
@@ -154,7 +162,9 @@ class PostAdmin(Model):
     label = "Posts"
     icon = "fas fa-photo-film"
     model = Post
-    filters = []
+    filters = [
+        filters.ForeignKey(model=User, name="author", label="User")
+    ]
     fields = [
         "status",
         Field(
