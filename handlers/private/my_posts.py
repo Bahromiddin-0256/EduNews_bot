@@ -19,22 +19,19 @@ router.message.middleware(PermissionMiddleware())
 
 @router.message(TranslatedText('my_posts'))
 async def show_my_posts(message: types.Message, user: User, state: FSMContext):
-    try:
-        data = await my_posts_tm(user=user, index=0)
-        if data is None:
-            await message.answer(text=_('no_uploaded_posts', user.lang_code))
-            return
+    data = await my_posts_tm(user=user, index=0)
+    if data is None:
+        await message.answer(text=_('no_uploaded_posts', user.lang_code))
+        return
+    else:
+        back_button = await translated_button(user, 'back')
+        await message.answer(text=_('uploaded_posts', user.lang_code), reply_markup=back_button)
+        if data.get('photo') is not None:
+            _m = await message.answer_photo(**data)
         else:
-            back_button = await translated_button(user, 'back')
-            await message.answer(text=_('uploaded_posts', user.lang_code), reply_markup=back_button)
-            if data.get('photo') is not None:
-                _m = await message.answer_photo(**data)
-            else:
-                _m = await message.answer_video(**data)
-            await state.update_data(message_id=_m.message_id)
-            await state.set_state(MyPostsState.view)
-    except Exception as er:
-        print(er)
+            _m = await message.answer_video(**data)
+        await state.update_data(message_id=_m.message_id)
+        await state.set_state(MyPostsState.view)
 
 
 @router.callback_query(MyPostsState.view, F.data == 'null')
@@ -44,15 +41,12 @@ async def null_answer(call: CallbackQuery):
 
 @router.callback_query(MyPostsState.view, MyPosts.filter())
 async def change_current_post(call: CallbackQuery, user: User, callback_data: MyPosts, state: FSMContext):
-    try:
-        data = await my_posts_tm(user=user, index=callback_data.index)
-        if data.get('photo') is not None:
-            _m = await call.message.edit_media(media=types.input_media_photo.InputMediaPhoto(media=data['photo'], caption=data['caption']), reply_markup=data['reply_markup'])
-        else:
-            _m = await call.message.edit_media(media=types.input_media_video.InputMediaVideo(media=data['video'], caption=data['caption']), reply_markup=data['reply_markup'])
-        await state.update_data(message_id=_m.message_id)
-    except Exception as er:
-        print(er)
+    data = await my_posts_tm(user=user, index=callback_data.index)
+    if data.get('photo') is not None:
+        _m = await call.message.edit_media(media=types.input_media_photo.InputMediaPhoto(media=data['photo'], caption=data['caption']), reply_markup=data['reply_markup'])
+    else:
+        _m = await call.message.edit_media(media=types.input_media_video.InputMediaVideo(media=data['video'], caption=data['caption']), reply_markup=data['reply_markup'])
+    await state.update_data(message_id=_m.message_id)
 
 
 @router.message(MyPostsState.view, TranslatedText('back'))
