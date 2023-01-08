@@ -135,17 +135,17 @@ class ConnectedChannel(Model):
     
 
 class MediaCategory(Model):
-    objects: fields.ReverseRelation['Media']
+    # objects: fields.ReverseRelation['Media']
     name = fields.CharField(max_length=100, unique=True)
     
     def __str__(self) -> str:
         return self.name
     
     
-class Media(Model):
-    category: fields.ForeignKeyRelation[MediaCategory] = fields.ForeignKeyField(model_name='models.MediaCategory', related_name='objects')
-    title = fields.CharField(max_length=100)
-    url = fields.CharField(max_length=200)
+# class Media(Model):
+#     category: fields.ForeignKeyRelation[MediaCategory] = fields.ForeignKeyField(model_name='models.MediaCategory', related_name='objects')
+#     title = fields.CharField(max_length=100)
+#     url = fields.CharField(max_length=200)
     
-    def __str__(self) -> str:
-        return self.title
+#     def __str__(self) -> str:
+#         return self.title
