@@ -28,6 +28,7 @@ add_post: "➕ Yangi e'lon yuklash"
 my_posts: "📑 Mening e'lonlarim"
 statistics: "📊 Statistika"
 settings: "⚙ Sozlamalar"
+digital_education: "🌐 Raqamli ta'lim"
 leave_comment: "💬 Izoh qoldirish"
 
 # Membership check
@@ -90,3 +91,6 @@ school_rating: "<b>🏢 {school}</b> reytingi:"
 school_in_district: "   Tumanda: <b>{rank}</b>"
 school_in_region: "   Viloyatda: <b>{rank}</b>\n"
 district_rating: "<b>🏆 {district} tumani reytingi: {rank}</b>"
+
+# Digital education
+media_categories: "Bo'limlar:"

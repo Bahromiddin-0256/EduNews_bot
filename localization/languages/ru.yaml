@@ -28,6 +28,7 @@ add_post: "➕ Загрузить новый пост"
 my_posts: "📑 Мои посты"
 statistics: "📊 Статистика"
 settings: "⚙ Настройки"
+digital_education: "🌐 Цифровое образование"
 leave_comment: "💬 Оставить комментарий"
 
 # My posts
@@ -91,3 +92,6 @@ school_rating: "<b>🏢 рейтинг {school}</b>:"
 school_in_district: "   В округе: <b>{rank}</b>"
 school_in_region: "   В регионе: <b>{rank}</b>\n"
 district_rating: "<b>🏆 Рейтинг {district}: {rank}</b>"
+
+# Digital education
+media_categories: "Категории:"

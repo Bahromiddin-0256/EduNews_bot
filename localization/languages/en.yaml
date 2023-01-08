@@ -28,6 +28,7 @@ add_post: "➕ Upload new post"
 my_posts: "📑 My posts"
 statistics: "📊 Statistics"
 settings: "⚙ Settings"
+digital_education: "🌐 Digital Education"
 leave_comment: "💬 Leave comment"
 
 # Membership check
@@ -91,3 +92,6 @@ school_rating: "<b>🏢 {school}</b> ranking:"
 school_in_district: "       In district:  <b>{rank}</b>"
 school_in_region: "       In Region:  <b>{rank}</b>\n"
 district_rating: "<b>🏆 {district} ranking:  {rank}</b>"
+
+# Digital education
+media_categories: "Categories:"

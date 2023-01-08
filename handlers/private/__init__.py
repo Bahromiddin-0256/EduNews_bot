@@ -7,6 +7,7 @@ from .new_post import router as new_post_router
 from .my_posts import router as my_posts_router
 from .comment import router as comment_router
 from .statistics import router as statistics_router
+from .digital_education import router as digital_education_router
 
 from filters.chat_type import ChatTypes
 
@@ -28,3 +29,4 @@ router.include_router(new_post_router)
 router.include_router(my_posts_router)
 router.include_router(comment_router)
 router.include_router(statistics_router)
+router.include_router(digital_education_router)

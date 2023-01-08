@@ -36,3 +36,8 @@ class CommentState(StatesGroup):
 class AdminState(StatesGroup):
     input_broadcast_message = State()
     input_user_reply = State()
+
+
+class DigitalEducationState(StatesGroup):
+    category_list = State()
+    media_list = State()

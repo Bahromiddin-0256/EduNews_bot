@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from db.models import User, District
+from db.models import MediaCategory, User, District
 from localization.strings import get_all_languages, _
 
 cancel_button = ReplyKeyboardMarkup(
@@ -92,6 +92,30 @@ async def school_tm(user: User, district: District) -> dict:
     return {'text': text, 'reply_markup': builder.as_markup(resize_keyboard=True)}
 
 
+async def media_category_tm(user: User) -> dict:
+    text = _('media_categories', user.lang_code)
+    builder = ReplyKeyboardBuilder()
+    categories = await MediaCategory.all()
+    for category in categories:
+        builder.button(text=f'📁 {category.name}')
+    builder.adjust(1)
+    builder.row(KeyboardButton(text=_('back', user.lang_code)))
+    if len(categories) == 0:
+        return None
+    return {'text': text, 'reply_markup': builder.as_markup(resize_keyboard=True)}
+
+
+async def media_list_tm(user: User, category: MediaCategory):
+    media_list = await category.objects.all()
+    text = category.name + ':'
+    builder = ReplyKeyboardBuilder()
+    for media in media_list:
+        builder.button(text=f'📹 {media.title}')
+        builder.adjust(2)
+    builder.row(KeyboardButton(text=_('back', user.lang_code)))
+    return {'text': text, 'reply_markup': builder.as_markup(resize_keyboard=True)} 
+
+
 async def main_menu_tm(user: User) -> dict:
     text = _('main_menu', user.lang_code)
     markup = ReplyKeyboardMarkup(
@@ -99,14 +123,15 @@ async def main_menu_tm(user: User) -> dict:
         keyboard=[
             [
                 KeyboardButton(text=_('add_post', user.lang_code)),
-            ],
-            [
                 KeyboardButton(text=_('my_posts', user.lang_code)),
-                KeyboardButton(text=_('statistics', user.lang_code)),
             ],
             [
+                KeyboardButton(text=_('statistics', user.lang_code)),
                 KeyboardButton(text=_('settings', user.lang_code)),
-                KeyboardButton(text=_('leave_comment', user.lang_code))
+            ],
+            [
+                KeyboardButton(text=_('digital_education', user.lang_code)),
+                KeyboardButton(text=_('leave_comment', user.lang_code)),
             ],
         ],
         resize_keyboard=True,

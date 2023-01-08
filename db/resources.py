@@ -10,7 +10,15 @@ from starlette.requests import Request
 from tortoise import Model as db_model
 
 from db import enums
-from db.models import District, School, User, Post, ConnectedChannel
+from db.models import (
+    District,
+    Media,
+    MediaCategory,
+    School,
+    User,
+    Post,
+    ConnectedChannel,
+)
 from core.config import BASE_DIR
 
 upload = FileUpload(uploads_dir=os.path.join(BASE_DIR, "static", "uploads"))
@@ -51,7 +59,7 @@ class UserResource(Model):
         ),
         filters.ForeignKey(model=District, name="district", label="District"),
         filters.ForeignKey(model=School, name="school", label="School"),
-        filters.Enum(enum=enums.IsRegistered, name="registered", label="Is Registered"),  
+        filters.Enum(enum=enums.IsRegistered, name="registered", label="Is Registered"),
     ]
     fields = [
         Field(
@@ -104,8 +112,8 @@ class UserResource(Model):
             method=Method.POST,
         )
         show_posts = Action(
-            label='posts',
-            icon='ti ti-list',
+            label="posts",
+            icon="ti ti-list",
             name="related_posts",
             method=Method.GET,
             ajax=False,
@@ -162,9 +170,7 @@ class PostAdmin(Model):
     label = "Posts"
     icon = "fas fa-photo-film"
     model = Post
-    filters = [
-        filters.ForeignKey(model=User, name="author", label="User")
-    ]
+    filters = [filters.ForeignKey(model=User, name="author", label="User")]
     fields = [
         "status",
         Field(
@@ -196,6 +202,34 @@ class PostAdmin(Model):
             return {"style": "background-color: rgba(0, 255, 0, 0.5);"}
         else:
             return {"style": "background-color: rgb(0, 255, 0);"}
+
+
+@app.register
+class DigitalEducationAdmin(Dropdown):
+    class MediaCategoryAdmin(Model):
+        label = "Category"
+        model = MediaCategory
+        fields = ["id", "name"]
+
+    class MediaAdmin(Model):
+        label = "Media"
+        model = Media
+        filters = [filters.ForeignKey(model=MediaCategory, name='category', label='Category')]
+        fields = [
+            "id",
+            Field(
+                name="category_id",
+                label="Category",
+                input_=inputs.ForeignKey(model=MediaCategory),
+                display=ForeignKeyDisplay(model=MediaCategory, display_field="name"),
+            ),
+            "title",
+            "url",
+        ]
+
+    label = "Digital Education"
+    icon = "fas fa-earth"
+    resources = [MediaCategoryAdmin, MediaAdmin]
 
 
 @app.register
