@@ -136,7 +136,10 @@ class ConnectedChannel(Model):
 
 class MediaCategory(Model):
     objects: fields.ReverseRelation['Media']
+    subcategories: fields.ReverseRelation['MediaCategory']
+    parent_category: fields.ForeignKeyRelation = fields.ForeignKeyField(model_name='models.MediaCategory', related_name='subcategories', null=True)
     name = fields.CharField(max_length=100, unique=True)
+    last_layer = fields.BooleanField(default=False)
     
     def __str__(self) -> str:
         return self.name

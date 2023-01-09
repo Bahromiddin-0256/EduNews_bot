@@ -1,5 +1,6 @@
 # Most used
 back: "⬅ Назад"
+home_back: "⤴️ Главный"
 confirm: "✅ Подтвердить"
 check: "✅ Проверять"
 restart: "🔄 заново"
@@ -94,4 +95,4 @@ school_in_region: "   В регионе: <b>{rank}</b>\n"
 district_rating: "<b>🏆 Рейтинг {district}: {rank}</b>"
 
 # Digital education
-media_categories: "Категории:"
+media_categories: "Категории"

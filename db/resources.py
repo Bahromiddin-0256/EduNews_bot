@@ -7,6 +7,7 @@ from fastapi_admin.file_upload import FileUpload
 from fastapi_admin.resources import Dropdown, Link, Field, Model, Action
 from fastapi_admin.widgets import inputs, displays, filters
 from starlette.requests import Request
+from starlette.datastructures import FormData
 from tortoise import Model as db_model
 
 from db import enums
@@ -209,12 +210,48 @@ class DigitalEducationAdmin(Dropdown):
     class MediaCategoryAdmin(Model):
         label = "Category"
         model = MediaCategory
-        fields = ["id", "name"]
+        filters = [
+            filters.ForeignKey(model=MediaCategory, name='parent_category', label='Parenl category')
+        ]
+        fields = [
+            "id",
+            Field(
+                name="parent_category_id",
+                label="Parent category",
+                input_=inputs.ForeignKey(model=MediaCategory, null=True),
+                display=ForeignKeyDisplay(model=MediaCategory, display_field='name'),
+            ),
+            "name",
+            "last_layer"
+        ]
+        
+        @classmethod
+        async def resolve_data(cls, request: Request, data: FormData):
+            ret = {}
+            m2m_ret = {}
+            for field in cls.get_fields(is_display=False):
+                input_ = field.input
+                if input_.context.get("disabled") or isinstance(input_, inputs.DisplayOnly):
+                    continue
+                name = input_.context.get("name")
+                if isinstance(input_, inputs.ManyToMany):
+                    v = data.getlist(name)
+                    value = await input_.parse_value(request, v)
+                    m2m_ret[name] = await input_.model.filter(pk__in=value)
+                else:
+                    v = data.get(name)
+                    value = await input_.parse_value(request, v)
+                    if value in [None, '']:
+                        continue
+                    ret[name] = value
+            return ret, m2m_ret
 
     class MediaAdmin(Model):
         label = "Media"
         model = Media
-        filters = [filters.ForeignKey(model=MediaCategory, name='category', label='Category')]
+        filters = [
+            filters.ForeignKey(model=MediaCategory, name="category", label="Category")
+        ]
         fields = [
             "id",
             Field(

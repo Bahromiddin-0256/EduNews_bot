@@ -1,5 +1,6 @@
 # Most used
 back: "⬅ Ortga"
+home_back: "⤴️ Asosiy"
 confirm: "✅ Tasdiqlash"
 check: "✅ Tekshirish"
 restart: "🔄 Qaytadan"
@@ -93,4 +94,4 @@ school_in_region: "   Viloyatda: <b>{rank}</b>\n"
 district_rating: "<b>🏆 {district} tumani reytingi: {rank}</b>"
 
 # Digital education
-media_categories: "Bo'limlar:"
+media_categories: "Bo'limlar"

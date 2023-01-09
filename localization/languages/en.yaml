@@ -1,5 +1,6 @@
 # Most used
 back: "⬅ Back"
+home_back: "⤴️ Home"
 confirm: "✅ Confirm"
 check: "✅ Check"
 restart: "🔄 Restart"
@@ -94,4 +95,4 @@ school_in_region: "       In Region:  <b>{rank}</b>\n"
 district_rating: "<b>🏆 {district} ranking:  {rank}</b>"
 
 # Digital education
-media_categories: "Categories:"
+media_categories: "Categories"

@@ -50,6 +50,7 @@ async def start_command(message: types.Message, user: User, state: FSMContext):
     else:
         if user.is_member:
             await send_main_menu(message, user)
+            await state.clear()
         else:
             await send_membership_alert(message, user)
 

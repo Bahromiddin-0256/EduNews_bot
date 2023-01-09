@@ -94,25 +94,51 @@ async def school_tm(user: User, district: District) -> dict:
 
 async def media_category_tm(user: User) -> dict:
     text = _('media_categories', user.lang_code)
+    categories = await MediaCategory.filter(parent_category=None)
     builder = ReplyKeyboardBuilder()
-    categories = await MediaCategory.all()
     for category in categories:
         builder.button(text=f'📁 {category.name}')
     builder.adjust(1)
-    builder.row(KeyboardButton(text=_('back', user.lang_code)))
+    builder.row(KeyboardButton(text=_('back', user.lang_code)), KeyboardButton(text=_('home_back', user.lang_code)))
     if len(categories) == 0:
         return None
     return {'text': text, 'reply_markup': builder.as_markup(resize_keyboard=True)}
 
 
+async def sub_category_tm(user: User, category: MediaCategory) -> dict:
+    parent_tree = []
+    instance = category.clone()
+    while instance is not None and instance.parent_category is not None:
+        parent_tree.append(instance.name)
+        await instance.fetch_related('parent_category')
+        instance = instance.parent_category
+    parent_tree.reverse()
+    text = f"📁 {_('media_categories', user.lang_code)}/{'/'.join(parent_tree)}"
+    await category.fetch_related('subcategories')
+    categories = await category.subcategories.all()
+    builder = ReplyKeyboardBuilder()
+    for category in categories:
+        builder.button(text=f'📁 {category.name}')
+    builder.adjust(1)
+    builder.row(KeyboardButton(text=_('back', user.lang_code)), KeyboardButton(text=_('home_back', user.lang_code)))
+    return {'text': text, 'reply_markup': builder.as_markup(resize_keyboard=True)}
+    
+
 async def media_list_tm(user: User, category: MediaCategory):
     media_list = await category.objects.all()
-    text = category.name + ':'
+    parent_tree = []
+    instance = category.clone()
+    while instance is not None and instance.parent_category is not None:
+        parent_tree.append(instance.name)
+        await instance.fetch_related('parent_category')
+        instance = instance.parent_category
+    parent_tree.reverse()
+    text = f"📁 {_('media_categories', user.lang_code)}/{'/'.join(parent_tree)}"
     builder = ReplyKeyboardBuilder()
     for media in media_list:
         builder.button(text=f'📹 {media.title}')
         builder.adjust(2)
-    builder.row(KeyboardButton(text=_('back', user.lang_code)))
+    builder.row(KeyboardButton(text=_('back', user.lang_code)), KeyboardButton(text=_('home_back', user.lang_code)))
     return {'text': text, 'reply_markup': builder.as_markup(resize_keyboard=True)} 
 
 
