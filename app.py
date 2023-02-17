@@ -21,16 +21,17 @@ import routes
 app = FastAPI()
 app.logger = logger
 
-app.mount(
-    "/static",
-    StaticFiles(directory=os.path.join(BASE_DIR, "static")),
-    name="static",
-)
+if settings.DEBUG:
+    app.mount(
+        "/static",
+        StaticFiles(directory=os.path.join(BASE_DIR, "static")),
+        name="static",
+    )
 
 
 @app.get("/")
 async def overall_stat(
-    request: Request,
+        request: Request,
 ):
     data = await stat_info()
     return templates.TemplateResponse(
@@ -44,8 +45,8 @@ async def overall_stat(
 
 @app.get("/district/{district_id}/")
 async def schools_stat(
-    request: Request,
-    district_id: int,
+        request: Request,
+        district_id: int,
 ):
     data = await schools_stat_info(district_id=district_id)
     return templates.TemplateResponse(
@@ -59,9 +60,9 @@ async def schools_stat(
 
 @app.get("/district/{district_id}/{school_id}")
 async def schools_stat(
-    request: Request,
-    district_id: int,
-    school_id: int,
+        request: Request,
+        district_id: int,
+        school_id: int,
 ):
     data = await users_stat_info(district_id=district_id, school_id=school_id)
     return templates.TemplateResponse(
@@ -114,7 +115,7 @@ async def feed_update(update):
 
 @app.post(settings.WEBHOOK_PATH, include_in_schema=False)
 async def telegram_update(
-    token: str, background_tasks: BackgroundTasks, update: dict = Body(...)
+        token: str, background_tasks: BackgroundTasks, update: dict = Body(...)
 ) -> Response:
     if token == bot.token:
         background_tasks.add_task(feed_update, update)

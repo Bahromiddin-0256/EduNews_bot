@@ -1,4 +1,4 @@
-<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+<link href="/static/css/quill.snow.css" rel="stylesheet">
 <div class="form-group mb-3">
     <label class="form-label">{{ label }}</label>
     <input {% if not null %}required{% endif %} type="{{ input_type }}" class="form-control" name="{{ name }}"
@@ -11,7 +11,7 @@
         </small>
     {% endif %}
 </div>
-<script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+<script src="/static/js/quill.js"></script>
 <script>
     Quill.prototype.getHTML = function () {
         return this.container.querySelector('.ql-editor').innerHTML;

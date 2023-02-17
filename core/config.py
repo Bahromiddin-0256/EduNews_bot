@@ -88,12 +88,12 @@ TORTOISE_ORM = {
 }
 
 admin_config = {
-    "logo_url": "https://preview.tabler.io/static/logo-white.svg",
+    "logo_url": "/static/images/favicon.ico",
     "template_folders": [os.path.join(BASE_DIR, "templates")],
-    "favicon_url": "https://raw.githubusercontent.com/fastapi-admin/fastapi-admin/dev/images/favicon.png",
+    "favicon_url": "/static/images/favicon.ico",
     "providers": [
         LoginProvider(
-            login_logo_url="https://preview.tabler.io/static/logo.svg",
+            login_logo_url="/static/images/telegram-icon.svg",
             admin_model=Admin,
         )
     ],
