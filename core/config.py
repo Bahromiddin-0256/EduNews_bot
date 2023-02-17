@@ -93,7 +93,7 @@ admin_config = {
     "favicon_url": "/static/images/favicon.ico",
     "providers": [
         LoginProvider(
-            login_logo_url="/static/images/telegram-icon.svg",
+            login_logo_url="/static/images/login.png",
             admin_model=Admin,
         )
     ],

@@ -7,9 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ district }} maktablari</title>
 
-    {% if request.app.favicon_url %}
-    <link rel="icon" href="{{ request.app.favicon_url }}">
-    {% endif %}
+    <link rel="icon" href="/static/images/favicon.ico">
     <script src="/static/js/b6633c4c6c.js" crossorigin="anonymous"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
@@ -25,7 +23,7 @@
     <div class="h3 text-secondary text-center mt-1"><b>{{ district }}</b> maktablari reytingi</div>
     <div class="table-responsive">
         <table class="table table-hover shadow mt-3 mb-5 bg-white rounded" id="myTable">
-            <caption>Oxirgi marta yangilandi:   {{ last_update }}</caption>
+            <caption>Oxirgi marta yangilandi: {{ last_update }}</caption>
             <thead style="position: sticky; top: 0">
             <tr>
                 <th class="bg-primary text-white text-center" style="border-radius: 10px 0 0 0">№</th>
@@ -37,16 +35,16 @@
             </thead>
             <tbody>
             {% for school in schools %}
-            <tr>
-                <td class="text-center">{{ loop.index }}</td>
-                <td class="text-center">{{ school.name }}</td>
-                <td class="text-center">{{ school.users }}</td>
-                <td class="text-center">{{ school.points }}</td>
-                <td class="text-center"><a href="/district/{{ district.id }}/{{ school.id }}/">
-                    <button type="button" class="btn btn-info">Ko'rish <i
-                            class="fa fa-arrow-right"></i></button>
-                </a></td>
-            </tr>
+                <tr>
+                    <td class="text-center">{{ loop.index }}</td>
+                    <td class="text-center">{{ school.name }}</td>
+                    <td class="text-center">{{ school.users }}</td>
+                    <td class="text-center">{{ school.points }}</td>
+                    <td class="text-center"><a href="/district/{{ district.id }}/{{ school.id }}/">
+                        <button type="button" class="btn btn-info">Ko'rish <i
+                                class="fa fa-arrow-right"></i></button>
+                    </a></td>
+                </tr>
             {% endfor %}
             </tbody>
         </table>
@@ -110,7 +108,6 @@
             }
         }
     }
-
 
 
 </script>
