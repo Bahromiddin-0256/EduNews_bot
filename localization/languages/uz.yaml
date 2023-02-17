@@ -26,7 +26,6 @@ invalid_school: "🚫 Noto'g'ri kiritilgan maktab, quyidagilardan maktabingizni 
 # Main menu
 main_menu: "Asosiy menyu:"
 add_post: "➕ Yangi e'lon yuklash"
-events: "🏆 Tanlovlar"
 my_posts: "📑 Mening e'lonlarim"
 statistics: "📊 Statistika"
 settings: "⚙ Sozlamalar"

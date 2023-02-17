@@ -26,7 +26,6 @@ invalid_school: "🚫 Введена неверная школа, пожалуй
 # Main menu
 main_menu: "Главное меню:"
 add_post: "➕ Загрузить новый пост"
-events: "🏆 События"
 my_posts: "📑 Мои посты"
 statistics: "📊 Статистика"
 settings: "⚙ Настройки"

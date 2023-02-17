@@ -19,7 +19,6 @@ class SettingsState(StatesGroup):
 
 
 class NewPostState(StatesGroup):
-    event_input = State()
     media_upload = State()
     title_input = State()
     description_input = State()
