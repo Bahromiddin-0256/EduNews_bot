@@ -40,7 +40,7 @@ async def check_for_unpublished_posts():
         await publish_post(post=remaining_posts[0], bot=bot)
 
 
-@app.task(every("10 seconds"))
+@app.task(every("60 seconds"))
 async def checker():
     req = await redis.lpop(cache_key)
     aggregate = {}
@@ -76,7 +76,7 @@ async def checker():
                     message_id=counter.post.message_id,
                     reply_markup=markup,
                 )
-                await asyncio.sleep(0.3)
+                await asyncio.sleep(0.5)
             except Exception as error:
                 await asyncio.sleep(3)
 

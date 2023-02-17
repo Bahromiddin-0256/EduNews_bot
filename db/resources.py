@@ -1,5 +1,5 @@
 import os
-from typing import Type, List
+from typing import Type, List, Any
 
 from fastapi_admin.app import app
 from fastapi_admin.enums import Method
@@ -39,6 +39,17 @@ class ForeignKeyDisplay(displays.Display):
         return f"<b><a href='{url}'>{model_[self.display_field]}</a></b>"
 
 
+class ForeignKeyUrl(filters.ForeignKey):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    async def get_options(self):
+        return []
+
+    async def render(self, request: Request, value: Any):
+        return ''
+
+
 @app.register
 class Dashboard(Link):
     label = "Dashboard"
@@ -59,7 +70,7 @@ class UserResource(Model):
             placeholder="Search for full name",
         ),
         filters.ForeignKey(model=District, name="district", label="District"),
-        filters.ForeignKey(model=School, name="school", label="School"),
+        ForeignKeyUrl(model=School, name="school", label="School"),
         filters.Enum(enum=enums.IsRegistered, name="registered", label="Is Registered"),
     ]
     fields = [
@@ -171,7 +182,7 @@ class PostAdmin(Model):
     label = "Posts"
     icon = "fas fa-photo-film"
     model = Post
-    filters = [filters.ForeignKey(model=User, name="author", label="User")]
+    filters = [ForeignKeyUrl(model=User, name="author", label="User")]
     fields = [
         "status",
         Field(
