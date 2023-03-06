@@ -1,13 +1,12 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Union
 
 from aiogram import types
 import asyncio
 from core.config import settings
-from core.sessions import user_cache, ranking_cache, post_counter_cache
+from core.sessions import user_cache, dashboard_cache, post_counter_cache
 from db.models import User, PostLikes, Post, District, School
 from localization.strings import _
-
 
 lock = asyncio.Lock()
 
@@ -68,8 +67,8 @@ async def update_points(post: Post, delta: int) -> Union[int, None]:
 
 
 async def stat_info() -> dict:
-    if "districts_ranking" in ranking_cache:
-        return ranking_cache["districts_ranking"]
+    if "districts_ranking" in dashboard_cache:
+        return dashboard_cache["districts_ranking"]
     districts = (
         await District.all().order_by("-points").prefetch_related("schools", "users")
     )
@@ -86,14 +85,14 @@ async def stat_info() -> dict:
             }
         )
     result = {"districts": res, "last_update": get_current_time()}
-    ranking_cache["districts_ranking"] = result
+    dashboard_cache["districts_ranking"] = result
     return result
 
 
 async def schools_stat_info(district_id: int) -> dict:
     cache_key = f"district_{district_id}_ranking"
-    if cache_key in ranking_cache:
-        return ranking_cache[cache_key]
+    if cache_key in dashboard_cache:
+        return dashboard_cache[cache_key]
     district = await District.get(pk=district_id).prefetch_related("schools")
     res = []
     schools = await district.schools.all().order_by("-points").prefetch_related("users")
@@ -107,7 +106,7 @@ async def schools_stat_info(district_id: int) -> dict:
             }
         )
     result = {"district": district, "schools": res, "last_update": get_current_time()}
-    ranking_cache[cache_key] = result
+    dashboard_cache[cache_key] = result
     return result
 
 
@@ -129,8 +128,8 @@ async def show_user_stat(user: User):
     await user.fetch_related("school", "district")
     school_in_region = len(await School.filter(points__gt=user.school.points)) + 1
     school_in_district = (
-        len(await School.filter(points__gt=user.school.points, district=user.district))
-        + 1
+            len(await School.filter(points__gt=user.school.points, district=user.district))
+            + 1
     )
     district_in_region = len(await District.filter(points__gt=user.district.points)) + 1
 
@@ -166,3 +165,69 @@ async def create_post(user: User, data: dict) -> Union[Post, None]:
     else:
         post = await Post.create(**data)
         return post
+
+
+def lower_bound(nums, target):
+    left = 0
+    right = len(nums) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return left
+
+
+async def get_user_count_data():
+    if 'get_user_count_data' in dashboard_cache:
+        return dashboard_cache['get_user_count_data']
+    result = []
+    users = await User.all().order_by('created_at').values('created_at')
+    created_time_array = [user['created_at'].timestamp() for user in users]
+
+    end_date = datetime.now(tz=settings.TIME_ZONE)
+    end_date.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    start_date = end_date - timedelta(days=365)
+    for date in (start_date + timedelta(days=n) for n in range(365)):
+        count = lower_bound(created_time_array, date.timestamp())
+        result.append([date.timestamp() * 1000, count])
+    dashboard_cache['get_user_count_data'] = result
+    return result
+
+
+async def get_post_stat_data():
+    if 'get_post_stat_data' in dashboard_cache:
+        return dashboard_cache['get_post_stat_data']
+    result = []
+    posts = await Post.all().order_by('created_at').values('created_at')
+    created_time_array = [post['created_at'].timestamp() for post in posts]
+
+    end_date = datetime.now(tz=settings.TIME_ZONE)
+    end_date.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    start_date = end_date - timedelta(days=365)
+    for date in (start_date + timedelta(days=n) for n in range(365)):
+        count = lower_bound(created_time_array, date.timestamp())
+        result.append([date.timestamp() * 1000, count])
+    dashboard_cache['get_post_stat_data'] = result
+    return result
+
+
+async def get_user_data_by_regions():
+    if 'get_user_data_by_regions' in dashboard_cache:
+        return dashboard_cache['get_user_data_by_regions']
+    data = await stat_info()
+    regions_users = []
+    regions_points = []
+    regions_labels = []
+    for region in data['districts']:
+        regions_users.append(region['users'])
+        regions_points.append(region['points'])
+        regions_labels.append(region['name'].split(' ')[0])
+    dashboard_cache['get_user_data_by_regions'] = regions_users, regions_points, regions_labels
+    return regions_users, regions_points, regions_labels

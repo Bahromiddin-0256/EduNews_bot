@@ -1,14 +1,187 @@
 {% extends 'layout.html' %}
 {% block page_body %}
 <div class="row">
-    <div class="col-8">
+    <div class="col-7">
         <div class="card">
             <div class="card-body">
-                <div class="card-title">
-                    Dashboard info
-                </div>
+                <div id="user-stat"></div>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="col-5">
+        <div class="card">
+            <div class="card-title" style="padding: 10px;">
+                Registered users
+            </div>
+            <div class="card-body">
+                <div id="users-by-regions"></div>
             </div>
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-7">
+        <div class="card" style="width: auto;">
+            <div class="card-body">
+                <div id="post-stat"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="card">
+            <div class="card-title" style="padding: 10px;">
+                Points by regions
+            </div>
+            <div class="card-body">
+                <div id="users-points-by-regions"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const options_user_stat = {
+  chart: {
+    type: 'area',
+  },
+  series: [{
+    name: 'Total users',
+    data: {{ user_count_data }},
+  }],
+  title: {
+          text: 'Total bot users',
+          align: 'left'
+        },
+  fill: {
+          type: 'gradient',
+          gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.7,
+            opacityTo: 0.9,
+            stops: [0, 100]
+          }
+        },
+  dataLabels: {
+    enabled: false,
+  },
+  xaxis: {
+    type: 'datetime',
+  },
+  tooltip: {
+  x: {
+        format: 'dd MMM yyyy'
+     }
+  },
+};
+
+const options_post_stat = {
+  chart: {
+    type: 'area',
+  },
+  series: [{
+    name: 'Total users',
+    data: {{ post_stat_data }},
+  }],
+  title: {
+          text: 'Uploaded posts',
+          align: 'left'
+        },
+  fill: {
+          type: 'gradient',
+          gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.7,
+            opacityTo: 0.9,
+            stops: [0, 100]
+          }
+        },
+  dataLabels: {
+    enabled: false,
+  },
+  xaxis: {
+    type: 'datetime',
+  },
+  tooltip: {
+  x: {
+        format: 'dd MMM yyyy'
+     }
+  },
+};
+
+// render the chart
+const chart_user_stat = new ApexCharts(document.querySelector('#user-stat'), options_user_stat);
+const chart_post_stat = new ApexCharts(document.querySelector('#post-stat'), options_post_stat);
+chart_user_stat.render();
+chart_post_stat.render();
+
+// users by regions
+var options_users_by_regions = {
+          series: {{ users_data_by_regions }},
+          labels: {{ users_data_by_regions_labels | safe}},
+          chart: {
+          type: 'donut',
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }],
+        plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                total: {
+                    show: true,
+                }
+              }
+            }
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#users-by-regions"), options_users_by_regions);
+        chart.render();
+// users points by regions
+var options_users_points_by_regions = {
+          series: {{ users_points_by_regions }},
+          labels: {{ users_data_by_regions_labels | safe}},
+          chart: {
+          type: 'donut',
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }],
+        plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                total: {
+                    show: true,
+                }
+              }
+            }
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#users-points-by-regions"), options_users_points_by_regions);
+        chart.render();
+
+</script>
 {% endblock %}
