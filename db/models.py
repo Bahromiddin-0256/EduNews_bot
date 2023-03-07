@@ -14,6 +14,7 @@ class District(Model):
 
     schools: fields.ReverseRelation["School"]
     users: fields.ReverseRelation["User"]
+    posts: fields.ReverseRelation["Post"]
 
     def __str__(self):
         return self.name
@@ -90,7 +91,7 @@ class Post(Model):
     district: fields.ForeignKeyRelation[District] = fields.ForeignKeyField(model_name='models.District',
                                                                            related_name='posts')
     school: fields.ForeignKeyRelation[School] = fields.ForeignKeyField(model_name='models.School', related_name='posts')
-    counter: fields.ReverseRelation['PostLikes']
+    counter: fields.BackwardOneToOneRelation['PostLikes']
 
     def facebook_id(self):
         if self.facebook_url:

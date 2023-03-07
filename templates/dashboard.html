@@ -31,10 +31,10 @@
     <div class="col-5">
         <div class="card">
             <div class="card-title" style="padding: 10px;">
-                Points by regions
+                Posts by regions
             </div>
             <div class="card-body">
-                <div id="users-points-by-regions"></div>
+                <div id="users-posts-by-regions"></div>
             </div>
         </div>
     </div>
@@ -79,7 +79,7 @@ const options_post_stat = {
     type: 'area',
   },
   series: [{
-    name: 'Total users',
+    name: 'Total posts',
     data: {{ post_stat_data }},
   }],
   title: {
@@ -149,8 +149,8 @@ var options_users_by_regions = {
         var chart = new ApexCharts(document.querySelector("#users-by-regions"), options_users_by_regions);
         chart.render();
 // users points by regions
-var options_users_points_by_regions = {
-          series: {{ users_points_by_regions }},
+var options_users_posts_by_regions = {
+          series: {{ users_posts_by_regions }},
           labels: {{ users_data_by_regions_labels | safe}},
           chart: {
           type: 'donut',
@@ -180,7 +180,7 @@ var options_users_points_by_regions = {
         }
         };
 
-        var chart = new ApexCharts(document.querySelector("#users-points-by-regions"), options_users_points_by_regions);
+        var chart = new ApexCharts(document.querySelector("#users-posts-by-regions"), options_users_posts_by_regions);
         chart.render();
 
 </script>

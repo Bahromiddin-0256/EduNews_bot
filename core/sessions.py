@@ -9,7 +9,7 @@ private_messages_cache = TTLCache(maxsize=30000, ttl=1)
 user_cache = TTLCache(maxsize=30000, ttl=60)
 blocked_users_cache = TTLCache(maxsize=30000, ttl=30)
 like_action_counter = TTLCache(maxsize=30000, ttl=1.7)
-dashboard_cache = TTLCache(maxsize=100000, ttl=300)
+dashboard_cache = TTLCache(maxsize=100000, ttl=3600)
 post_counter_cache = TTLCache(maxsize=20000, ttl=120)
 
 

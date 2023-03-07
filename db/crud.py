@@ -6,6 +6,7 @@ import asyncio
 from core.config import settings
 from core.sessions import user_cache, dashboard_cache, post_counter_cache
 from db.models import User, PostLikes, Post, District, School
+from tortoise.functions import Count
 from localization.strings import _
 
 lock = asyncio.Lock()
@@ -57,7 +58,7 @@ async def update_points(post: Post, delta: int) -> Union[int, None]:
     await post.school.save()
     await post.district.save()
     await post.counter.fetch_related("liked_users")
-    total_likes = len(await post.counter.liked_users.all())
+    total_likes = await post.counter.liked_users.all().count()
     if total_likes != post.counter.last_updated_likes:
         post.counter.last_updated_likes = total_likes
         await post.counter.save()
@@ -69,9 +70,7 @@ async def update_points(post: Post, delta: int) -> Union[int, None]:
 async def stat_info() -> dict:
     if "districts_ranking" in dashboard_cache:
         return dashboard_cache["districts_ranking"]
-    districts = (
-        await District.all().order_by("-points").prefetch_related("schools", "users")
-    )
+    districts = await District.all().order_by("-points").annotate(total_posts=Count('posts')).prefetch_related('schools', 'users')
     res = []
     for district in districts:
         district: District
@@ -82,6 +81,7 @@ async def stat_info() -> dict:
                 "points": district.points,
                 "schools": len(district.schools),
                 "users": len(district.users),
+                "posts": district.total_posts,
             }
         )
     result = {"districts": res, "last_update": get_current_time()}
@@ -95,13 +95,13 @@ async def schools_stat_info(district_id: int) -> dict:
         return dashboard_cache[cache_key]
     district = await District.get(pk=district_id).prefetch_related("schools")
     res = []
-    schools = await district.schools.all().order_by("-points").prefetch_related("users")
+    schools = await district.schools.all().order_by("-points").annotate(total_users=Count('users'))
     for school in schools:
         res.append(
             {
                 "id": school.pk,
                 "name": school.name,
-                "users": len(await school.users),
+                "users": school.total_users,
                 "points": school.points,
             }
         )
@@ -223,11 +223,11 @@ async def get_user_data_by_regions():
         return dashboard_cache['get_user_data_by_regions']
     data = await stat_info()
     regions_users = []
-    regions_points = []
+    regions_posts = []
     regions_labels = []
     for region in data['districts']:
         regions_users.append(region['users'])
-        regions_points.append(region['points'])
+        regions_posts.append(region['posts'])
         regions_labels.append(region['name'].split(' ')[0])
-    dashboard_cache['get_user_data_by_regions'] = regions_users, regions_points, regions_labels
-    return regions_users, regions_points, regions_labels
+    dashboard_cache['get_user_data_by_regions'] = regions_users, regions_posts, regions_labels
+    return regions_users, regions_posts, regions_labels

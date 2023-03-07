@@ -48,7 +48,7 @@ async def home(
 ):
     user_count_data = await get_user_count_data()
     post_stat_data = await get_post_stat_data()
-    users_data_by_regions, users_points_by_regions, users_data_by_regions_labels = await get_user_data_by_regions()
+    users_data_by_regions, users_posts_by_regions, users_data_by_regions_labels = await get_user_data_by_regions()
     return templates.TemplateResponse(
         "dashboard.html",
         context={
@@ -58,7 +58,7 @@ async def home(
             "post_stat_data": post_stat_data,
             'users_data_by_regions': users_data_by_regions,
             'users_data_by_regions_labels': users_data_by_regions_labels,
-            'users_points_by_regions': users_points_by_regions,
+            'users_posts_by_regions': users_posts_by_regions,
             "resource_label": "Dashboard",
             "page_pre_title": "overview",
             "page_title": "Dashboard",
