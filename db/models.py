@@ -49,7 +49,7 @@ class User(Model):
     is_member = fields.BooleanField(default=False)
     is_superuser = fields.BooleanField(default=False)
     like_allowed = fields.BooleanField(default=False)
-    post_permission = fields.BooleanField(default=True)
+    post_permission = fields.BooleanField(default=False)
     registered = fields.BooleanField(default=False)
     points = fields.IntField(default=0)
     created_at = fields.DatetimeField(auto_now_add=True)
