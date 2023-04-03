@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Statistika</title>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <script src="/static/js/b6633c4c6c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <style>
+        th {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container p-2" style="position: relative;">
+    <div class="h3 text-secondary text-center mt-1">
+        {{ tournament.name }} tanlovi qatnashchilari
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped shadow mt-3 mb-5 bg-white rounded">
+
+            <caption>Oxirgi marta yangilandi: {{ last_update }}</caption>
+            <thead style="position: sticky; top: 0; background-color: #f2c80a;">
+            <tr>
+                <th class="text-center" style="border-radius: 10px 0 0 0">№</th>
+                <th class="text-center">Qatnashchi</th>
+                <th class="text-center">Tumani</th>
+                <th class="text-center">Maktabi</th>
+                <th class="text-center" style="border-radius: 0 10px 0 0">Umumiy bali</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for participant in participants %}
+                <tr class="item">
+                    <td class="text-center">{{ loop.index }}</td>
+                    <td class="text-center">{{ participant.author.full_name }}</td>
+                    <td class="text-center">{{ participant.district.name }}</td>
+                    <td class="text-center">{{ participant.school.name }}</td>
+                    <td class="text-center">
+                       {{ participant.counter.last_updated_likes }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            <a href="/tournaments/ranking/" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Tanlovlar</a>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

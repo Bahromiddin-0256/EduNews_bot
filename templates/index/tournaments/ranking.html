@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Statistika</title>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <script src="/static/js/b6633c4c6c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <style>
+        th {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container p-2" style="position: relative;">
+    <div class="h3 text-secondary text-center mt-1">
+        🏆 Tanlovlar ro'yhati
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped shadow mt-3 mb-5 bg-white rounded">
+
+            <caption>Oxirgi marta yangilandi: {{ last_update }}</caption>
+            <thead style="position: sticky; top: 0; background-color: #f2c80a;">
+            <tr>
+                <th class="text-center" style="border-radius: 10px 0 0 0">№</th>
+                <th class="text-center">Ta'nlov</th>
+                <th class="text-center">A'zolar soni</th>
+                <th class="text-center" style="border-radius: 0 10px 0 0">Natijalar</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tournament in tournaments %}
+                <tr class="item">
+                    <td class="text-center">{{ loop.index }}</td>
+                    <td class="text-center">{{ tournament.name }}</td>
+                    <td class="text-center">{{ tournament.total_participants }}</td>
+                    <td class="text-center"><a href="/tournaments/{{ tournament.id }}/">
+                        <button type="button" class="btn btn-info">Natijalar  <i class="fa fa-arrow-right"></i></button>
+                    </a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            <a href="/" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Umumiy reyting</a>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
