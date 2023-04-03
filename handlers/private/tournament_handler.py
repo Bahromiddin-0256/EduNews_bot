@@ -130,21 +130,18 @@ async def confirm_post_creation(call: types.CallbackQuery, user: User, state: FS
     await call.message.delete()
     await bot.delete_message(chat_id=call.from_user.id, message_id=data['request_message_id'])
     await state.clear()
-    try:
-        post = await Post.create(**data)
-        
-        markup = await post_confirmation_markup_admin(user=user, post=post)
-        notification_text = f"<b>User:</b>   {user.mention}\n\n" + (await post.context())
+    post = await Post.create(**data)
+    
+    markup = await post_confirmation_markup_admin(user=user, post=post)
+    notification_text = f"<b>User:</b>   {user.mention}\n\n" + (await post.context())
 
-        if media_type == 'photo':
-            await bot.send_photo(chat_id=settings.TOURNAMENT_CHECK_CHANNEL_ID, photo=media_id, caption=notification_text,
-                                reply_markup=markup)
-        elif media_type == 'video':
-            await bot.send_video(chat_id=settings.TOURNAMENT_CHECK_CHANNEL_ID, video=media_id, caption=notification_text,
-                                reply_markup=markup)
+    if media_type == 'photo':
+        await bot.send_photo(chat_id=settings.TOURNAMENT_CHECK_CHANNEL_ID, photo=media_id, caption=notification_text,
+                            reply_markup=markup)
+    elif media_type == 'video':
+        await bot.send_video(chat_id=settings.TOURNAMENT_CHECK_CHANNEL_ID, video=media_id, caption=notification_text,
+                            reply_markup=markup)
 
-        data = await main_menu_tm(user=user)
-        data['text'] = _('post_taken_to_consideration', user.lang_code)
-        await call.message.answer(**data)
-    except Exception as error:
-        logging.error(error)
+    data = await main_menu_tm(user=user)
+    data['text'] = _('post_taken_to_consideration', user.lang_code)
+    await call.message.answer(**data)

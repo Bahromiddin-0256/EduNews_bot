@@ -14,7 +14,7 @@ from localization.strings import _
 router = Router()
 
 
-@router.callback_query(PostAction.filter(), ChannelFilter(channel=settings.CONSIDERATION_CHANNEL_ID))
+@router.callback_query(PostAction.filter(), ChannelFilter(channel=[settings.CONSIDERATION_CHANNEL_ID, settings.TOURNAMENT_CHECK_CHANNEL_ID]))
 async def commit_action(call: CallbackQuery, user: User, callback_data: PostAction):
     from core.misc import bot
     post: Post = await Post.get(id=callback_data.post_id).prefetch_related('author', 'district', 'school')
@@ -31,7 +31,7 @@ async def commit_action(call: CallbackQuery, user: User, callback_data: PostActi
         await call.message.edit_caption(caption=text, reply_markup=None)
 
 
-@router.callback_query(LikeButton.filter(), ChannelFilter(channel=settings.MAIN_CHANNEL_ID))
+@router.callback_query(LikeButton.filter(), ChannelFilter(channel=[settings.CONSIDERATION_CHANNEL_ID, settings.TOURNAMENT_CHECK_CHANNEL_ID]))
 async def perform_like(call: CallbackQuery, user: User, callback_data: LikeButton):
     if not user.like_allowed:
         await call.answer(text=_('join_alert', user.lang_code), show_alert=True)

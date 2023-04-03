@@ -250,7 +250,7 @@ async def tournament_participants_rating(tournament: Tournament):
     key = f'tournament_participants_rating:{tournament.id}'
     if key in dashboard_cache:
         return dashboard_cache[key]
-    participants = await Post.filter(tournament=tournament).prefetch_related('author', 'district', 'school', 'counter').order_by('counter__last_updated_likes')
+    participants = await Post.filter(tournament=tournament, is_published=True).prefetch_related('author', 'district', 'school', 'counter').order_by('counter__last_updated_likes')
     result = {'participants': participants, 'last_update': get_current_time()}
     dashboard_cache[key] = result
     return result
