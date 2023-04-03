@@ -1,18 +1,16 @@
-from datetime import datetime
-
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
 from core.config import settings
-from db.crud import check_active_posts, create_post
 from db.models import User, Tournament, Post
 from filters.common import TranslatedText
 from filters.states import NewPostState, TournamentPostState
-from keyboards.inline_markup import admin_contact, post_confirmation_markup, post_confirmation_markup_admin
+from keyboards.inline_markup import post_confirmation_markup, post_confirmation_markup_admin
 from keyboards.reply_markup import translated_button, main_menu_tm, get_tournaments_list
 from localization.strings import _
 from middlewares.base_middlewares import PermissionMiddleware
 from utils.shortcuts import send_main_menu, post_text_maker, check_tournament_name
+import logging
 
 router = Router()
 router.message.middleware(PermissionMiddleware())
@@ -132,23 +130,21 @@ async def confirm_post_creation(call: types.CallbackQuery, user: User, state: FS
     await call.message.delete()
     await bot.delete_message(chat_id=call.from_user.id, message_id=data['request_message_id'])
     await state.clear()
-    post = await Post.create(**data)
+    try:
+        post = await Post.create(**data)
+        
+        markup = await post_confirmation_markup_admin(user=user, post=post)
+        notification_text = f"<b>User:</b>   {user.mention}\n\n" + (await post.context())
 
-    if post is None:
-        await call.message.answer("Oops, Something went wrong.")
-        await send_main_menu(call.message, user)
-        return
-    
-    markup = await post_confirmation_markup_admin(user=user, post=post)
-    notification_text = f"<b>User:</b>   {user.mention}\n\n" + (await post.context())
+        if media_type == 'photo':
+            await bot.send_photo(chat_id=settings.TOURNAMENT_CHECK_CHANNEL_ID, photo=media_id, caption=notification_text,
+                                reply_markup=markup)
+        elif media_type == 'video':
+            await bot.send_video(chat_id=settings.TOURNAMENT_CHECK_CHANNEL_ID, video=media_id, caption=notification_text,
+                                reply_markup=markup)
 
-    if media_type == 'photo':
-        await bot.send_photo(chat_id=settings.TOURNAMENT_CHECK_CHANNEL_ID, photo=media_id, caption=notification_text,
-                             reply_markup=markup)
-    elif media_type == 'video':
-        await bot.send_video(chat_id=settings.TOURNAMENT_CHECK_CHANNEL_ID, video=media_id, caption=notification_text,
-                             reply_markup=markup)
-
-    data = await main_menu_tm(user=user)
-    data['text'] = _('post_taken_to_consideration', user.lang_code)
-    await call.message.answer(**data)
+        data = await main_menu_tm(user=user)
+        data['text'] = _('post_taken_to_consideration', user.lang_code)
+        await call.message.answer(**data)
+    except Exception as error:
+        logging.error(error)
