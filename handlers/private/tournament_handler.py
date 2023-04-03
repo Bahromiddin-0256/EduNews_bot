@@ -93,6 +93,7 @@ async def input_post_description(message: types.Message, user: User, state: FSMC
     media_id = data['media_id']
     media_type = data['media_type']
     data['description'] = message.text
+    await user.fetch_related('district', 'school')
     data['district_name'] = user.district.name
     data['school_name'] = user.school.name
     selected_tournament = await Tournament.get(id=data['tournament_id'])
