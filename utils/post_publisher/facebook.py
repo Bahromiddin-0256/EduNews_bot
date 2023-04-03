@@ -35,4 +35,4 @@ async def upload_on_facebook(post: Post, bot: Bot):
     session = aiohttp.ClientSession()
     res = await session.post(url=url, data=data)
     await session.close()
-    return json.loads(await res.text())
+    return await res.json()

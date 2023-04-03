@@ -24,8 +24,7 @@ async def show_my_posts(message: types.Message, user: User, state: FSMContext):
         await message.answer(text=_('no_uploaded_posts', user.lang_code))
         return
     else:
-        back_button = await translated_button(user, 'back')
-        await message.answer(text=_('uploaded_posts', user.lang_code), reply_markup=back_button)
+        await message.answer(text=_('uploaded_posts', user.lang_code), reply_markup=translated_button(user, 'back'))
         if data.get('photo') is not None:
             _m = await message.answer_photo(**data)
         else:

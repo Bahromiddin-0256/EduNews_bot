@@ -45,7 +45,7 @@ async def back_to_main_settings(message: types.Message, user: User, state: FSMCo
 async def change_language(message: types.Message, user: User, state: FSMContext):
     data = await languages_tm()
 
-    data['reply_markup'].keyboard.append((await translated_button(user, 'cancel')).keyboard[0])
+    data['reply_markup'].keyboard.append(translated_button(user, 'cancel').keyboard[0])
     await message.answer(**data)
     await state.set_state(SettingsState.language)
 
@@ -63,10 +63,9 @@ async def change_language(message: types.Message, user: User, state: FSMContext)
     data = await full_name_tm(user)
 
     if data['reply_markup'] is not list:
-        data['reply_markup'] = await translated_button(user, 'cancel')
-
+        data['reply_markup'] = translated_button(user, 'cancel')
     else:
-        data['reply_markup'].keyboard.append((await translated_button(user, 'cancel')).keyboard[0])
+        data['reply_markup'].keyboard.append(translated_button(user, 'cancel').keyboard[0])
 
     await message.answer(**data)
     await state.set_state(SettingsState.full_name)
@@ -88,7 +87,7 @@ async def set_full_name(message: types.Message, user: User, state: FSMContext):
 async def change_language(message: types.Message, user: User, state: FSMContext):
     data = await contact_number_tm(user)
 
-    data['reply_markup'].keyboard.append((await translated_button(user, 'cancel')).keyboard[0])
+    data['reply_markup'].keyboard.append(translated_button(user, 'cancel').keyboard[0])
 
     await message.answer(**data)
     await state.set_state(SettingsState.phone_number)
@@ -111,7 +110,7 @@ async def set_phone_number(message: types.Message, user: User, state: FSMContext
 async def change_language(message: types.Message, user: User, state: FSMContext):
     data = await district_tm(user)
 
-    data['reply_markup'].keyboard.append((await translated_button(user, 'cancel')).keyboard[0])
+    data['reply_markup'].keyboard.append(translated_button(user, 'cancel').keyboard[0])
 
     await message.answer(**data)
     await state.set_state(SettingsState.district)
@@ -125,7 +124,7 @@ async def set_district(message: types.Message, user: User, state: FSMContext):
         return
     await state.update_data(district=district.name)
     data = await school_tm(user, district)
-    data['reply_markup'].keyboard.append((await translated_button(user, 'cancel')).keyboard[0])
+    data['reply_markup'].keyboard.append(translated_button(user, 'cancel').keyboard[0])
     await message.answer(**data)
     await state.set_state(SettingsState.school)
 
@@ -134,7 +133,7 @@ async def set_district(message: types.Message, user: User, state: FSMContext):
 async def set_district(message: types.Message, user: User, state: FSMContext):
     data = await district_tm(user)
     await message.answer(**data)
-    data['reply_markup'].keyboard.append((await translated_button(user, 'cancel')).keyboard[0])
+    data['reply_markup'].keyboard.append(translated_button(user, 'cancel').keyboard[0])
     await state.set_state(SettingsState.district)
 
 

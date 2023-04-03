@@ -95,3 +95,11 @@ district_rating: "<b>🏆 {district} tumani reytingi: {rank}</b>"
 
 # Digital education
 media_categories: "Bo'limlar"
+
+# Tournaments
+no_active_tournaments: "Xozirda faol tanlovlar mavjud emas."
+tournaments: "🏆 Tanlovlar"
+list_of_active_tournaments: "Faol tanlovlar:"
+already_participated: "Siz bu tanlovda qatnashgansiz."
+enter_tournament_post_media: "1. Tanlov uchun rasm<b>(Faqat 1 ta)</b> yoki video<b>(50MB dan oshmagan)</b> yuklang:"
+incorrect_tournament_name: "🚫 Noto'giri tanlov nomi tanlandi, quyidagilardan birini tanlang:"

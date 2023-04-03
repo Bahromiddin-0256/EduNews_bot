@@ -14,7 +14,42 @@
             cursor: pointer;
         }
 
+        .btn-tournaments {
+            background-color: #f9e79f;
+            color: #34495e;
+            border: 1px solid #f9e79f;
+            border-radius: 5px;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-tournaments:hover {
+            background-color: #f5d76e;
+            border-color: #f5d76e;
+            color: #fff;
+        }
+        
+        .btn-tournaments:active {
+            background-color: #f1c40f;
+            border-color: #f1c40f;
+            color: #fff;
+        }
+        
+        .btn-tournaments:focus {
+            outline: none;
+        }
+        
+        .table-wrapper {
+            position: relative;
+        }
+        
+        .table-wrapper .btn-tournaments {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
 
+    </style>
     </style>
 </head>
 <body>
@@ -22,7 +57,7 @@
     <div class="h3 text-secondary text-center mt-1">Andijon viloyati xalq ta'limi xodimlarining ijtimoiy faollik
         reytingi
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive table-wrapper">
         <table class="table table-hover table-striped shadow mt-3 mb-5 bg-white rounded" id="myTable">
 
             <caption>Oxirgi marta yangilandi: {{ last_update }}</caption>
@@ -49,7 +84,9 @@
             {% endfor %}
             </tbody>
         </table>
+        <a href="tournaments/ranking/"><button class='btn-tournaments'>🏆 Tanlovlar <i class="fa fa-arrow-right"></i></button></a>
     </div>
+
 </div>
 <script>
     function sortTable(n) {

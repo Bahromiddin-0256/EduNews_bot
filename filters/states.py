@@ -25,6 +25,14 @@ class NewPostState(StatesGroup):
     confirmation = State()
 
 
+class TournamentPostState(StatesGroup):
+    tournaments_list = State()
+    media_upload = State()
+    title_input = State()
+    description_input = State()
+    confirmation = State()
+
+
 class MyPostsState(StatesGroup):
     view = State()
 

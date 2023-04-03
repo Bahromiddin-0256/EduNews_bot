@@ -18,9 +18,8 @@ router.message.middleware(PermissionMiddleware())
 @router.message(TranslatedText('leave_comment'))
 async def leave_comment(message: types.Message, user: User, state: FSMContext):
     text = _('send_your_comment', user.lang_code)
-    markup = await translated_button(user, 'cancel')
 
-    await message.answer(text=text, reply_markup=markup)
+    await message.answer(text=text, reply_markup=translated_button(user, 'cancel'))
     await state.set_state(CommentState.input_comment)
 
 

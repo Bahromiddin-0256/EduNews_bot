@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 
 from core.config import settings
 from db.crud import check_active_posts, create_post
-from db.models import User, Post
+from db.models import User
 from filters.common import TranslatedText
 from filters.states import NewPostState
 from keyboards.inline_markup import admin_contact, post_confirmation_markup, post_confirmation_markup_admin
@@ -31,7 +31,7 @@ async def new_post(message: types.Message, user: User, state: FSMContext):
         await message.answer(text=_('daily_limit_alert', user.lang_code))
         return
     await message.answer(text=_('enter_post_media', user.lang_code),
-                         reply_markup=(await translated_button(user, 'cancel')))
+                         reply_markup=translated_button(user, 'cancel'))
     await state.set_state(NewPostState.media_upload)
 
 

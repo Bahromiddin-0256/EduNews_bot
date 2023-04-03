@@ -29,6 +29,7 @@ class Settings(BaseSettings):
                              'poll_answer', 'my_chat_member', 'chat_member', 'chat_join_request']
     ADMINS: list = []
     CONSIDERATION_CHANNEL_ID: int
+    TOURNAMENT_CHECK_CHANNEL_ID: int
     MAIN_CHANNEL_ID: int
     REQUIRED_CHANNELS_IDS: list = []
     REQUIRED_CHANNELS_USERNAMES: list = []

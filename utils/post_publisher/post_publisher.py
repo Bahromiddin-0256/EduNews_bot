@@ -1,8 +1,8 @@
-import datetime
-import logging
 import asyncio
+import datetime
 
 from aiogram import Bot
+import logging
 
 from core.config import settings, media_points
 from db.crud import update_points
@@ -62,9 +62,11 @@ async def publish_post(post: Post, bot: Bot):
                     ),
                 )
                 break
-            except Exception:
+            except:
                 k += 1
                 await asyncio.sleep(10)
+    else:
+        logging.warning(facebook_upload)
 
     markup = make_url_markup(text="👍 Like", url=post.url)
     current_district = post.district

@@ -13,7 +13,8 @@ from tortoise import Tortoise
 import middlewares
 from core import sessions
 from core.config import settings, TORTOISE_ORM, admin_config, BASE_DIR, logger
-from db.crud import stat_info, schools_stat_info, users_stat_info
+from db.crud import stat_info, schools_stat_info, users_stat_info, get_tournaments_list, tournament_participants_rating
+from db.models import Tournament
 from core.misc import bot, dp
 import db.resources
 import routes
@@ -69,6 +70,32 @@ async def schools_stat(
         "index/user_ranking.html",
         context={
             "request": request,
+            **data,
+        },
+    )
+    
+
+@app.get('/tournaments/ranking/')
+async def tournaments_ranking(request: Request):
+    data = await get_tournaments_list()
+    return templates.TemplateResponse(
+        "index/tournaments/ranking.html",
+        context={
+            'request': request,
+            **data,
+        },
+    )
+
+
+@app.get('/tournaments/{tournament_id}/')
+async def tournament_participants(request: Request, tournament_id: int):
+    tournament = await Tournament.get(id=tournament_id)
+    data = await tournament_participants_rating(tournament)
+    return templates.TemplateResponse(
+        "index/tournaments/participants.html",
+        context={
+            'request': request,
+            'tournament': tournament,
             **data,
         },
     )

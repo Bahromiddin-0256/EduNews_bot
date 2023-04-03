@@ -83,7 +83,7 @@ comment_sent: "✅ Thank you, your comment has been sent to admins, you may rece
 liked: "➕ You put a like"
 like_taken: "➖ You get your like back"
 too_many_requests: "🚫 Too many requests, please try again later."
-join_alert: "⛔ You haven't not joined to the channel yet."
+join_alert: "⛔ Please join to the channel to put a like."
 
 
 # Statistics
@@ -96,3 +96,12 @@ district_rating: "<b>🏆 {district} ranking:  {rank}</b>"
 
 # Digital education
 media_categories: "Categories"
+
+
+# Tournaments
+no_active_tournaments: "Currenly there is no ongoing tournament"
+tournaments: "🏆 Tournaments"
+list_of_active_tournaments: "List of active tournaments:"
+already_participated: "You have already submitted your post for this tournament."
+enter_tournament_post_media: "1. Upload an Image<b>(Only 1)</b> or a Video<b>(No more than 50MB)</b> for tournament:"
+incorrect_tournament_name: "🚫 Incorrect tournament name selected, please select from the following:"

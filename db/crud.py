@@ -5,9 +5,11 @@ from aiogram import types
 import asyncio
 from core.config import settings
 from core.sessions import user_cache, dashboard_cache, post_counter_cache
-from db.models import User, PostLikes, Post, District, School
+from db.models import User, PostLikes, Post, District, School, Tournament
 from tortoise.functions import Count
 from localization.strings import _
+from tortoise.functions import Count
+from tortoise.query_utils import Prefetch
 
 lock = asyncio.Lock()
 
@@ -231,3 +233,24 @@ async def get_user_data_by_regions():
         regions_labels.append(region['name'].split(' ')[0])
     dashboard_cache['get_user_data_by_regions'] = regions_users, regions_posts, regions_labels
     return regions_users, regions_posts, regions_labels
+
+
+async def get_tournaments_list():
+    key = 'tournaments_list_key'
+    if key in dashboard_cache:
+        return dashboard_cache[key]
+    tournaments = await Tournament.annotate(total_participants=Count('participants')).prefetch_related(
+        'participants').all()
+    result = {'tournaments': tournaments, 'last_update': get_current_time()}
+    dashboard_cache[key] = result
+    return result
+
+
+async def tournament_participants_rating(tournament: Tournament):
+    key = f'tournament_participants_rating:{tournament.id}'
+    if key in dashboard_cache:
+        return dashboard_cache[key]
+    participants = await Post.filter(tournament=tournament).prefetch_related('author', 'district', 'school', 'counter').order_by('counter__last_updated_likes')
+    result = {'participants': participants, 'last_update': get_current_time()}
+    dashboard_cache[key] = result
+    return result

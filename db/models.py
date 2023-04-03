@@ -74,9 +74,26 @@ class User(Model):
         ordering = ['-points', 'full_name']
 
 
+class Tournament(Model):
+    name = fields.CharField(max_length=100)
+    active = fields.BooleanField(default=True)
+    start_date = fields.DatetimeField()
+    end_date = fields.DatetimeField()
+    participants: fields.ReverseRelation["Post"]
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        ordering = ['-id']
+
+
 class Post(Model):
     author: fields.ForeignKeyRelation[User] = fields.ForeignKeyField(model_name='models.User', related_name='posts',
                                                                      on_delete='CASCADE')
+    tournament: fields.ForeignKeyRelation[Tournament] = fields.ForeignKeyField(model_name='models.Tournament',
+                                                                                related_name='participants',
+                                                                                on_delete='CASCADE', null=True)
     media_id = fields.CharField(max_length=100)
     media_type = fields.CharField(max_length=10)
     status = fields.CharField(max_length=20, default='waiting')
@@ -102,13 +119,17 @@ class Post(Model):
     async def context(self, fb=False) -> str:
         from core.config import settings
         if fb:
-            return '\n\n'.join(
+            context = '\n\n'.join(
                 [f"{self.title}", f"{self.description}\n", f"📍 {self.district.name},  {self.school.name}\n",
                  f"🔗 {self.url}"])
         else:
-            return '\n'.join([f"<b>{self.title}</b>\n", f"<i>{self.description}</i>",
+            context = '\n'.join([f"<b>{self.title}</b>\n", f"<i>{self.description}</i>",
                               f"\n📍 <b>{self.district.name},  {self.school.name}</b>",
                               f"\n👉  @{settings.BOT_USERNAME}"])
+        await self.fetch_related('tournament')
+        if self.tournament:
+            context = f'🏆 {self.tournament.name} | TANLOV\n\n' + context
+        return context
 
     def __str__(self) -> str:
         return self.title
@@ -133,23 +154,25 @@ class ConnectedChannel(Model):
     channel_title = fields.CharField(max_length=100)
     channel_username = fields.CharField(max_length=50, null=True)
     channel_type = fields.CharField(max_length=50)
-    
+
 
 class MediaCategory(Model):
     objects: fields.ReverseRelation['Media']
     subcategories: fields.ReverseRelation['MediaCategory']
-    parent_category: fields.ForeignKeyRelation = fields.ForeignKeyField(model_name='models.MediaCategory', related_name='subcategories', null=True)
+    parent_category: fields.ForeignKeyRelation = fields.ForeignKeyField(model_name='models.MediaCategory',
+                                                                        related_name='subcategories', null=True)
     name = fields.CharField(max_length=100, unique=True)
     last_layer = fields.BooleanField(default=False)
-    
+
     def __str__(self) -> str:
         return self.name
-    
-    
+
+
 class Media(Model):
-    category: fields.ForeignKeyRelation[MediaCategory] = fields.ForeignKeyField(model_name='models.MediaCategory', related_name='objects')
+    category: fields.ForeignKeyRelation[MediaCategory] = fields.ForeignKeyField(model_name='models.MediaCategory',
+                                                                                related_name='objects')
     title = fields.CharField(max_length=100)
     url = fields.CharField(max_length=200)
-    
+
     def __str__(self) -> str:
         return self.title

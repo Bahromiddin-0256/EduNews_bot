@@ -1,8 +1,9 @@
 from aiogram.types import Message
 import re
-
+from datetime import datetime
+from tortoise.expressions import Q
 from core.config import settings
-from db.models import User
+from db.models import User, Tournament
 from keyboards.inline_markup import required_channels_tm
 from keyboards.reply_markup import main_menu_tm
 
@@ -43,11 +44,22 @@ async def send_membership_alert(message: Message, user: User) -> None:
     await message.answer(**data)
 
 
-def post_text_maker(data: dict) -> str:
+def post_text_maker(data: dict, tournament_name: str = None) -> str:
     post_text = "\n".join([
         "<b>{title}</b>\n",
         "<i>{description}</i>",
         "\n📍 <b>{district_name},  {school_name}</b>",
         "\n👉  @{bot_username}"
     ]).format(**data, bot_username=settings.BOT_USERNAME)
+    if tournament_name:
+        post_text = f'🏆 {tournament_name} | TANLOV\n\n' + post_text
     return post_text
+
+
+async def check_tournament_name(name: str):
+    current_date = datetime.utcnow()
+    tournament = await Tournament.get_or_none(
+        Q(active=True) & Q(start_date__lte=current_date) & Q(end_date__gte=current_date) & Q(name=name)
+    )
+    return tournament
+    

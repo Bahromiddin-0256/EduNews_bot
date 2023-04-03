@@ -1,6 +1,5 @@
 import asyncio
 import json
-import logging
 
 from rocketry import Rocketry
 from rocketry.conds import every
@@ -24,9 +23,7 @@ async def on_startup():
 
 
 def make_delta(values: list[bool]):
-    trues = values.count(True)
-    falses = values.count(False)
-    return falses - trues
+    return values.count(False) - values.count(True)
 
 
 @app.task(every(f"{settings.POST_RANGE} seconds"))
@@ -40,7 +37,7 @@ async def check_for_unpublished_posts():
         await publish_post(post=remaining_posts[0], bot=bot)
 
 
-@app.task(every("60 seconds"))
+@app.task(every("20 seconds"))
 async def checker():
     req = await redis.lpop(cache_key)
     aggregate = {}
@@ -77,7 +74,7 @@ async def checker():
                     reply_markup=markup,
                 )
                 await asyncio.sleep(0.5)
-            except Exception as error:
+            except:
                 await asyncio.sleep(3)
 
 

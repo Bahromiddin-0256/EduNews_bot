@@ -19,6 +19,7 @@ from db.models import (
     User,
     Post,
     ConnectedChannel,
+    Tournament,
 )
 from core.config import BASE_DIR
 
@@ -47,7 +48,11 @@ class ForeignKeyUrl(filters.ForeignKey):
         return []
 
     async def render(self, request: Request, value: Any):
-        return ''
+        return ""
+
+
+class DatetimeInput(inputs.Text):
+    input_type = "datetime-local"
 
 
 @app.register
@@ -178,42 +183,72 @@ class Content(Dropdown):
 
 
 @app.register
-class PostAdmin(Model):
-    label = "Posts"
-    icon = "fas fa-photo-film"
-    model = Post
-    filters = [ForeignKeyUrl(model=User, name="author", label="User")]
-    fields = [
-        "status",
-        Field(
-            name="author_id",
-            label="Author",
-            input_=inputs.ForeignKey(model=User),
-            display=ForeignKeyDisplay(model=User, display_field="full_name"),
-        ),
-        "title",
-        Field(
-            name="url",
-            label="Telegram link",
-            input_=inputs.Input(),
-            display=displays.InputOnly(),
-        ),
-        Field(
-            name="facebook_url",
-            label="Facebook link",
-            input_=inputs.Input(),
-            display=displays.InputOnly(),
-        ),
-        "created_at",
-    ]
+class PostManagement(Dropdown):
+    class TournamentAdmin(Model):
+        label = "Tournaments"
+        icon = "fa-regular fa-trophy"
+        model = Tournament
+        filters = [filters.Boolean(name="active", label="Active")]
+        fields = [
+            "name",
+            "active",
+            Field(
+                name="start_date",
+                label="Start Date",
+                input_=DatetimeInput(),
+                display=displays.DatetimeDisplay(format_="%d/%m/%Y %H:%M"),
+            ),
+            Field(
+                name="end_date",
+                label="End Date",
+                input_=DatetimeInput(),
+                display=displays.DatetimeDisplay(format_="%d/%m/%Y %H:%M"),
+            ),
+        ]
 
-    async def row_attributes(self, request: Request, obj: dict) -> dict:
-        if obj["status"] == "waiting":
-            return {"style": "background-color: rgb(245, 187, 61);"}
-        elif obj["status"] == "approved" and obj["is_published"] is False:
-            return {"style": "background-color: rgba(0, 255, 0, 0.5);"}
-        else:
-            return {"style": "background-color: rgb(0, 255, 0);"}
+    class PostAdmin(Model):
+        label = "Posts"
+        icon = "fas fa-photo-film"
+        model = Post
+        filters = [
+            ForeignKeyUrl(model=User, name="author", label="User"),
+            filters.ForeignKey(model=Tournament, name="tournament", label="Tournament"),
+        ]
+        fields = [
+            "status",
+            Field(
+                name="author_id",
+                label="Author",
+                input_=inputs.ForeignKey(model=User),
+                display=ForeignKeyDisplay(model=User, display_field="full_name"),
+            ),
+            "title",
+            Field(
+                name="url",
+                label="Telegram link",
+                input_=inputs.Input(),
+                display=displays.InputOnly(),
+            ),
+            Field(
+                name="facebook_url",
+                label="Facebook link",
+                input_=inputs.Input(),
+                display=displays.InputOnly(),
+            ),
+            "created_at",
+        ]
+
+        async def row_attributes(self, request: Request, obj: dict) -> dict:
+            if obj["status"] == "waiting":
+                return {"style": "background-color: rgb(245, 187, 61);"}
+            elif obj["status"] == "approved" and obj["is_published"] is False:
+                return {"style": "background-color: rgba(0, 255, 0, 0.5);"}
+            else:
+                return {"style": "background-color: rgb(0, 255, 0);"}
+
+    label = "Post management"
+    icon = "fa-solid fa-list-check"
+    resources = [TournamentAdmin, PostAdmin]
 
 
 @app.register
@@ -222,7 +257,9 @@ class DigitalEducationAdmin(Dropdown):
         label = "Category"
         model = MediaCategory
         filters = [
-            filters.ForeignKey(model=MediaCategory, name='parent_category', label='Parenl category')
+            filters.ForeignKey(
+                model=MediaCategory, name="parent_category", label="Parenl category"
+            )
         ]
         fields = [
             "id",
@@ -230,19 +267,21 @@ class DigitalEducationAdmin(Dropdown):
                 name="parent_category_id",
                 label="Parent category",
                 input_=inputs.ForeignKey(model=MediaCategory, null=True),
-                display=ForeignKeyDisplay(model=MediaCategory, display_field='name'),
+                display=ForeignKeyDisplay(model=MediaCategory, display_field="name"),
             ),
             "name",
-            "last_layer"
+            "last_layer",
         ]
-        
+
         @classmethod
         async def resolve_data(cls, request: Request, data: FormData):
             ret = {}
             m2m_ret = {}
             for field in cls.get_fields(is_display=False):
                 input_ = field.input
-                if input_.context.get("disabled") or isinstance(input_, inputs.DisplayOnly):
+                if input_.context.get("disabled") or isinstance(
+                    input_, inputs.DisplayOnly
+                ):
                     continue
                 name = input_.context.get("name")
                 if isinstance(input_, inputs.ManyToMany):
@@ -252,7 +291,7 @@ class DigitalEducationAdmin(Dropdown):
                 else:
                     v = data.get(name)
                     value = await input_.parse_value(request, v)
-                    if value in [None, '']:
+                    if value in [None, ""]:
                         continue
                     ret[name] = value
             return ret, m2m_ret
