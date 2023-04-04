@@ -66,6 +66,4 @@ class ChannelFilter(Filter):
     ) -> bool:
         if isinstance(event, CallbackQuery):
             event = event.message
-        print(self.channel)
-        print(event.chat.id)
         return event.chat.id in self.channel
