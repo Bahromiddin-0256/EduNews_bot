@@ -119,7 +119,6 @@ async def on_startup():
     await admin_app.configure(**admin_config)
     if settings.DEBUG is False:
         await set_bot_webhook(bot)
-        await bot2.set_webhook(url=f"https://avxtb.uz/bot{bot2.token}")
     else:
         await bot.delete_webhook(drop_pending_updates=True)
     middlewares.setup(dp)
@@ -154,7 +153,6 @@ async def telegram_update(
         background_tasks.add_task(feed_update, bot, dp, update)
         return Response(status_code=status.HTTP_202_ACCEPTED)
     elif token == bot2.token:
-        print("bot2")
         background_tasks.add_task(feed_update, bot2, dp2, update)
         return Response(status_code=status.HTTP_202_ACCEPTED)
     return Response(status_code=status.HTTP_401_UNAUTHORIZED)
