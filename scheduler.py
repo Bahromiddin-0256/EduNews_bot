@@ -7,7 +7,7 @@ from tortoise import Tortoise
 
 from core.config import settings, TORTOISE_ORM
 from aioredis import Redis
-from core.misc import bot
+from core.misc import bot, bot2
 from db.crud import update_points
 from db.models import Post, PostLikes
 from keyboards.inline_markup import make_post_markup
