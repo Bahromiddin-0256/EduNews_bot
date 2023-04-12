@@ -19,18 +19,21 @@ router.message.middleware(PermissionMiddleware())
 
 @router.message(TranslatedText('my_posts'))
 async def show_my_posts(message: types.Message, user: User, state: FSMContext):
-    data = await my_posts_tm(user=user, index=0)
-    if data is None:
-        await message.answer(text=_('no_uploaded_posts', user.lang_code))
-        return
-    else:
-        await message.answer(text=_('uploaded_posts', user.lang_code), reply_markup=translated_button(user, 'back'))
-        if data.get('photo') is not None:
-            _m = await message.answer_photo(**data)
+    try:
+        data = await my_posts_tm(user=user, index=0)
+        if data is None:
+            await message.answer(text=_('no_uploaded_posts', user.lang_code))
+            return
         else:
-            _m = await message.answer_video(**data)
-        await state.update_data(message_id=_m.message_id)
-        await state.set_state(MyPostsState.view)
+            await message.answer(text=_('uploaded_posts', user.lang_code), reply_markup=translated_button(user, 'back'))
+            if data.get('photo') is not None:
+                _m = await message.answer_photo(**data)
+            else:
+                _m = await message.answer_video(**data)
+            await state.update_data(message_id=_m.message_id)
+            await state.set_state(MyPostsState.view)
+    except Exception as er:
+        print(er)
 
 
 @router.callback_query(MyPostsState.view, F.data == 'null')
