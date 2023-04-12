@@ -25,7 +25,7 @@ async def show_my_posts(message: types.Message, user: User, state: FSMContext):
             return
         else:
             await message.answer(text=_('uploaded_posts', user.lang_code), reply_markup=translated_button(user, 'back'))
-            _m = await message.answer_video(**data)
+            _m = await message.answer(**data)
             await state.update_data(message_id=_m.message_id)
             await state.set_state(MyPostsState.view)
     except Exception as er:
