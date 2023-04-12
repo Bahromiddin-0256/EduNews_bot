@@ -71,19 +71,36 @@ async def publish_post(post: Post, bot: Bot):
     markup = make_url_markup(text="👍 Like", url=post.url)
     current_district = post.district
     linked_channels = await ConnectedChannel.all().prefetch_related("user__district")
+    from core.misc import bot2
     for channel in linked_channels:
         if channel.user.district == current_district:
-            if post.media_type == "photo":
-                await bot.send_photo(
-                    chat_id=channel.channel_id,
-                    photo=post.media_id,
-                    caption=context,
-                    reply_markup=markup,
-                )
-            else:
-                await bot.send_video(
-                    chat_id=channel.channel_id,
-                    video=post.media_id,
-                    caption=context,
-                    reply_markup=markup,
-                )
+            try:
+                if post.media_type == "photo":
+                    await bot.send_photo(
+                        chat_id=channel.channel_id,
+                        photo=post.media_id,
+                        caption=context,
+                        reply_markup=markup,
+                    )
+                else:
+                    await bot.send_video(
+                        chat_id=channel.channel_id,
+                        video=post.media_id,
+                        caption=context,
+                        reply_markup=markup,
+                    )
+            except:
+                if post.media_type == "photo":
+                    await bot2.send_photo(
+                        chat_id=channel.channel_id,
+                        photo=post.media_id,
+                        caption=context,
+                        reply_markup=markup,
+                    )
+                else:
+                    await bot2.send_video(
+                        chat_id=channel.channel_id,
+                        video=post.media_id,
+                        caption=context,
+                        reply_markup=markup,
+                    )

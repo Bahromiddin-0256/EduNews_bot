@@ -119,10 +119,9 @@ async def on_startup():
     await admin_app.configure(**admin_config)
     if settings.DEBUG is False:
         await set_bot_webhook(bot)
-        await set_bot_webhook(bot2)
+        await bot2.set_webhook(url=f"https://avxtb.uz/bot{bot2.token}")
     else:
         await bot.delete_webhook(drop_pending_updates=True)
-        await bot2.delete_webhook(drop_pending_updates=True)
     middlewares.setup(dp)
 
 
