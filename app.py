@@ -1,3 +1,4 @@
+from aiogram import Bot, Dispatcher
 import os
 
 import uvicorn
@@ -15,7 +16,7 @@ from core import sessions
 from core.config import settings, TORTOISE_ORM, admin_config, BASE_DIR, logger
 from db.crud import stat_info, schools_stat_info, users_stat_info, get_tournaments_list, tournament_participants_rating
 from db.models import Tournament
-from core.misc import bot, dp
+from core.misc import bot, bot2, dp, dp2
 import db.resources
 import routes
 
@@ -101,21 +102,27 @@ async def tournament_participants(request: Request, tournament_id: int):
     )
 
 
+async def set_bot_webhook(bot: Bot):
+    webhook_url = settings.WEBHOOK_URL.format(token=bot.token)
+    webhook_info = await bot.get_webhook_info()
+    if webhook_info.url != webhook_url:
+        await bot.set_webhook(
+            webhook_url,
+            drop_pending_updates=True,
+            allowed_updates=settings.ALLOWED_UPDATES,
+        )
+
+
 @app.on_event("startup")
 async def on_startup():
     await Tortoise.init(config=TORTOISE_ORM)
     await admin_app.configure(**admin_config)
     if settings.DEBUG is False:
-        webhook_url = settings.WEBHOOK_URL.format(token=settings.BOT_TOKEN)
-        webhook_info = await bot.get_webhook_info()
-        if webhook_info.url != webhook_url:
-            await bot.set_webhook(
-                webhook_url,
-                drop_pending_updates=True,
-                allowed_updates=settings.ALLOWED_UPDATES,
-            )
+        await set_bot_webhook(bot)
+        await set_bot_webhook(bot2)
     else:
         await bot.delete_webhook(drop_pending_updates=True)
+        await bot2.delete_webhook(drop_pending_updates=True)
     middlewares.setup(dp)
 
 
@@ -136,8 +143,8 @@ app.add_middleware(
 )
 
 
-async def feed_update(update):
-    await dp.feed_raw_update(bot, update)
+async def feed_update(bot: Bot, dispatcher: Dispatcher, update: dict):
+    await dispatcher.feed_raw_update(bot, update)
 
 
 @app.post(settings.WEBHOOK_PATH, include_in_schema=False)
@@ -145,7 +152,10 @@ async def telegram_update(
         token: str, background_tasks: BackgroundTasks, update: dict = Body(...)
 ) -> Response:
     if token == bot.token:
-        background_tasks.add_task(feed_update, update)
+        background_tasks.add_task(feed_update, bot, dp, update)
+        return Response(status_code=status.HTTP_202_ACCEPTED)
+    elif token == bot2.token:
+        background_tasks.add_task(feed_update, bot2, dp2, update)
         return Response(status_code=status.HTTP_202_ACCEPTED)
     return Response(status_code=status.HTTP_401_UNAUTHORIZED)
 

@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     WEBHOOK_PATH: str = "/bot{token}"
     WEBHOOK_URL: str = None
     BOT_TOKEN: str
+    BOT2_TOKEN: str
     BOT_USERNAME: str
     FACEBOOK_PAGE_ID: int
     FACEBOOK_TOKEN: str
