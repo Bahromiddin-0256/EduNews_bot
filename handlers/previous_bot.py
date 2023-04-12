@@ -2,7 +2,6 @@ from aiogram import Router, types
 from .channel.post_actions import router as channel_router
 
 router = Router()
-router.include_router(channel_router)
 
 
 @router.message()

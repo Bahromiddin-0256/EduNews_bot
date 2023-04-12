@@ -22,6 +22,7 @@ dp2 = Dispatcher()
 
 dp.include_router(router)
 dp2.include_router(forward_message_router)
+print(dp2.sub_routers)
 
 if not settings.DEBUG:
     dp.shutdown.register(redis.close)
