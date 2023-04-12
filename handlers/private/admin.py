@@ -46,7 +46,7 @@ async def start_broadcasting(message: types.Message, user: User, state: FSMConte
     broadcast_status = await message.answer("Broadcast started...")
     users = await User.all().exclude(pk=user.pk)
     users_count = len(users)
-    percent_range = int(users_count * 0.01) * 5
+    percent_range = int(users_count * 0.01)
     percent_range = percent_range if percent_range else 1
     count = 0
     try:
@@ -54,7 +54,8 @@ async def start_broadcasting(message: types.Message, user: User, state: FSMConte
             if await send_copy(message=message, chat_id=users[i].tg_id):
                 count += 1
             k = i + 1
-            if k % percent_range == 0 or i == users_count - 1:
+            print(k)
+            if k % percent_range == 0 or i >= users_count - 1:
                 await broadcast_status.edit_text(
                     f"Status: {k}/{users_count}, {int(k / users_count * 100)}%"
                 )
