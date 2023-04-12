@@ -59,7 +59,7 @@ async def start_broadcasting(message: types.Message, user: User, state: FSMConte
                 await broadcast_status.edit_text(
                     f"Status: {k}/{users_count}, {int(k / users_count * 100)}%"
                 )
-            await asyncio.sleep(0.05)
+            await asyncio.sleep(0.02)
     finally:
         data = await main_menu_tm(user=user)
         data["text"] = f"Message has been sent to <b>{count}</b> users."
