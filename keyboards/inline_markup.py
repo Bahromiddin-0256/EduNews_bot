@@ -121,10 +121,8 @@ async def my_posts_tm(user: User, index: int) -> Union[dict, None]:
     builder.row(InlineKeyboardButton(text=_('share', user.lang_code),
                                      url=f"https://t.me/share/url?url={post.url}&text=Check out my new post."))
 
-    caption = await post.context()
-    if post.media_type == 'photo':
-        return {'photo': post.media_id, 'caption': caption, 'reply_markup': builder.as_markup()}
-    return {'video': post.media_id, 'caption': caption, 'reply_markup': builder.as_markup()}
+    text = hide_link(post.url)
+    return {'text': text, 'reply_markup': builder.as_markup()}
 
 
 async def post_approved_tm(user: User, post: Post) -> dict:
