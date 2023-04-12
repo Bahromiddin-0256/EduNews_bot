@@ -1,5 +1,4 @@
 from aiogram.types import Message
-from core.misc import bot2
 
 
 async def send_copy(message: Message, chat_id: int):
@@ -13,6 +12,7 @@ async def send_copy(message: Message, chat_id: int):
         }
         text = message.text or message.caption
         entities = message.entities or message.caption_entities
+        from core.misc import bot2
         try:
             if message.text:
                 await bot2.send_message(text=message.text, **kwargs)
