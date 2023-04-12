@@ -154,6 +154,7 @@ async def telegram_update(
         background_tasks.add_task(feed_update, bot, dp, update)
         return Response(status_code=status.HTTP_202_ACCEPTED)
     elif token == bot2.token:
+        print("bot2")
         background_tasks.add_task(feed_update, bot2, dp2, update)
         return Response(status_code=status.HTTP_202_ACCEPTED)
     return Response(status_code=status.HTTP_401_UNAUTHORIZED)
