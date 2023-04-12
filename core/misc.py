@@ -4,7 +4,7 @@ from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
 from core import sessions
 from core.config import settings, redis
 from handlers import router
-from handlers.previous_bot import router as forward_message_router
+from handlers.old_bot import router as forward_message_router
 
 
 TELEGRAM_SERVER = TelegramAPIServer.from_base(settings.BOT_API_SERVER)
