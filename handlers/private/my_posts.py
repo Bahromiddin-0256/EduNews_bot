@@ -21,6 +21,7 @@ router.message.middleware(PermissionMiddleware())
 async def show_my_posts(message: types.Message, user: User, state: FSMContext):
     try:
         data = await my_posts_tm(user=user, index=0)
+        print(data)
         if data is None:
             await message.answer(text=_('no_uploaded_posts', user.lang_code))
             return
