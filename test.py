@@ -8,9 +8,9 @@ import unittest
 
 async def main():
     await tortoise.Tortoise.init(config=TORTOISE_ORM)
-    await User.all().update(post_permission=False, points=0)
-    await School.all().update(points=0)
-    await District.all().update(points=0)
+    await User.filter(district_id=18).update(points=0)
+    await School.filter(district_id=18).update(points=0)
+    await District.get(id=18).update(points=0)
 
 
 tortoise.run_async(main())
