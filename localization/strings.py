@@ -1,4 +1,5 @@
 import os
+from typing import Union
 
 import yaml
 
@@ -26,7 +27,7 @@ def load_all_languages():
 _languages, _texts = load_all_languages()
 
 
-def _(key, language) -> str | None:
+def _(key, language) -> Union[str, None]:
     """Translate text from key and language code"""
 
     if language is None:

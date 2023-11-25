@@ -151,3 +151,4 @@ migrations/
 pyproject.toml
 logs
 .vscode/
+test.py
