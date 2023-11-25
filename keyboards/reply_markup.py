@@ -6,6 +6,7 @@ from localization.strings import get_all_languages
 from localization.strings import _
 from datetime import datetime
 from tortoise.expressions import Q
+from typing import Union
 
 
 cancel_button = ReplyKeyboardMarkup(
@@ -199,7 +200,7 @@ async def settings_tm(user: User) -> dict:
     return {"text": text, "reply_markup": markup}
 
 
-async def get_tournaments_list(user: User) -> dict | None:
+async def get_tournaments_list(user: User) -> Union[dict, None]:
     text = _("list_of_active_tournaments", user.lang_code)
     markup = ReplyKeyboardBuilder()
 
