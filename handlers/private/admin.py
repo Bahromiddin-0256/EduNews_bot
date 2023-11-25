@@ -16,7 +16,7 @@ router = Router()
 router.message.middleware.register(AdminMessageMiddleware())
 
 
-@router.message(F.content_type == "text", F.message.text.startswith("/user_"))
+@router.message(F.content_type == "text", F.text.startswith("/user_"))
 async def reply_user_mention(message: types.Message):
     user_id = message.text.split("_")[1]
     print(user_id)
