@@ -16,6 +16,14 @@ router = Router()
 router.message.middleware.register(AdminMessageMiddleware())
 
 
+@router.message(F.content_type == "text", F.message.text.startswith("/user_"))
+async def reply_user_mention(message: types.Message):
+    user_id = message.text.split("_")[1]
+    print(user_id)
+    user = await User.get_or_none(id=int(user_id))
+    await message.answer(text=f"User: {user.mention}")
+
+
 @router.message(F.content_type == "text", CommentReply())
 async def comment_reply(message: types.Message, comment_author: User):
     await message.send_copy(chat_id=comment_author.tg_id)
@@ -30,7 +38,9 @@ async def ask_broadcast_message(message: types.Message, state: FSMContext):
 
 
 @router.message(AdminState.input_broadcast_message, F.text == "🚫 Cancel")
-async def cancel_broadcast(message: types.Message, user: User, state: FSMContext):
+async def cancel_broadcast(
+    message: types.Message, user: User, state: FSMContext
+):
     await state.clear()
     await send_main_menu(message=message, user=user)
 
@@ -38,10 +48,20 @@ async def cancel_broadcast(message: types.Message, user: User, state: FSMContext
 @router.message(
     AdminState.input_broadcast_message,
     F.content_type.in_(
-        {"text", "audio", "photo", "video", "video_note", "location", "document"}
+        {
+            "text",
+            "audio",
+            "photo",
+            "video",
+            "video_note",
+            "location",
+            "document",
+        }
     ),
 )
-async def start_broadcasting(message: types.Message, user: User, state: FSMContext):
+async def start_broadcasting(
+    message: types.Message, user: User, state: FSMContext
+):
     await state.clear()
     broadcast_status = await message.answer("Broadcast started...")
     users = await User.all().exclude(pk=user.pk)
