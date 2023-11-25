@@ -22,7 +22,7 @@ async def on_startup():
     await Tortoise.init(config=TORTOISE_ORM)
 
 
-def make_delta(values: list[bool]):
+def make_delta(values):
     return values.count(False) - values.count(True)
 
 
