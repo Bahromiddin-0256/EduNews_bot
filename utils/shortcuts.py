@@ -20,7 +20,7 @@ async def check_channels(user: User) -> bool:
     return True
 
 
-async def phone_number_validator(message: Message) -> str | None:
+async def phone_number_validator(message: Message):
     if message.content_type == 'contact':
         phone_number = message.contact.phone_number
     else:
