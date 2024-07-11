@@ -1,5 +1,4 @@
 aerich==0.7.1
-aiofiles==22.1.0
 aiogram~=3.0.0b7
 aiohttp~=3.8.4
 aioredis==2.0.1
@@ -60,7 +59,6 @@ tzlocal==4.2
 urllib3==1.26.12
 uvicorn~=0.20.0
 watchfiles==0.18.0
-websockets==10.3
 wrapt==1.14.1
 yarl==1.8.1
 
